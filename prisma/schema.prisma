@@ -1,0 +1,73 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  role      String   @default("ADMIN")
+  createdAt DateTime @default(now())
+}
+
+model Client {
+  id        String   @id @default(cuid())
+  phone     String   @unique
+  name      String
+  email     String?
+  bookings  Appointment[]
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  price       Float
+  duration    Int      // Duration in minutes
+  category    String   // e.g. "Glass Nails", "3D Art", "Basic"
+  bookings    Appointment[]
+}
+
+model Appointment {
+  id            String   @id @default(cuid())
+  clientId      String
+  client        Client   @relation(fields: [clientId], references: [id])
+  serviceId     String
+  service       Service  @relation(fields: [serviceId], references: [id])
+  startTime     DateTime
+  status        String   @default("PENDING") // PENDING, CONFIRMED, CANCELLED, COMPLETED
+  depositPaid   Boolean  @default(false)
+  notes         String?
+  createdAt     DateTime @default(now())
+}
+
+model GalleryItem {
+  id          String   @id @default(cuid())
+  imageUrl    String
+  title       String
+  tags        String[] // ["Glass", "Summer", "Short"]
+  skinTone    String?  // Fair, Tan, Deep
+  handShape   String?  // Round, Square, Almond
+  isTrending  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
+
+model BlogPost {
+  id        String   @id @default(cuid())
+  title     String
+  slug      String   @unique
+  content   String   @db.Text
+  author    String
+  published Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

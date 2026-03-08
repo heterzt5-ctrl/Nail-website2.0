@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", "Noto Sans KR", sans-serif;
+  --font-display: "Playfair Display", serif;
+
+  --color-brand-50: #FFF7ED;
+  /* Warm Peach Tint */
+  --color-brand-100: #FFEDD5;
+  --color-brand-200: #FED7AA;
+  --color-brand-pink: #EC4899;
+  /* Vibrant Pink */
+  --color-brand-orange: #F97316;
+  /* Energetic Orange */
+  --color-brand-purple: #8B5CF6;
+  /* Creative Purple */
+  --color-brand-900: #431407;
+  /* Deep Espresso */
+
+  --radius-ios: 24px;
+
+  --shadow-lively: 0 20px 40px -10px rgba(249, 115, 22, 0.15);
+  --shadow-glass: 0 8px 32px 0 rgba(236, 72, 153, 0.1);
+}
+
+:root {
+  --background: #FFF7ED;
+  --foreground: #431407;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+}
+
+.glass-vibrant {
+  background: rgba(236, 72, 153, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(236, 72, 153, 0.1);
+  box-shadow: var(--shadow-lively);
+}
+
+.gradient-mesh {
+  background: radial-gradient(circle at 10% 20%, rgba(236, 72, 153, 0.1) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(249, 115, 22, 0.1) 0%, transparent 40%);
+}
+
+.smooth-transition {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: var(--shadow-lively);
+}
