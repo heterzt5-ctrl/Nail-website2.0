@@ -1,107 +1,112 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Sparkles } from "lucide-react";
-import GlassCard from "./glass-card";
-import Link from "next/link";
-import { useState } from "react";
-import BookingModal from "../booking/booking-modal";
 import { useLanguage } from "@/lib/language-context";
 
 export default function Hero() {
-    const [isBookingOpen, setIsBookingOpen] = useState(false);
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
 
     return (
-        <>
-            <section className="relative pt-44 pb-20 px-4 overflow-hidden">
-                {/* Background Dynamic Shapes */}
-                <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-brand-pink/10 blur-[150px] -z-10 rounded-full animate-pulse" />
-                <div className="absolute bottom-[0%] right-[-10%] w-[50%] h-[50%] bg-brand-orange/10 blur-[120px] -z-10 rounded-full" />
+        <section className="relative h-screen min-h-[640px] grid grid-cols-1 lg:grid-cols-2 overflow-hidden bg-cloud" aria-label="Cover">
+            {/* Left Column: Typography */}
+            <div className="flex flex-col justify-center px-8 md:px-20 lg:px-16 xl:px-24 pt-32 pb-20 relative z-10 w-full">
+                <motion.div
+                    initial={{ x: -20, opacity: 0 }}
+                    whileInView={{ x: 0, opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1, delay: 0.1, ease: [0.4, 0, 0.2, 1] }}
+                    className="text-[12px] tracking-[5px] text-gold uppercase mb-16 flex items-center gap-4"
+                >
+                    <div className="w-8 h-px bg-gold-pale" />
+                    <span>{t('h-eyebrow')}</span>
+                </motion.div>
 
-                <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-                    <div className="space-y-10">
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 1 }}
-                            className="inline-flex items-center gap-2 bg-brand-pink/10 px-4 py-2 rounded-full text-brand-pink text-xs font-black tracking-widest uppercase border border-brand-pink/20"
-                        >
-                            <Sparkles className="w-4 h-4" />
-                            <span>Lively Salon • 2026 Vibes</span>
-                        </motion.div>
+                <motion.h1
+                    initial={{ x: -20, opacity: 0 }}
+                    whileInView={{ x: 0, opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1, delay: 0.25, ease: [0.4, 0, 0.2, 1] }}
+                    className="font-serif font-light text-[clamp(52px,7vw,88px)] leading-none tracking-[0.06em] text-ink uppercase"
+                >
+                    <span>REMY</span><br />
+                    <span className="italic text-gold-deep tracking-[0.08em]">Muse</span>
+                </motion.h1>
 
-                        <div className="space-y-4">
-                            <motion.h1
-                                initial={{ opacity: 0, y: 30 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.8, delay: 0.2 }}
-                                className="text-7xl md:text-9xl font-display font-black leading-[0.85] tracking-tighter text-brand-900"
-                            >
-                                {t("heroTitle")} <br />
-                                <span className="text-brand-orange italic font-light drop-shadow-sm">{t("heroSubtitle")}</span>
-                            </motion.h1>
-                        </div>
+                <motion.p
+                    initial={{ x: -20, opacity: 0 }}
+                    whileInView={{ x: 0, opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1, delay: 0.4, ease: [0.4, 0, 0.2, 1] }}
+                    className="text-[12px] tracking-[5px] text-ink-light uppercase mt-6"
+                >
+                    {t('h-sub')}
+                </motion.p>
 
-                        <motion.p
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: 0.4 }}
-                            className="max-w-md text-xl text-brand-900/60 font-sans tracking-tight leading-relaxed"
-                        >
-                            {t("heroDesc")}
-                        </motion.p>
+                <motion.div
+                    initial={{ width: 0, opacity: 0 }}
+                    whileInView={{ width: 40, opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1, delay: 0.6, ease: [0.4, 0, 0.2, 1] }}
+                    className="h-px bg-gold my-10"
+                />
 
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: 0.6 }}
-                            className="flex flex-wrap items-center gap-6"
-                        >
-                            <button
-                                onClick={() => setIsBookingOpen(true)}
-                                className="bg-brand-pink text-white px-10 py-5 rounded-full font-black text-lg shadow-xl shadow-brand-pink/30 hover:scale-105 hover:bg-brand-purple transition-all flex items-center gap-3 group"
-                            >
-                                {t("startBooking")}
-                                <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
-                            </button>
-                            <Link href="#portfolio" className="px-10 py-5 rounded-full border-2 border-brand-orange/30 text-brand-orange font-bold text-lg hover:bg-brand-orange/10 transition-all">
-                                {t("seeTrends")}
-                            </Link>
-                        </motion.div>
-                    </div>
+                <motion.p
+                    initial={{ x: -20, opacity: 0 }}
+                    whileInView={{ x: 0, opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1, delay: 0.7, ease: [0.4, 0, 0.2, 1] }}
+                    className="font-serif italic font-light text-[18px] leading-[1.8] text-ink-mid max-w-xs"
+                    dangerouslySetInnerHTML={{ __html: t('h-quote') }}
+                />
+            </div>
 
-                    <div className="relative group">
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.95 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 1.2, delay: 0.3 }}
-                            className="relative z-10 rounded-[50px] overflow-hidden aspect-[4/5] shadow-2xl ring-1 ring-white/20"
-                        >
-                            <div className="absolute inset-0 bg-brand-orange/10 animate-pulse" />
-                            <img
-                                src="https://images.unsplash.com/photo-1604654894610-df490651e10c?auto=format&fit=crop&q=80&w=1200"
-                                alt="Vibrant Nail Art"
-                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[2000ms]"
-                            />
-                        </motion.div>
+            {/* Right Column: Visual Collage */}
+            <div className="relative overflow-hidden hidden lg:block h-full">
+                <motion.div 
+                    initial={{ scale: 1.1, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 2, ease: "easeOut" }}
+                    className="absolute inset-0 bg-cover bg-center"
+                    style={{ 
+                        backgroundImage: `linear-gradient(to right, var(--color-cloud) 0%, transparent 15%), url('https://images.unsplash.com/photo-1632345031435-09506637dae6?auto=format&fit=crop&q=80&w=1200')`,
+                    }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-cloud via-cloud/30 to-transparent" />
+                
+                {/* Floating CSS Nail Shapes */}
+                <NailShape className="w-[90px] h-[120px] top-[15%] left-[52%] -rotate-8 animate-float1" />
+                <NailShape className="w-[70px] h-[94px] top-[10%] left-[68%] rotate-5 animate-float2" />
+                <NailShape className="w-[60px] h-[80px] top-[32%] left-[78%] -rotate-3 animate-float3" />
+                <NailShape className="w-[80px] h-[108px] top-[48%] left-[58%] rotate-12 animate-float1 [animation-direction:reverse]" />
+                <NailShape className="w-[54px] h-[72px] top-[62%] left-[76%] -rotate-18 animate-float2" />
+                <NailShape className="w-[100px] h-[134px] top-[25%] left-[42%] rotate-2 animate-float3 [animation-direction:reverse]" />
+            </div>
 
-                        <GlassCard className="absolute -bottom-10 -left-10 max-w-[300px] z-20 glass-vibrant" delay={0.8}>
-                            <div className="flex items-center gap-5">
-                                <div className="w-14 h-14 rounded-2xl overflow-hidden bg-brand-pink shadow-lg shadow-brand-pink/30">
-                                    <img src="https://i.pravatar.cc/150?u=vibrant-girl" alt="AI Stylist" />
-                                </div>
-                                <div className="space-y-1">
-                                    <p className="text-[10px] font-black text-brand-pink uppercase tracking-[0.2em]">{t("stylistAI")}</p>
-                                    <p className="text-sm font-bold leading-tight">{t("analyzing")}</p>
-                                </div>
-                            </div>
-                        </GlassCard>
-                    </div>
+            {/* Scroll Cue */}
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1.5, delay: 1.2 }}
+                className="absolute bottom-10 left-8 md:left-20 z-10 flex flex-col items-center gap-2"
+            >
+                <div className="w-px h-[50px] bg-gradient-to-b from-gold-pale to-transparent relative overflow-hidden">
+                    <div className="absolute top-0 left-0 right-0 h-5 bg-gold animate-scroll" />
                 </div>
-            </section>
-
-            <BookingModal isOpen={isBookingOpen} onClose={() => setIsBookingOpen(false)} />
-        </>
+                <span className="text-[10px] tracking-[3px] text-ink-ghost uppercase [writing-mode:vertical-rl] font-sans">
+                    {t('h-scroll')}
+                </span>
+            </motion.div>
+        </section>
     );
 }
+
+function NailShape({ className }: { className?: string }) {
+    return (
+        <div 
+            className={`absolute rounded-[48%/52%_52%_48%_/_60%_60%_40%_40%] bg-gradient-to-br from-white/80 via-cloud-3/40 to-gold/15 border border-white/85 shadow-[0_12px_40px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.9),inset_0_-1px_0_rgba(196,169,106,0.2)] ${className}`}
+        >
+            <div className="absolute top-[8%] left-[15%] w-[30%] h-[35%] rounded-full bg-gradient-radial from-white/90 to-transparent -rotate-[30deg]" />
+        </div>
+    );
+}
+

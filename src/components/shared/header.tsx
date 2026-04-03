@@ -1,51 +1,35 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Calendar } from "lucide-react";
-import Link from "next/link";
-import { useState } from "react";
-import BookingModal from "../booking/booking-modal";
-import LanguageSwitcher from "./language-switcher";
 import { useLanguage } from "@/lib/language-context";
 
 export default function Header() {
-    const [isBookingOpen, setIsBookingOpen] = useState(false);
-    const { t } = useLanguage();
+    const { language, setLanguage } = useLanguage();
+
+    const langs: { id: typeof language, label: string }[] = [
+        { id: "VN", label: "VI" },
+        { id: "EN", label: "EN" },
+        { id: "KR", label: "한국어" },
+        { id: "CN", label: "中文" },
+        { id: "RU", label: "RU" },
+    ];
 
     return (
-        <>
-            <header className="fixed top-6 left-0 right-0 z-50 flex justify-center px-4">
-                <motion.nav
-                    initial={{ y: -20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="glass rounded-full px-8 py-3 flex items-center gap-10"
+        <nav className="fixed top-0 left-0 right-0 z-[200] h-12 bg-cloud/92 backdrop-blur-xl border-b border-cloud-3 flex items-center justify-end px-6 md:px-14 gap-1">
+            <span className="text-[11px] tracking-[3px] text-ink-ghost uppercase mr-4">Lang</span>
+            {langs.map((l) => (
+                <button
+                    key={l.id}
+                    onClick={() => setLanguage(l.id)}
+                    className={`bg-none border-none outline-none font-sans font-light text-[11px] tracking-[2px] uppercase px-3.5 py-1.5 cursor-pointer border-b transition-all duration-250 ease-linear ${
+                        language === l.id 
+                        ? "text-gold-deep border-gold" 
+                        : "text-ink-light border-transparent hover:text-gold-deep"
+                    }`}
                 >
-                    <div className="flex items-center gap-4">
-                        <LanguageSwitcher />
-                        <Link href="/" className="flex flex-col group">
-                            <span className="font-display font-black text-xl tracking-tighter text-brand-900 leading-none">Website 2.0</span>
-                            <span className="text-[8px] font-black uppercase tracking-[0.3em] text-brand-pink">Beauty Hub</span>
-                        </Link>
-                    </div>
-
-                    <div className="hidden md:flex items-center gap-8 text-[11px] font-black tracking-[0.2em] uppercase text-brand-900/40">
-                        <Link href="#portfolio" className="hover:text-brand-pink transition-colors">{t("portfolio")}</Link>
-                        <Link href="#booking" className="hover:text-brand-pink transition-colors">{t("booking")}</Link>
-                        <Link href="#blog" className="hover:text-brand-pink transition-colors">{t("insights")}</Link>
-                    </div>
-
-                    <button
-                        onClick={() => setIsBookingOpen(true)}
-                        className="flex items-center gap-3 bg-brand-pink text-white px-8 py-2.5 rounded-full text-xs font-black tracking-widest uppercase hover:bg-brand-purple hover:scale-105 transition-all shadow-xl shadow-brand-pink/20"
-                    >
-                        <Calendar className="w-4 h-4" />
-                        <span>{t("bookNow")}</span>
-                    </button>
-                </motion.nav>
-            </header>
-
-            <BookingModal isOpen={isBookingOpen} onClose={() => setIsBookingOpen(false)} />
-        </>
+                    {l.label}
+                </button>
+            ))}
+        </nav>
     );
 }
+

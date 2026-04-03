@@ -1,18 +1,14 @@
-import { Inter, Playfair_Display, Noto_Sans_KR } from "next/font/google";
+import { Playfair_Display, Jost, Didact_Gothic } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "@/lib/language-context";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
-const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-display" });
-const notoSansKR = Noto_Sans_KR({
-  subsets: ["latin"],
-  variable: "--font-noto-sans-kr",
-  weight: ["300", "400", "500", "700", "900"]
-});
+const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-serif" });
+const jost = Jost({ subsets: ["latin"], variable: "--font-sans", weight: ["200", "300", "400"] });
+const didactGothic = Didact_Gothic({ subsets: ["latin"], variable: "--font-didact", weight: ["400"] });
 
 export const metadata = {
-  title: "Website 2.0 | Vibrant Nail Salon Ecosystem",
-  description: "Next-gen nail salon experience with Virtual Consultant & Advanced Booking.",
+  title: "REMY MUSE — Luxury Nail Studio",
+  description: "Exquisite nail care and aesthetic ecosystem. Clean girl aesthetic, glassmorphism, and premium service in Da Nang.",
 };
 
 export default function RootLayout({
@@ -22,7 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${inter.variable} ${playfair.variable} ${notoSansKR.variable} font-sans gradient-mesh min-h-screen text-brand-900 selection:bg-brand-pink/30 selection:text-brand-900`}>
+      <body className={`${playfair.variable} ${jost.variable} ${didactGothic.variable} antialiased min-h-screen`}>
         <LanguageProvider>
           {children}
         </LanguageProvider>
@@ -30,3 +26,4 @@ export default function RootLayout({
     </html>
   );
 }
+
