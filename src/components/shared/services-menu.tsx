@@ -1,10 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/lib/language-context";
+import { CatalogTrigger, AtelierCatalogModal } from "@/components/shared/atelier-catalog-modal";
 
 export default function ServicesMenu() {
     const { t, language } = useLanguage();
+    const [isCatalogOpen, setIsCatalogOpen] = useState(false);
 
     const sections = [
         {
@@ -108,6 +111,15 @@ export default function ServicesMenu() {
                     </motion.div>
                 ))}
             </div>
+
+            {/* ── Catalog Trigger ── */}
+            <CatalogTrigger onOpen={() => setIsCatalogOpen(true)} />
+
+            {/* ── Fullscreen Catalog Modal ── */}
+            <AtelierCatalogModal
+                isOpen={isCatalogOpen}
+                onClose={() => setIsCatalogOpen(false)}
+            />
         </section>
     );
 }
