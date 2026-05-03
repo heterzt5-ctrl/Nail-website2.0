@@ -1,96 +1,92 @@
 @import "tailwindcss";
 
 @theme {
-  --font-serif: "Playfair Display", serif;
-  --font-sans: "Jost", "Didact Gothic", sans-serif;
-
+  /* Core Palette - Synchronized with Stitch Editorial System */
+  --color-primary: #735c00;
+  --color-primary-container: #d4af37;
+  --color-on-primary: #ffffff;
+  
   --color-cloud: #F0EEE9;
   --color-cloud-2: #EAE7E1;
   --color-cloud-3: #E1DDD6;
   --color-cloud-4: #D5D0C7;
-  --color-ink: #28261F;
+  
+  --color-ink: #1B1C19;
   --color-ink-mid: #5C5A53;
   --color-ink-light: #9C9A93;
   --color-ink-ghost: #C2BFB8;
 
-  --color-gold: #C4A96A;
-  --color-gold-deep: #A88A4A;
-  --color-gold-pale: #EAD9B0;
-  --color-gold-fog: rgba(196, 169, 106, 0.12);
+  --color-gold: #735c00;
+  --color-gold-deep: #574500;
+  --color-gold-pale: #D0C5AF;
+  
+  --color-surface-variant: #e4e2dd;
+  --color-secondary: #5d5e5f;
 
-  --color-silver: #B8B8B4;
-  --color-silver-lt: #DDDDD8;
-  --color-silver-deep: #8A8A85;
+  /* Typography Stack */
+  --font-serif: "Noto Serif", serif;
+  --font-sans: "Inter", sans-serif;
+  
+  /* Radii */
+  --radius-xs: 0.125rem;
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
 
-  --spacing-s1: 8px;
-  --spacing-s2: 16px;
-  --spacing-s3: 24px;
-  --spacing-s4: 40px;
-  --spacing-s5: 64px;
-  --spacing-s6: 96px;
-  --spacing-s7: 140px;
-
-  --animate-float1: float1 7s ease-in-out infinite;
-  --animate-float2: float2 9s ease-in-out infinite;
-  --animate-float3: float3 11s ease-in-out infinite;
-  --animate-scroll: scrollDown 2s ease-in-out infinite;
-
-  @keyframes float1 {
-    0%, 100% { transform: rotate(-8deg) translateY(0px); }
-    50%      { transform: rotate(-6deg) translateY(-10px); }
-  }
-  @keyframes float2 {
-    0%, 100% { transform: rotate(5deg) translateY(0px); }
-    50%      { transform: rotate(7deg) translateY(-8px); }
-  }
-  @keyframes float3 {
-    0%, 100% { transform: rotate(-3deg) translateY(0px); }
-    50%      { transform: rotate(-1deg) translateY(-6px); }
-  }
-  @keyframes scrollDown {
-    0%   { top: -20px; }
-    100% { top: 100%; }
+  /* Animations */
+  --animate-shimmer-gold: shimmer-gold 2s linear infinite;
+  
+  @keyframes shimmer-gold {
+    from { background-position: 0% 50%; }
+    to { background-position: 100% 50%; }
   }
 }
 
-:root {
-  --background: #F0EEE9;
-  --foreground: #28261F;
+/* Global Styles */
+@layer base {
+  body {
+    @apply bg-cloud text-ink font-serif antialiased;
+    scroll-behavior: smooth;
+  }
+  
+  /* Selection styling */
+  ::selection {
+    @apply bg-primary-container/30 text-ink;
+  }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  -webkit-font-smoothing: antialiased;
-  font-family: var(--font-sans);
-  font-weight: 300;
-  overflow-x: hidden;
-  position: relative;
+/* Editorial Utilities */
+@layer components {
+  .editorial-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1rem;
+  }
+
+  .shimmer-gold {
+    background: linear-gradient(90deg, #735c00 0%, #d4af37 100%);
+    background-size: 200% 100%;
+  }
+
+  .glass-header {
+    @apply bg-cloud/80 backdrop-blur-xl border-b border-gold-pale/15 sticky top-0 z-50;
+    box-shadow: 0 12px 40px rgba(27, 28, 25, 0.05);
+  }
 }
 
-/* Subtle paper texture */
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 999;
-  pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-  opacity: 0.018;
-  mix-blend-mode: multiply;
+/* Custom Scrollbar for Luxury Feel */
+::-webkit-scrollbar {
+  width: 6px;
 }
 
-.reveal {
-  opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1), transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+::-webkit-scrollbar-track {
+  @apply bg-cloud;
 }
 
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
+::-webkit-scrollbar-thumb {
+  @apply bg-gold-pale/30 rounded-full;
 }
 
-.smooth-transition {
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gold/20;
 }

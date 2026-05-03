@@ -1,30 +1,34 @@
 "use client";
 
+import Link from "next/link";
 import { useLanguage } from "@/lib/language-context";
 
 export default function Footer() {
     const { t } = useLanguage();
 
     return (
-        <footer className="bg-cloud border-t border-cloud-3 pt-16 md:pt-32 pb-16 px-7 md:px-20">
-            <div className="max-w-[900px] mx-auto grid grid-cols-1 md:grid-cols-[1fr_1px_1fr] gap-8 md:gap-10 items-center">
-                <div className="space-y-2">
-                    <div className="font-serif font-light text-[26px] tracking-[0.1em] text-ink uppercase">
-                        Remy <span className="italic text-gold-deep font-normal">Muse</span>
-                    </div>
-                    <div className="text-[11px] tracking-[4px] text-ink-ghost uppercase">
-                        {t('ft-tagline')}
-                    </div>
+        <footer className="bg-surface-variant/20 dark:bg-ink w-full border-t border-gold-pale/15">
+            <div className="flex flex-col md:flex-row justify-between items-center px-8 md:px-20 py-12 w-full mt-24 max-w-[1920px] mx-auto">
+                <div className="font-serif text-lg tracking-[0.2em] text-ink uppercase mb-8 md:mb-0">
+                    REMY MUSE
                 </div>
                 
-                <div className="hidden md:block w-px h-[60px] bg-cloud-3 self-center" />
-                
-                <div 
-                    className="text-[12px] tracking-[1.5px] text-ink-ghost leading-[2] uppercase md:text-right"
-                    dangerouslySetInnerHTML={{ __html: t('ft-note') }}
-                />
+                <div className="flex flex-wrap justify-center gap-8 mb-8 md:mb-0">
+                    {['Privacy', 'Terms', 'Atelier Locations', 'Contact'].map((link) => (
+                        <Link 
+                            key={link}
+                            href={`/${link.toLowerCase().replace(' ', '-')}`}
+                            className="font-sans text-[0.75rem] tracking-[0.1rem] uppercase text-secondary hover:text-primary transition-colors decoration-primary/30 underline-offset-4 hover:underline"
+                        >
+                            {link}
+                        </Link>
+                    ))}
+                </div>
+
+                <div className="font-serif text-[0.75rem] tracking-[0.1rem] uppercase text-primary text-center md:text-right">
+                    © 2026 REMY MUSE. <span className="opacity-60">ALL ARTISTRY RESERVED.</span>
+                </div>
             </div>
         </footer>
     );
 }
-

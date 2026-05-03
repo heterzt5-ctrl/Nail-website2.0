@@ -1,23 +1,25 @@
-# Website 2.0 - Nail Salon Digital Ecosystem
+# Website 2.0 - REMY MUSE Digital Atelier
 
-> **Mô tả:** Hệ sinh thái kỹ thuật số toàn diện dành cho Salon, kết hợp giữa "Thương hiệu chuyên gia" và "Trải nghiệm khách hàng tối ưu" (Clean Girl Aesthetic).
+> **Mô tả:** Hệ sinh thái kỹ thuật số toàn diện dành cho Salon, kết hợp giữa "Thương hiệu chuyên gia" và "Trải nghiệm thị giác xa xỉ" (The Digital Atelier).
 
 ---
 
 ## 📋 Tổng quan dự án (Project Overview)
 
-- **Mục tiêu**: Chuyển đổi người xem thành lịch hẹn thực tế thông qua hệ thống đặt lịch thông minh và trải nghiệm thị giác cao cấp.
-- **Phong cách**: Minimalist, Aesthetic, Glassmorphism (trong veo như mặt kính), hiện đại và sạch sẽ.
+- **Mục tiêu**: Chuyển đổi người xem thành lịch hẹn thực tế thông qua trải nghiệm "Visual Silence" (Sự im lặng thị giác) và phong cách Editorial cao cấp.
+- **Phong cách**: Minimalist Luxury, Editorial, Visual Silence, Tonal Layering.
+- **Hệ thống thiết kế**: Được đồng bộ hóa trực tiếp qua **Stitch MCP**.
 - **Dự án**: WEB (Next.js 15+ App Router).
 
 ---
 
 ## 🎯 Tiêu chí thành công (Success Criteria)
 
-1. **Hệ thống đặt lịch (Smart Booking)**: Hỗ trợ đặt cọc, thông báo tự động (vía SMS/Email/WhatsApp).
-2. **Bộ lọc Tư vấn ảo (Virtual Consultant)**: Tìm mẫu nail theo dáng tay, màu da, xu hướng.
-3. **Blog Chuyên gia**: CMS quản lý bài viết về kỹ thuật và kiến thức an toàn salon.
-4. **Mobile-First & SEO**: Điểm Lighthouse > 95, tối ưu SEO Local hạng #1.
+1. **Visual Silence**: Giao diện tối giản, tập trung vào khoảng trống (white space) và nghệ thuật sắp đặt.
+2. **Hệ thống đặt lịch (Smart Booking)**: Quy trình tinh gọn, tích hợp thông báo tự động.
+3. **Bộ lọc Tư vấn ảo (Virtual Consultant)**: Tìm mẫu nail theo dáng tay, màu da, xu hướng với giao diện Gallery cao cấp.
+4. **Editorial Content**: Blog chuyên gia với bố cục tạp chí thời trang.
+5. **Mobile-First & SEO**: Điểm Lighthouse > 95, tối ưu SEO Local hạng #1.
 
 ---
 
@@ -25,11 +27,23 @@
 
 | Thành phần | Công nghệ | Lý do lựa chọn |
 | :--- | :--- | :--- |
+| **Design Engine** | `Stitch MCP` | Đồng bộ hóa Design Tokens và UI trực tiếp từ hệ thống thiết kế. |
 | **Frontend Framework** | `Next.js (App Router)` | Tối ưu SEO, Web Vitals, Server Components mạnh mẽ. |
 | **Styling** | `Tailwind CSS v4` | CSS-first configuration, hiệu năng cao, linh hoạt thiết kế. |
-| **Database (Free)** | **Supabase (PostgreSQL)** | Free Tier cực tốt, hỗ trợ Auth, Storage và Real-time sẵn có. |
-| **Animations** | `Framer Motion` | Micro-animations mượt mà cho cảm giác Premium. |
-| **Icons & Font** | `Lucide React` & `Google Fonts` | Sans-serif hiện đại, tối giản. |
+| **Database** | `Supabase (PostgreSQL)` | Auth, Storage và Real-time sẵn có, kết hợp Prisma ORM. |
+| **Animations** | `Framer Motion` | Micro-animations "weighted" tạo cảm giác đắt tiền. |
+| **Typography** | `Noto Serif` & `Inter` | Sự kết hợp giữa nét cổ điển sang trọng và hiện đại sắc nét. |
+
+---
+
+## 🎨 Design Tokens (Stitch)
+
+- **Primary**: `#735C00` (Champagne Gold) - Metallic shimmer accents.
+- **Surface**: `#FBF9F4` (Cloud Dancer) - Soft linen base.
+- **Secondary**: `#5D5E5F` (Metallic Silver) - Muted utility info.
+- **Rules**: 
+  - **No-Line Rule**: Phân chia vùng bằng sắc độ màu (Tonal Layering), không dùng border 1px.
+  - **Editorial Flow**: Bố cục bất đối xứng, hình ảnh tràn viền hoặc đặt lệch tâm.
 
 ---
 
@@ -38,14 +52,13 @@
 ```plaintext
 Website-2.0/
 ├── app/                  # Next.js App Router
-├── components/           # UI Components (Glassmorphism)
-│   ├── booking/          # Logic đặt lịch
-│   ├── gallery/          # Portfolio tư vấn ảo
+├── components/           # UI Components (Editorial Style)
+│   ├── booking/          # Logic đặt lịch tinh gọn
+│   ├── gallery/          # Portfolio Visual Silence
 │   └── shared/           # Header/Footer, Layouts
-├── lib/                  # Utils, API clients (Supabase)
-├── types/                # TypeScript interfaces
+├── design-system/        # Stitch design tokens & documentation
+├── lib/                  # Utils, API clients (Supabase, Prisma)
 ├── content/              # Blog posts (Markdown/Mdx)
-├── public/               # Videos, high-res images
 └── tailwind.config.ts    # Tailwind v4 configuration
 ```
 
@@ -53,60 +66,26 @@ Website-2.0/
 
 ## 📝 Phân chia nhiệm vụ (Task Breakdown)
 
-### P0: Nền tảng & Cơ sở dữ liệu (Foundation & DB)
-- **TID-001: Khởi tạo dự án Next.js 15+ & Tailwind v4**
+### P0: Nền tảng & Stitch Integration
+- **TID-001: Kết nối Stitch MCP & Áp dụng Design Tokens**
   - **Agent**: `orchestrator`
   - **Skill**: `app-builder`
-  - **INPUT→OUTPUT→VERIFY**: `Empty Dir` → `Base project` → `npm run dev` success.
-- **TID-002: Thiết kế Schema Database trên Supabase**
-  - **Agent**: `database-architect`
-  - **Skill**: `database-design`
-  - **INPUT→OUTPUT→VERIFY**: `Requirements` → `SQL Schema (users, appointments, gallery, blog)` → `Schema validation`.
-
-### P1: Giao diện & Trải nghiệm (UI/UX - Clean Girl Aesthetic)
-- **TID-003: Xây dựng Design System (Glassmorphism & Typography)**
+  - **VERIFY**: Các biến CSS màu Champagne Gold và font Noto Serif hoạt động.
+- **TID-002: Refactor Layout sang phong cách Editorial**
   - **Agent**: `frontend-specialist`
-  - **Skill**: `frontend-design`
-  - **INPUT→OUTPUT→VERIFY**: `Styles` → `Global CSS & Color Tokens` → `UI Layout audit`.
-- **TID-004: Portfolio "Tư vấn ảo" (Advanced Filtering)**
-  - **Agent**: `frontend-specialist`
-  - **Skill**: `ui-ux-pro-max`
-  - **INPUT→OUTPUT→VERIFY**: `Gallery Assets` → `Filtered Grid` → `Filter logic correctness`.
+  - **VERIFY**: Loại bỏ toàn bộ border 1px, áp dụng Tonal Layering.
 
-### P2: Logic nghiệp vụ (Business Logic)
-- **TID-005: Logic Đặt lịch & Tích hợp Thanh toán (Stripe/PayOS/Manual)**
-  - **Agent**: `backend-specialist`
-  - **Skill**: `api-patterns`
-  - **INPUT→OUTPUT→VERIFY**: `Booking flow` → `API routes` → `Mock payment success`.
-- **TID-006: CMS Blog Chuyên gia**
-  - **Agent**: `backend-specialist`
-  - **Skill**: `documentation-templates`
-  - **INPUT→OUTPUT→VERIFY**: `Blog content` → `MDX Dynamic Routes` → `Lighthouse SEO Score`.
-
-### P3: Tối ưu hóa & Bảo mật (Optimization & Security)
-- **TID-007: Kiểm thử bảo mật & Phân quyền (Supabase RLS)**
-  - **Agent**: `security-auditor`
-  - **Skill**: `vulnerability-scanner`
-  - **INPUT→OUTPUT→VERIFY**: `Code` → `RLS Policies` → `Auth test pass`.
-- **TID-008: Local SEO & Performance Audit**
-  - **Agent**: `seo-specialist`
-  - **Skill**: `seo-fundamentals`
-  - **INPUT→OUTPUT→VERIFY**: `Metatags` → `Sitemap/JSON-LD` → `Rank analysis`.
+### P1: Giao diện & Trải nghiệm (Luxury Experience)
+- **TID-003: Xây dựng Hero Section (Visual Silence)**
+  - **VERIFY**: Khoảng trống lớn, typography Display Serif nổi bật.
+- **TID-004: Portfolio "Tư vấn ảo" (Asymmetric Grid)**
+  - **VERIFY**: Bố cục lưới không đối xứng, hiệu ứng hover mượt mà.
 
 ---
 
-## ✅ PHASE X: VERIFICATION (Kiểm định cuối cùng)
+## ✅ PHASE X: VERIFICATION
 
-- [ ] **Lint & Type Check**: `npm run lint` & `tsc --noEmit`
-- [ ] **Security Scan**: `python .agent/scripts/security_scan.py .`
-- [ ] **UX Audit**: `python .agent/scripts/ux_audit.py .` (Aesthetic & Glassmorphism)
-- [ ] **Lighthouse Performance**: Web Vitals > 90
-- [ ] **Mobile-First Check**: Viewport responsiveness on iOS/Android simulators.
-
----
-
-## ✅ PHASE X COMPLETE
-- Lint: ⚪ Pending
-- Security: ⚪ Pending
-- Build: ⚪ Pending
-- Date: 2026-03-07
+- [ ] **Stitch Sync**: Đảm bảo UI khớp 100% với Stitch Design.
+- [ ] **Contrast Check**: Đảm bảo khả năng truy cập (WCAG AA).
+- [ ] **Lighthouse Performance**: Web Vitals > 95.
+- [ ] **Mobile-First**: Tối ưu hiển thị trên iPhone/Android với cảm giác Premium.
