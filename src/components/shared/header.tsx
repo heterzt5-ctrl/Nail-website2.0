@@ -23,8 +23,9 @@ export default function Header({ onOpenBooking }: HeaderProps) {
     ];
 
     const navLinks = [
-        { href: "#portfolio", label: "Portfolio" },
-        { href: "#services", label: "Services" },
+        { href: "/gallery", label: "Portfolio" },
+        { href: "/#services", label: "Services" },
+        { href: "/editorial", label: "Editorial" },
         { href: "#ar", label: "AR Try-on" },
     ];
 

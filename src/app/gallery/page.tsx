@@ -85,6 +85,17 @@ export default function GalleryPage() {
           </p>
         </div>
 
+        {/* AI Ecosystem Section */}
+        <div className="mb-24">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-serif mb-4 tracking-tight text-ink">REMY MUSE AI Ecosystem</h2>
+            <p className="text-ink-light font-serif italic text-lg max-w-2xl mx-auto">
+              Step into our infinite design matrix. A living archive of AI-generated nail archetypes, curated for the modern muse.
+            </p>
+          </div>
+          <VortexSection />
+        </div>
+
         {/* Sticky Filter Bar */}
         <div className="sticky top-[88px] z-40 bg-cloud/95 backdrop-blur-sm py-6 mb-12 flex items-center justify-between border-b border-ink/5">
           <div className="flex gap-8 overflow-x-auto no-scrollbar scroll-smooth w-full lg:w-auto pr-4">
@@ -106,7 +117,7 @@ export default function GalleryPage() {
 
         {/* Masonry Grid */}
         <div 
-          className="mb-24 grid gap-8 w-full"
+          className="mb-32 grid gap-8 w-full"
           style={{
             gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
             gridAutoRows: "10px"
@@ -144,16 +155,6 @@ export default function GalleryPage() {
           ))}
         </div>
 
-        {/* AI Ecosystem Section */}
-        <div className="mb-32">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-serif mb-4 tracking-tight text-ink">REMY MUSE AI Ecosystem</h2>
-            <p className="text-ink-light font-serif italic text-lg max-w-2xl mx-auto">
-              Step into our infinite design matrix. A living archive of AI-generated nail archetypes, curated for the modern muse.
-            </p>
-          </div>
-          <VortexSection />
-        </div>
       </div>
 
       <BookingModal 

@@ -23,7 +23,7 @@ export default function BriefIntro() {
                 transition={{ duration: 1 }}
                 className="max-w-4xl mx-auto text-center"
             >
-                <span className="font-serif uppercase tracking-[0.3em] text-primary text-xs mb-8 block">Est. 2024</span>
+                <span className="font-serif uppercase tracking-[0.3em] text-primary text-xs mb-8 block">Est. 2026</span>
                 <h2 className="font-serif text-3xl md:text-4xl leading-relaxed text-ink font-light italic">
                     {text[language] || text.EN}
                 </h2>
