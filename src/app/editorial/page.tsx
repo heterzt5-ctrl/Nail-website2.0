@@ -152,7 +152,7 @@ export default function EditorialPage() {
                                 ) : (
                                     <div className="w-full h-full bg-cloud-2 flex items-center justify-center p-10 text-center border-l-4 border-primary/40">
                                         <p className="font-serif text-2xl italic text-ink-mid leading-relaxed">
-                                            "{article.quote[language === "VN" ? "VN" : "EN"]}"
+                                            &quot;{article.quote[language === "VN" ? "VN" : "EN"]}&quot;
                                         </p>
                                     </div>
                                 )}

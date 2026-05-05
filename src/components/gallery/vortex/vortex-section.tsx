@@ -75,7 +75,7 @@ export default function VortexSection() {
         <div className="flex justify-between items-end">
            <div className="max-w-xs bg-ink/20 backdrop-blur-sm p-4">
               <p className="text-cloud/60 text-xs italic font-serif leading-relaxed">
-                "Our AI ecosystem constantly evolves, generating thousands of unique nail archetypes based on your personal 'Muse' signature."
+                &quot;Our AI ecosystem constantly evolves, generating thousands of unique nail archetypes based on your personal &apos;Muse&apos; signature.&quot;
               </p>
            </div>
            <div className="text-right">

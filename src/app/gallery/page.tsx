@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import Header from "@/components/shared/header";
 import Footer from "@/components/shared/footer";
@@ -70,7 +71,7 @@ export default function GalleryPage() {
       <div className="pt-32 px-6 md:px-12 lg:px-20 min-h-screen max-w-[1800px] mx-auto">
         {/* Breadcrumbs */}
         <nav className="mb-8 flex items-center gap-3 text-[0.7rem] uppercase tracking-[0.15rem] text-ink-light font-sans font-medium">
-          <a className="hover:text-primary transition-colors" href="/">Home</a>
+          <Link className="hover:text-primary transition-colors" href="/">Home</Link>
           <ChevronRight className="w-3 h-3" />
           <span className="hover:text-primary transition-colors cursor-pointer">Portfolio</span>
           <ChevronRight className="w-3 h-3" />
