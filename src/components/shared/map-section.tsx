@@ -11,7 +11,7 @@ const GOOGLE_MAPS_LINK =
     "https://www.google.com/maps/place/Remy+Muse+Nail+-+Shampoo+-+Foot+care+studio/@16.069097,108.232815,17z";
 
 const springTransition = {
-    type: "spring",
+    type: "spring" as const,
     stiffness: 120,
     damping: 20
 };
