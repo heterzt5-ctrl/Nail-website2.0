@@ -16,10 +16,10 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: "REMY MUSE — Luxury Nail Studio & Aesthetic Atelier",
+  title: "REMY MUSE — Luxury Nail Studio & Aesthetic Space",
   description: "A curated digital sanctuary where nail artistry meets architectural design. Explore bespoke nail services and editorial aesthetics in the heart of Saigon.",
   openGraph: {
-    title: "REMY MUSE | Luxury Nail Atelier",
+    title: "REMY MUSE | Luxury Nail Studio",
     description: "The Art of Precision. A curated experience of stillness and architectural beauty for your aesthetic identity.",
     url: "https://remymuse.vn",
     siteName: "REMY MUSE",
@@ -28,7 +28,7 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "REMY MUSE | Luxury Nail Atelier",
+    title: "REMY MUSE | Luxury Nail Studio",
     description: "The Art of Precision. A curated experience of stillness.",
   },
 };

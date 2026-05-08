@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import { useState } from "react";
 import { Sparkles, Camera, Smartphone } from "lucide-react";
 
@@ -91,10 +92,11 @@ export default function ARTryOn() {
 
                 <div className="relative aspect-square md:aspect-[4/5] bg-cloud/5 overflow-hidden border border-gold-pale/10 shadow-2xl">
                     {/* Simulated Camera Feed */}
-                    <img 
+                    <Image 
                         src="https://images.unsplash.com/photo-1519014816548-bf5fe059798b?auto=format&fit=crop&q=80&w=1200" 
                         alt="Macro hand shot"
-                        className="w-full h-full object-cover opacity-60 grayscale-[0.2]"
+                        fill
+                        className="object-cover opacity-60 grayscale-[0.2]"
                     />
                     
                     {/* Interaction Overlay */}

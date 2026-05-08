@@ -1,10 +1,12 @@
 "use client";
 
+import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/lib/language-context";
 
 export default function Hero() {
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
 
     return (
         <section className="relative min-h-screen flex items-center px-8 md:px-20 pt-20 overflow-hidden bg-cloud">
@@ -22,12 +24,12 @@ export default function Hero() {
                             {t('h-quote').replace(/<\/?span>/g, '').replace('<br />', ' ')}
                         </p>
                         <div className="flex items-center space-x-8">
-                            <button className="px-10 py-4 shimmer-gold text-white font-serif uppercase tracking-[0.2em] text-sm rounded-xs hover:scale-105 transition-transform duration-300">
-                                Explore Atelier
-                            </button>
-                            <a className="font-serif uppercase tracking-widest text-xs border-b border-primary/30 pb-1 hover:border-primary transition-colors cursor-pointer" href="#philosophy">
-                                The Philosophy
-                            </a>
+                            <Link href="/#services" className="px-10 py-4 shimmer-gold text-white font-serif uppercase tracking-[0.2em] text-sm rounded-xs hover:scale-105 transition-transform duration-300">
+                                {language === "VN" ? "Khám Phá Atelier" : "Explore Atelier"}
+                            </Link>
+                            <Link className="font-serif uppercase tracking-widest text-xs border-b border-primary/30 pb-1 hover:border-primary transition-colors cursor-pointer" href="/#philosophy">
+                                {language === "VN" ? "Về Chúng Tôi" : "About Us"}
+                            </Link>
                         </div>
                     </motion.div>
                 </div>
@@ -39,10 +41,12 @@ export default function Hero() {
                         transition={{ duration: 1.2, ease: "easeOut" }}
                         className="aspect-[4/5] w-full bg-surface-variant overflow-hidden relative shadow-2xl"
                     >
-                        <img 
+                        <Image 
                             src="/images/hero-main.jpeg"
                             alt="Luxury macro nail art"
-                            className="w-full h-full object-cover grayscale-[0.2] hover:scale-110 transition-transform duration-[2000ms]"
+                            fill
+                            priority
+                            className="object-cover grayscale-[0.2] hover:scale-110 transition-transform duration-[2000ms]"
                         />
                     </motion.div>
                     
@@ -53,10 +57,11 @@ export default function Hero() {
                         transition={{ duration: 1, delay: 0.5 }}
                         className="absolute -bottom-12 -left-12 hidden lg:block w-64 aspect-square bg-[#e4e2dd] shadow-2xl p-4 z-20"
                     >
-                        <img 
+                        <Image 
                             src="/images/Luckycat.jpeg"
                             alt="Interior detail"
-                            className="w-full h-full object-cover"
+                            fill
+                            className="object-cover"
                         />
                     </motion.div>
                 </div>

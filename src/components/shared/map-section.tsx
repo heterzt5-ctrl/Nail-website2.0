@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, Navigation, Clock, Phone, X, ExternalLink } from "lucide-react";
+import { useLanguage } from "@/lib/language-context";
 
 const GOOGLE_MAPS_EMBED_URL =
     "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3833.9304823831353!2d108.23281477387397!3d16.069096839443958!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3142193889388167%3A0x633e70e641ebdf2f!2sRemy%20Muse%20Nail%20-%20Shampoo%20-%20Foot%20care%20studio!5e0!3m2!1svi!2s!4v1777901349014!5m2!1svi!2s";
@@ -17,6 +19,7 @@ const springTransition = {
 };
 
 export default function MapSection() {
+    const { language } = useLanguage();
     const [isMapOpen, setIsMapOpen] = useState(false);
 
     const handleEsc = useCallback(
@@ -44,14 +47,10 @@ export default function MapSection() {
                     <div className="space-y-8">
                         <div className="inline-flex items-center gap-3 text-primary text-[10px] font-sans font-bold tracking-[0.4em] uppercase">
                             <MapPin className="w-4 h-4" />
-                            <span>Atelier Finder</span>
+                            <span>{language === "VN" ? "Đến Với Chúng Tôi" : "Visit Us"}</span>
                         </div>
-                        <h2 className="text-4xl md:text-6xl font-serif font-light tracking-tight text-ink leading-[1.1]">
-                            The <span className="italic text-primary">Sanctuary</span>
-                        </h2>
                         <p className="max-w-md text-ink-light font-serif italic text-lg leading-relaxed">
-                            Located in the heart of Sơn Trà, Đà Nẵng.<br />
-                            A modern nail atelier at 21 An Nhơn 6 Street.
+                            {language === "VN" ? "Một studio làm móng hiện đại tại An Hải, Đà Nẵng." : "A modern nail studio in An Hai, Da Nang."}
                         </p>
                     </div>
 
@@ -61,8 +60,8 @@ export default function MapSection() {
                                 <Clock className="w-5 h-5" />
                             </div>
                             <div className="space-y-1">
-                                <h4 className="font-serif text-xl font-normal text-ink">Opening Hours</h4>
-                                <p className="font-sans text-[10px] text-ink-ghost tracking-[0.3em] uppercase">Mon - Sun · 09:00 - 21:00</p>
+                                <h4 className="font-serif text-xl font-normal text-ink">{language === "VN" ? "Giờ Mở Cửa" : "Opening Hours"}</h4>
+                                <p className="font-sans text-[10px] text-ink-ghost tracking-[0.3em] uppercase">{language === "VN" ? "Thứ 2 - Chủ Nhật" : "Mon - Sun"} · 09:30 - 21:00</p>
                             </div>
                         </div>
                         <div className="space-y-6">
@@ -70,7 +69,7 @@ export default function MapSection() {
                                 <Phone className="w-5 h-5" />
                             </div>
                             <div className="space-y-1">
-                                <h4 className="font-serif text-xl font-normal text-ink">Direct Line</h4>
+                                <h4 className="font-serif text-xl font-normal text-ink">{language === "VN" ? "Hotline" : "Direct Line"}</h4>
                                 <p className="font-sans text-[10px] text-ink-ghost tracking-[0.3em] uppercase">+84 094 559 8001</p>
                             </div>
                         </div>
@@ -80,7 +79,7 @@ export default function MapSection() {
                         onClick={() => setIsMapOpen(true)}
                         className="px-14 py-6 shimmer-gold text-white font-serif uppercase tracking-[0.3em] text-xs rounded-xs hover:scale-105 transition-transform duration-500 shadow-2xl flex items-center gap-4 cursor-pointer"
                     >
-                        Get Directions
+                        {language === "VN" ? "Chỉ Đường" : "Get Directions"}
                         <Navigation className="w-4 h-4" />
                     </button>
                 </div>
@@ -99,10 +98,11 @@ export default function MapSection() {
                         onClick={() => setIsMapOpen(true)}
                         className="relative z-10 bg-surface-variant overflow-hidden aspect-[4/3] shadow-2xl cursor-pointer group"
                     >
-                        <img
+                        <Image
                             src="https://images.unsplash.com/photo-1527853787696-f7be74f2e39a?auto=format&fit=crop&q=80&w=1200"
                             alt="Salon Location Map"
-                            className="w-full h-full object-cover grayscale-[0.5] group-hover:scale-105 transition-transform duration-1000"
+                            fill
+                            className="object-cover grayscale-[0.5] group-hover:scale-105 transition-transform duration-1000"
                         />
                         <div className="absolute inset-0 bg-ink/20 group-hover:bg-transparent transition-colors duration-700 pointer-events-none" />
 
@@ -115,11 +115,11 @@ export default function MapSection() {
                             </div>
                         </div>
                     </motion.div>
-                
+
                     <div className="absolute -bottom-10 -right-10 bg-white/95 backdrop-blur-md p-10 shadow-2xl max-w-[320px] z-30 hidden xl:block pointer-events-none">
                         <div className="space-y-6">
-                            <span className="font-sans text-[10px] font-bold text-primary tracking-[0.4em] uppercase">Aesthetic Hub</span>
-                            <p className="font-serif text-2xl text-ink leading-tight italic">21 An Nhơn 6 Street, Sơn Trà, Đà Nẵng</p>
+                            <span className="font-sans text-[10px] font-bold text-primary tracking-[0.4em] uppercase">{language === "VN" ? "Vị Trí" : "Aesthetic Hub"}</span>
+                            <p className="font-serif text-2xl text-ink leading-tight italic">{language === "VN" ? "21 An Nhơn 6, An Hải, Đà Nẵng (ngã tư Phan Bôi x An Nhơn 6)" : "21 An Nhon 6, An Hai, Da Nang (Phan Boi x An Nhon 6 intersection)"}</p>
                         </div>
                     </div>
                 </motion.div>
@@ -168,7 +168,7 @@ export default function MapSection() {
                                 rel="noopener noreferrer"
                                 className="absolute bottom-6 right-6 z-20 bg-white/95 hover:bg-white text-ink px-6 py-3 text-xs font-sans font-bold tracking-[0.2em] uppercase rounded-full shadow-lg transition-all flex items-center gap-2"
                             >
-                                Open in Maps
+                                {language === "VN" ? "Mở Bản Đồ" : "Open in Maps"}
                                 <ExternalLink className="w-4 h-4" />
                             </a>
                         </motion.div>

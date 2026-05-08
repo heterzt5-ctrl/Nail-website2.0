@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { useLanguage } from "@/lib/language-context";
 import { CatalogTrigger, AtelierCatalogModal } from "@/components/shared/atelier-catalog-modal";
 
@@ -49,8 +50,8 @@ export default function ServicesMenu() {
         },
         {
             id: "ritual",
-            title: "The Ritual",
-            subtitle: "Restorative Spa",
+            title: language === "VN" ? "Gội đầu & Thư giãn" : "Hair shampoo & Relaxation",
+            subtitle: language === "VN" ? "Spa Phục Hồi" : "Restorative Spa",
             image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDnfaeYd_saXJAzAUxMrlG2BxsGP9fZ_f0rsW3Fih4-YCHNT04OcomxzYdRXeuGLizDdGFW6sww9CmqpeO6qWs8lDfv7FiWKhgQCuKJRPD1-_ema4C5m-hdZ-4S2XPkvJyXhe7OiYF3-A94A8poqOcP-_l6zZG8ZUj_tf2bRERZ-qWMaI_AmeDM8sFfuj3pf8kI73Tz0ITawRr1VWit5i5JCJ6-MKLv4tzAWdZZIWkvGCL1t1w6gBLBTJLbrPrH4DhCZSNHFEi-JB-7",
             price: "",
             asymmetric: true,
@@ -66,7 +67,7 @@ export default function ServicesMenu() {
         <section id="services" className="py-32 px-8 md:px-20 bg-cloud">
             <div className="flex flex-col md:flex-row justify-between items-baseline mb-24 max-w-[1400px] mx-auto">
                 <h2 className="font-serif text-4xl md:text-5xl tracking-tight text-ink">The Menu</h2>
-                <p className="font-sans text-secondary mt-4 md:mt-0 tracking-widest uppercase text-xs">Curated Artistry</p>
+                <p className="font-sans text-secondary mt-4 md:mt-0 tracking-widest uppercase text-xs">{language === "VN" ? "Dịch Vụ" : "Our Services"}</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-32 max-w-[1400px] mx-auto">
@@ -80,10 +81,12 @@ export default function ServicesMenu() {
                         className={`group cursor-pointer ${section.asymmetric ? 'md:mt-40' : ''}`}
                     >
                         <div className="aspect-video bg-surface-variant overflow-hidden mb-8 relative">
-                            <img
+                            <Image
                                 src={section.image}
                                 alt={section.title}
-                                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100"
+                                fill
+                                sizes="(max-width: 768px) 100vw, 50vw"
+                                className="object-cover grayscale hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100"
                             />
                             <div className="absolute inset-0 bg-ink/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                         </div>

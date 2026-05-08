@@ -7,8 +7,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -28,13 +26,15 @@ model Client {
 }
 
 model Service {
-  id          String   @id @default(cuid())
-  name        String
-  description String?
-  price       Float
-  duration    Int      // Duration in minutes
-  category    String   // e.g. "Glass Nails", "3D Art", "Basic"
-  bookings    Appointment[]
+  id             String   @id @default(cuid())
+  name           String   @unique
+  name_vn        String?
+  description    String?
+  description_vn String?
+  price          Float
+  duration       Int      // Duration in minutes
+  category       String   // e.g. "Glass Nails", "3D Art", "Basic"
+  bookings       Appointment[]
 }
 
 model Appointment {

@@ -23,10 +23,10 @@ export default function Header({ onOpenBooking }: HeaderProps) {
     ];
 
     const navLinks = [
-        { href: "/gallery", label: "Portfolio" },
-        { href: "/#services", label: "Services" },
-        { href: "/editorial", label: "Editorial" },
-        { href: "#ar", label: "AR Try-on" },
+        { href: "/gallery", label: language === "VN" ? "Bộ Sưu Tập" : "Portfolio" },
+        { href: "/#services", label: language === "VN" ? "Dịch Vụ" : "Services" },
+        { href: "/editorial", label: language === "VN" ? "Bài Viết" : "Editorial" },
+        { href: "/#location", label: language === "VN" ? "Vị Trí" : "Location" },
     ];
 
     return (
@@ -46,7 +46,7 @@ export default function Header({ onOpenBooking }: HeaderProps) {
                         onClick={onOpenBooking}
                         className="font-serif tracking-tight uppercase text-primary font-bold border-b border-primary/30 pb-0.5 hover:border-primary transition-all duration-700 cursor-pointer"
                     >
-                        Booking
+                        {language === "VN" ? "Đặt Lịch" : "Booking"}
                     </button>
                 </div>
 
@@ -111,7 +111,7 @@ export default function Header({ onOpenBooking }: HeaderProps) {
                                     onClick={() => { onOpenBooking(); setIsMobileMenuOpen(false); }}
                                     className="px-12 py-5 shimmer-gold text-white font-serif uppercase tracking-[0.3em] text-sm cursor-pointer"
                                 >
-                                    Booking
+                                    {language === "VN" ? "Đặt Lịch" : "Booking"}
                                 </button>
                             </motion.div>
 

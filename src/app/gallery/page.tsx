@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import Header from "@/components/shared/header";
 import Footer from "@/components/shared/footer";
@@ -135,10 +136,12 @@ export default function GalleryPage() {
                   <Play className="w-4 h-4 text-white fill-white ml-[1px]" />
                 </div>
               )}
-              <img 
+              <Image 
                 src={item.imageUrl} 
                 alt={item.title} 
-                className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-[1200ms] ease-out" 
+                fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1536px) 33vw, 25vw"
+                className="object-cover grayscale-[0.2] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-[1200ms] ease-out" 
               />
               <div className="absolute inset-0 bg-ink/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
                 <h3 className="text-white font-serif text-xl mb-4 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">

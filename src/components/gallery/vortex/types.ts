@@ -68,12 +68,7 @@ export const VORTEX_IMAGES: ImageItem[] = [
     title: "Verde — No. 08",
     description: "Emerald green with hand-painted gold kintsugi veins. A celebration of imperfection and beauty, inspired by the Japanese art of repairing broken pottery with gold.",
   },
-  {
-    src: "/gallery/vortex/nail_09.jpg",
-    category: "Glitter",
-    title: "Lilac Dream — No. 09",
-    description: "Lavender base with silver glitter ombre and crystal accents. Soft, dreamy, and undeniably glamorous — perfect for special celebrations.",
-  },
+
   {
     src: "/gallery/vortex/nail_10.jpg",
     category: "Botanical",
@@ -152,12 +147,7 @@ export const VORTEX_IMAGES: ImageItem[] = [
     title: "Tidal — No. 22",
     description: "Teal base with silver chrome wave patterns. Fluid and dynamic, this design captures the motion of ocean waves in metallic form.",
   },
-  {
-    src: "/gallery/vortex/nail_23.jpg",
-    category: "Botanical",
-    title: "Lavender Fields — No. 23",
-    description: "Pale lilac with hand-painted lavender sprigs. A serene, pastoral design that brings the tranquility of Provence to your fingertips.",
-  },
+
   {
     src: "/gallery/vortex/nail_24.jpg",
     category: "Dark Luxe",

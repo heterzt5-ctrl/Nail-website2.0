@@ -1,25 +1,36 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useLanguage } from "@/lib/language-context";
 
 export default function Testimonials() {
+    const { language } = useLanguage();
     const reviews = [
         {
-            name: "Elena V.",
-            role: "Creative Director",
-            quote: "\"The attention to detail at REMY MUSE is unlike any other. It's not a manicure; it's a curated experience of stillness.\"",
+            name: "Lan Anh",
+            role: { VN: "Khách hàng", EN: "Client" },
+            quote: { 
+                VN: "\"Làm rất kỹ và sạch. Mình rất hài lòng với bộ móng mới.\"",
+                EN: "\"Meticulous and clean work. I am very satisfied with my new nails.\""
+            },
             offset: "0"
         },
         {
-            name: "Jordan M.",
-            role: "Architect",
-            quote: "\"Finally, a studio that understands the beauty of negative space. My nails have never looked more architectural.\"",
+            name: "Minh Thư",
+            role: { VN: "Khách hàng", EN: "Client" },
+            quote: { 
+                VN: "\"Nhân viên nhẹ nhàng, dễ chịu. Không gian rất thư giãn.\"",
+                EN: "\"Gentle and pleasant staff. The atmosphere is very relaxing.\""
+            },
             offset: "md:mt-24"
         },
         {
-            name: "Sasha K.",
-            role: "Product Designer",
-            quote: "\"The Digital Atelier made booking so seamless. Every touchpoint reflects the brand's uncompromising quality.\"",
+            name: "Ngọc Bích",
+            role: { VN: "Khách hàng", EN: "Client" },
+            quote: { 
+                VN: "\"Dịch vụ chu đáo, tư vấn nhiệt tình. Sẽ quay lại ủng hộ tiếp.\"",
+                EN: "\"Attentive service, enthusiastic consultation. I will definitely come back.\""
+            },
             offset: "md:mt-48"
         }
     ];
@@ -42,11 +53,11 @@ export default function Testimonials() {
                             className={`flex flex-col space-y-8 ${rev.offset}`}
                         >
                             <p className="font-serif text-xl italic leading-relaxed text-ink/80">
-                                {rev.quote}
+                                {language === "VN" ? rev.quote.VN : rev.quote.EN}
                             </p>
                             <div>
                                 <span className="block font-serif uppercase tracking-widest text-[10px] text-primary">{rev.name}</span>
-                                <span className="block font-serif text-[10px] text-secondary/70">{rev.role}</span>
+                                <span className="block font-serif text-[10px] text-secondary/70">{language === "VN" ? rev.role.VN : rev.role.EN}</span>
                             </div>
                         </motion.div>
                     ))}

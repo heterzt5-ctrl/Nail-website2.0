@@ -1,8 +1,20 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Sparkles, CheckCircle2, ArrowRight, Bell } from "lucide-react";
-import { useState } from "react";
+import { X, Sparkles, CheckCircle2, ArrowRight, Bell, Loader2, ChevronLeft, ChevronRight } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useLanguage } from "@/lib/language-context";
+
+interface Service {
+    id: string;
+    name: string;
+    name_vn: string | null;
+    description: string | null;
+    description_vn: string | null;
+    price: number;
+    duration: number;
+    category: string;
+}
 
 interface BookingModalProps {
     isOpen: boolean;
@@ -10,25 +22,129 @@ interface BookingModalProps {
 }
 
 export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
+    const { language } = useLanguage();
     const [step, setStep] = useState(1);
-    const [selectedService, setSelectedService] = useState("");
+    const [services, setServices] = useState<Service[]>([]);
+    const [selectedServiceId, setSelectedServiceId] = useState("");
+    const [selectedService, setSelectedService] = useState<Service | null>(null);
+    const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
+    const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+    const [selectedTime, setSelectedTime] = useState<string | null>(null);
     const [isConfirmed, setIsConfirmed] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [clientName, setClientName] = useState("");
     const [clientPhone, setClientPhone] = useState("");
 
     const steps = ["Experience", "Schedule", "Contact"];
 
-    const handleConfirm = () => {
-        setIsConfirmed(true);
+    useEffect(() => {
+        if (isOpen) {
+            fetchServices();
+        }
+    }, [isOpen]);
+
+    const fetchServices = async () => {
+        setIsLoading(true);
+        try {
+            const res = await fetch('/api/services');
+            const data = await res.json();
+            setServices(data);
+        } catch (error) {
+            console.error("Failed to fetch services:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleConfirm = async () => {
+        setIsSubmitting(true);
+        try {
+            if (!selectedDate || !selectedTime) return;
+            
+            const [hours, minutes] = selectedTime.split(':').map(Number);
+            const bookingDateTime = new Date(selectedDate);
+            bookingDateTime.setHours(hours, minutes, 0, 0);
+            
+            const res = await fetch('/api/bookings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    serviceId: selectedServiceId,
+                    startTime: bookingDateTime.toISOString(),
+                    clientName,
+                    clientPhone,
+                }),
+            });
+
+            if (res.ok) {
+                setIsConfirmed(true);
+            } else {
+                const err = await res.json();
+                alert(err.error || "Failed to create booking");
+            }
+        } catch (error) {
+            console.error("Booking failed:", error);
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     const handleClose = () => {
         setStep(1);
         setIsConfirmed(false);
-        setSelectedService("");
+        setSelectedServiceId("");
+        setSelectedService(null);
+        setSelectedDate(null);
+        setSelectedTime(null);
+        setCurrentMonth(new Date());
         setClientName("");
         setClientPhone("");
         onClose();
+    };
+
+    const renderCalendar = () => {
+        const year = currentMonth.getFullYear();
+        const month = currentMonth.getMonth();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const firstDayIndex = new Date(year, month, 1).getDay();
+
+        const days = [];
+        for (let i = 0; i < firstDayIndex; i++) {
+            days.push(<div key={`empty-${i}`} className="aspect-square" />);
+        }
+
+        for (let i = 1; i <= daysInMonth; i++) {
+            const date = new Date(year, month, i);
+            const isSelected = selectedDate?.toDateString() === date.toDateString();
+            const isPast = date < new Date(new Date().setHours(0,0,0,0));
+
+            days.push(
+                <button 
+                    key={i} 
+                    onClick={() => !isPast && setSelectedDate(date)}
+                    disabled={isPast}
+                    className={`aspect-square flex items-center justify-center text-[10px] font-sans font-bold transition-all ${
+                        isSelected 
+                            ? 'bg-ink text-white shadow-lg' 
+                            : isPast 
+                                ? 'text-ink-ghost/30 cursor-not-allowed'
+                                : 'hover:bg-primary/10 hover:text-primary text-ink-ghost'
+                    }`}
+                >
+                    {i}
+                </button>
+            );
+        }
+        return days;
+    };
+
+    const handlePrevMonth = () => {
+        setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1));
+    };
+
+    const handleNextMonth = () => {
+        setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1));
     };
 
     return (
@@ -106,17 +222,34 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                                                         <h4 className="text-3xl font-serif font-light tracking-tight text-ink">Select <span className="italic text-primary">Artistry</span></h4>
                                                         <p className="font-sans text-[10px] text-ink-ghost uppercase tracking-[0.4em]">Choose your signature experience.</p>
                                                     </div>
-                                                    <div className="space-y-4">
-                                                        {["The Muse Sculpt (Glass Nails)", "Lineal Artistry (3D Sculpture)", "The Ritual (Recovery Spa)"].map((s) => (
-                                                            <button
-                                                                key={s}
-                                                                onClick={() => setSelectedService(s)}
-                                                                className={`w-full p-8 text-left border transition-all flex items-center justify-between group ${selectedService === s ? 'border-primary bg-white shadow-xl' : 'border-gold-pale/20 hover:border-primary/40'}`}
-                                                            >
-                                                                <span className="font-serif text-lg text-ink tracking-tight">{s}</span>
-                                                                <CheckCircle2 className={`w-5 h-5 transition-all ${selectedService === s ? 'text-primary scale-110' : 'text-gold-pale/20'}`} />
-                                                            </button>
-                                                        ))}
+                                                    <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2">
+                                                        {isLoading ? (
+                                                            <div className="flex flex-col items-center justify-center py-20 space-y-4">
+                                                                <Loader2 className="w-8 h-8 text-primary animate-spin" />
+                                                                <p className="font-serif text-sm italic text-ink-ghost">Preparing the catalog...</p>
+                                                            </div>
+                                                        ) : (
+                                                            services.map((s) => (
+                                                                <button
+                                                                    key={s.id}
+                                                                    onClick={() => {
+                                                                        setSelectedServiceId(s.id);
+                                                                        setSelectedService(s);
+                                                                    }}
+                                                                    className={`w-full p-8 text-left border transition-all flex items-center justify-between group ${selectedServiceId === s.id ? 'border-primary bg-white shadow-xl' : 'border-gold-pale/20 hover:border-primary/40'}`}
+                                                                >
+                                                                    <div className="space-y-1">
+                                                                        <span className="font-serif text-lg text-ink tracking-tight">
+                                                                            {language === "VN" ? s.name_vn || s.name : s.name}
+                                                                        </span>
+                                                                        <p className="font-serif text-xs text-ink-ghost italic">
+                                                                            {language === "VN" ? s.description_vn : s.description}
+                                                                        </p>
+                                                                    </div>
+                                                                    <CheckCircle2 className={`w-5 h-5 transition-all flex-shrink-0 ${selectedServiceId === s.id ? 'text-primary scale-110' : 'text-gold-pale/20'}`} />
+                                                                </button>
+                                                            ))
+                                                        )}
                                                     </div>
                                                 </motion.div>
                                             )}
@@ -127,14 +260,48 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                                                         <h4 className="text-3xl font-serif font-light tracking-tight text-ink">The <span className="italic text-primary">Timeline</span></h4>
                                                         <p className="font-sans text-[10px] text-ink-ghost uppercase tracking-[0.4em]">Reserve your preferred arrival window.</p>
                                                     </div>
-                                                    <div className="bg-white/50 p-10 border border-gold-pale/10">
-                                                        <div className="grid grid-cols-7 gap-4 text-center">
-                                                            {["S", "M", "T", "W", "T", "F", "S"].map(d => <span key={d} className="font-sans text-[9px] font-bold text-primary/40 uppercase tracking-[0.3em] mb-4">{d}</span>)}
-                                                            {Array.from({ length: 31 }, (_, i) => (
-                                                                <button key={i} className={`aspect-square flex items-center justify-center text-[10px] font-sans font-bold transition-all ${i === 15 ? 'bg-ink text-white shadow-lg' : 'hover:bg-primary/10 hover:text-primary'}`}>
-                                                                    {i + 1}
+                                                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                                        <div className="bg-white/50 p-6 sm:p-10 border border-gold-pale/10">
+                                                            <div className="flex items-center justify-between mb-8">
+                                                                <button onClick={handlePrevMonth} className="p-2 hover:bg-gold-pale/10 rounded-full transition-colors text-ink-ghost hover:text-primary">
+                                                                    <ChevronLeft className="w-5 h-5" />
                                                                 </button>
-                                                            ))}
+                                                                <div className="font-sans text-xs font-bold uppercase tracking-[0.2em] text-ink">
+                                                                    {currentMonth.toLocaleDateString(language === "VN" ? 'vi-VN' : 'en-US', { month: 'long', year: 'numeric' })}
+                                                                </div>
+                                                                <button onClick={handleNextMonth} className="p-2 hover:bg-gold-pale/10 rounded-full transition-colors text-ink-ghost hover:text-primary">
+                                                                    <ChevronRight className="w-5 h-5" />
+                                                                </button>
+                                                            </div>
+                                                            <div className="grid grid-cols-7 gap-2 sm:gap-4 text-center">
+                                                                {(language === "VN" ? ["CN", "T2", "T3", "T4", "T5", "T6", "T7"] : ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]).map((d, i) => <span key={`${d}-${i}`} className="font-sans text-[9px] font-bold text-primary/40 uppercase tracking-[0.3em] mb-4">{d}</span>)}
+                                                                {renderCalendar()}
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="space-y-8">
+                                                            <div className="space-y-3">
+                                                                <label className="font-sans text-[9px] font-bold uppercase tracking-[0.4em] text-primary block">Select Time Window</label>
+                                                                <div className="grid grid-cols-3 gap-3">
+                                                                    {["09:30", "11:00", "13:00", "14:30", "16:00", "17:30", "19:00", "20:30"].map((time) => (
+                                                                        <button
+                                                                            key={time}
+                                                                            onClick={() => setSelectedTime(time)}
+                                                                            className={`py-4 text-[11px] font-sans font-bold border transition-all ${selectedTime === time ? 'bg-ink text-white border-ink shadow-lg' : 'border-gold-pale/20 text-ink-ghost hover:border-primary/40'}`}
+                                                                        >
+                                                                            {time}
+                                                                        </button>
+                                                                    ))}
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            {selectedDate && selectedTime && (
+                                                                <div className="p-6 bg-primary/5 border border-primary/10 rounded-xs">
+                                                                    <p className="font-serif text-[11px] text-primary italic leading-relaxed">
+                                                                        You have selected <span className="font-bold">{selectedDate.toLocaleDateString(language === "VN" ? 'vi-VN' : 'en-US', { weekday: 'long', day: 'numeric', month: 'long' })}</span> at <span className="font-bold">{selectedTime}</span>.
+                                                                    </p>
+                                                                </div>
+                                                            )}
                                                         </div>
                                                     </div>
                                                 </motion.div>
@@ -174,11 +341,20 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
 
                                                     <button
                                                         onClick={handleConfirm}
-                                                        disabled={!clientName || !clientPhone}
+                                                        disabled={!clientName || !clientPhone || isSubmitting}
                                                         className="w-full shimmer-gold text-white py-6 font-serif uppercase tracking-[0.4em] text-xs rounded-xs shadow-2xl hover:scale-[1.01] transition-all flex items-center justify-center gap-4 disabled:opacity-30"
                                                     >
-                                                        Confirm Atelier Reservation
-                                                        <ArrowRight className="w-4 h-4" />
+                                                        {isSubmitting ? (
+                                                            <>
+                                                                <Loader2 className="w-4 h-4 animate-spin" />
+                                                                Finalizing Reservation...
+                                                            </>
+                                                        ) : (
+                                                            <>
+                                                                Confirm Atelier Reservation
+                                                                <ArrowRight className="w-4 h-4" />
+                                                            </>
+                                                        )}
                                                     </button>
                                                 </motion.div>
                                             )}
@@ -191,7 +367,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                                                 {step < 3 && (
                                                     <button
                                                         onClick={() => setStep(step + 1)}
-                                                        disabled={step === 1 && !selectedService}
+                                                        disabled={(step === 1 && !selectedServiceId) || (step === 2 && (!selectedDate || !selectedTime))}
                                                         className="px-12 py-5 bg-ink text-white text-[10px] font-sans font-bold tracking-[0.3em] uppercase hover:bg-primary transition-all flex items-center gap-4 disabled:opacity-20 cursor-pointer"
                                                     >
                                                         Next Phase
@@ -212,7 +388,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                                             <div className="space-y-6">
                                                 <h4 className="text-4xl font-serif font-light tracking-tight text-ink">Success.</h4>
                                                 <p className="font-serif text-lg text-ink-light italic max-w-sm mx-auto leading-relaxed">
-                                                    Your request for **{selectedService}** has been recorded. The atelier is awaiting your arrival.
+                                                    Your request for **{language === "VN" ? selectedService?.name_vn || selectedService?.name : selectedService?.name}** on {selectedDate?.toLocaleDateString(language === "VN" ? 'vi-VN' : 'en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} at {selectedTime} has been recorded.
                                                 </p>
                                                 <div className="pt-8 flex justify-center">
                                                     <button

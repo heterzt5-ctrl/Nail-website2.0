@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function VisualBreak() {
     return (
@@ -17,10 +18,11 @@ export default function VisualBreak() {
                         <Nail className="w-[38px] h-[52px] -translate-y-1 scale-[0.9]" />
                     </div>
 
-                    <img 
+                    <Image 
                         src="https://images.unsplash.com/photo-1632345031435-09506637dae6?auto=format&fit=crop&q=80&w=800" 
                         alt="Glass Nails"
-                        className="w-full h-full object-cover saturate-[0.9] brightness-[1.03] group-hover:scale-105 group-hover:saturate-100 group-hover:brightness-[1.05] transition-all duration-800 ease-out"
+                        fill
+                        className="object-cover saturate-[0.9] brightness-[1.03] group-hover:scale-105 group-hover:saturate-100 group-hover:brightness-[1.05] transition-all duration-800 ease-out"
                     />
 
                     <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10 bg-gradient-to-t from-ink/38 to-transparent z-20">
@@ -38,10 +40,11 @@ export default function VisualBreak() {
                         <Nail className="w-[38px] h-[52px] translate-y-2.5 bg-gradient-to-br from-white/70 via-silver/60 to-ink/30 border-silver-lt/80" isChrome />
                     </div>
 
-                    <img 
+                    <Image 
                         src="https://images.unsplash.com/photo-1604654894610-df490651e10c?auto=format&fit=crop&q=80&w=800" 
                         alt="Chrome Art"
-                        className="w-full h-full object-cover saturate-[0.9] brightness-[1.03] group-hover:scale-105 group-hover:saturate-100 group-hover:brightness-[1.05] transition-all duration-800 ease-out"
+                        fill
+                        className="object-cover saturate-[0.9] brightness-[1.03] group-hover:scale-105 group-hover:saturate-100 group-hover:brightness-[1.05] transition-all duration-800 ease-out"
                     />
 
                     <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10 bg-gradient-to-t from-ink/38 to-transparent z-20">
@@ -60,10 +63,11 @@ export default function VisualBreak() {
                         <Nail className="w-[38px] h-[52px] translate-y-0.5 scale-[0.9] bg-gradient-to-br from-white/70 via-silver/60 to-ink/30 border-silver-lt/80" isChrome />
                     </div>
 
-                    <img 
+                    <Image 
                         src="https://images.unsplash.com/photo-1607779097040-26e80aa78e66?auto=format&fit=crop&q=80&w=800" 
                         alt="3D Champagne"
-                        className="w-full h-full object-cover saturate-[0.9] brightness-[1.03] group-hover:scale-105 group-hover:saturate-100 group-hover:brightness-[1.05] transition-all duration-800 ease-out"
+                        fill
+                        className="object-cover saturate-[0.9] brightness-[1.03] group-hover:scale-105 group-hover:saturate-100 group-hover:brightness-[1.05] transition-all duration-800 ease-out"
                     />
 
                     <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10 bg-gradient-to-t from-ink/38 to-transparent z-20">

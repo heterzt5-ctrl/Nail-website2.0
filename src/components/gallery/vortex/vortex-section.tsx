@@ -58,28 +58,32 @@ export default function VortexSection() {
         />
       </div>
 
-      {/* Overlay UI */}
+      {/* Overlay UI - Tonal Layering (No Borders) */}
       <div className="absolute inset-0 z-10 pointer-events-none flex flex-col justify-between p-8 md:p-16">
         <div className="flex justify-between items-start">
-          <div className="bg-ink/40 backdrop-blur-md px-6 py-3 border-l-2 border-primary">
-            <h3 className="text-white font-serif text-2xl md:text-3xl tracking-tight">AI Ecosystem</h3>
-            <p className="text-primary-light/80 text-[10px] uppercase tracking-[0.2em] mt-1 font-bold">Infinite Design Matrix</p>
+          <div className="bg-surface-variant/5 backdrop-blur-2xl p-8 shadow-2xl flex flex-col gap-2">
+            <h3 className="text-white font-serif text-3xl md:text-5xl tracking-tight leading-none">AI Ecosystem</h3>
+            <div className="flex items-center gap-3 mt-2">
+                <div className="w-6 h-[1px] bg-primary/60" />
+                <p className="text-primary-light/90 text-[10px] uppercase tracking-[0.3em] font-bold">Infinite Design Matrix</p>
+            </div>
           </div>
-          <div className="hidden md:block bg-white/5 backdrop-blur-sm p-4 text-right">
-             <p className="text-cloud/40 text-[9px] uppercase tracking-widest leading-relaxed">
-               Scroll to Navigate<br/>Click to Explore Detail
+          <div className="hidden md:flex flex-col items-end gap-2 bg-ink/30 backdrop-blur-md px-6 py-4">
+             <div className="w-1 h-1 bg-primary rounded-full animate-pulse mb-1" />
+             <p className="text-white/40 text-[9px] uppercase tracking-[0.4em] leading-relaxed text-right">
+               Scroll to Navigate<br/>Click to Explore
              </p>
           </div>
         </div>
 
         <div className="flex justify-between items-end">
-           <div className="max-w-xs bg-ink/20 backdrop-blur-sm p-4">
-              <p className="text-cloud/60 text-xs italic font-serif leading-relaxed">
+           <div className="max-w-sm bg-white/5 backdrop-blur-xl p-8 shadow-2xl">
+              <p className="text-cloud/70 text-sm md:text-base italic font-serif leading-relaxed">
                 &quot;Our AI ecosystem constantly evolves, generating thousands of unique nail archetypes based on your personal &apos;Muse&apos; signature.&quot;
               </p>
            </div>
-           <div className="text-right">
-              <span className="text-white/20 text-7xl md:text-9xl font-serif italic select-none">MUSE</span>
+           <div className="text-right flex flex-col items-end mix-blend-overlay">
+              <span className="text-white/20 text-8xl md:text-[10rem] font-serif italic select-none leading-none tracking-tighter">MUSE</span>
            </div>
         </div>
       </div>

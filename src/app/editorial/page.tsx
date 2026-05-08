@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Header from "@/components/shared/header";
 import Footer from "@/components/shared/footer";
 import BookingModal from "@/components/booking/booking-modal";
@@ -73,21 +74,27 @@ export default function EditorialPage() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="flex flex-col items-center justify-center text-center space-y-8 min-h-[50vh] bg-surface-container-low p-12 relative overflow-hidden"
-                    style={{ 
-                        backgroundImage: "linear-gradient(to bottom, rgba(245, 243, 238, 0.8), rgba(245, 243, 238, 0.9)), url('https://lh3.googleusercontent.com/aida/ADBb0ujqcrNJG6t1PvETrRuz3O477hOIR7Du1N9xYcZDYP29Ob3ZNTD2tL3_j2-hLKq1k0dm3KGCNQi7qqjyDGlXlpAlpNL0-HZE8QGE--wJbO9S2yTJHi0jhT1ACq_1FdeV-8lG87l4ajSOKKVIxxHUxA1m-lYZcT3MsXd1YF7X3jM1rIxeDEdZAPLcyQIbdJHtmy6XM7fV6cWPGuO_UPHwpaWuPh0JI91bs0luaoHTkNyqcGhVjN0gzS-fXUI')",
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center'
-                    }}
                 >
-                    <span className="font-sans text-[10px] uppercase tracking-[0.2em] text-secondary">
-                        {currentContent.title}
-                    </span>
-                    <h1 className="font-serif text-5xl md:text-7xl leading-tight tracking-tight text-ink">
-                        {currentContent.subtitle}
-                    </h1>
-                    <p className="font-serif italic text-base md:text-lg leading-relaxed text-secondary max-w-2xl">
-                        {currentContent.description}
-                    </p>
+                    <Image 
+                        src="https://lh3.googleusercontent.com/aida/ADBb0ujqcrNJG6t1PvETrRuz3O477hOIR7Du1N9xYcZDYP29Ob3ZNTD2tL3_j2-hLKq1k0dm3KGCNQi7qqjyDGlXlpAlpNL0-HZE8QGE--wJbO9S2yTJHi0jhT1ACq_1FdeV-8lG87l4ajSOKKVIxxHUxA1m-lYZcT3MsXd1YF7X3jM1rIxeDEdZAPLcyQIbdJHtmy6XM7fV6cWPGuO_UPHwpaWuPh0JI91bs0luaoHTkNyqcGhVjN0gzS-fXUI"
+                        alt="Editorial Background"
+                        fill
+                        priority
+                        className="object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-bottom from-cloud/80 to-cloud/90 z-1" />
+                    
+                    <div className="relative z-10 flex flex-col items-center space-y-8">
+                        <span className="font-sans text-[10px] uppercase tracking-[0.2em] text-secondary">
+                            {currentContent.title}
+                        </span>
+                        <h1 className="font-serif text-5xl md:text-7xl leading-tight tracking-tight text-ink">
+                            {currentContent.subtitle}
+                        </h1>
+                        <p className="font-serif italic text-base md:text-lg leading-relaxed text-secondary max-w-2xl">
+                            {currentContent.description}
+                        </p>
+                    </div>
                 </motion.div>
 
                 {/* Category Filters */}
@@ -107,10 +114,12 @@ export default function EditorialPage() {
             <section className="w-full max-w-[1440px] mx-auto px-6 md:px-20 mb-32">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center bg-white/40 backdrop-blur-sm p-8 md:p-12 border border-gold-pale/10">
                     <div className="col-span-1 lg:col-span-7 aspect-[16/9] bg-cloud-3 overflow-hidden">
-                        <img 
-                            alt="Featured Article" 
-                            className="w-full h-full object-cover grayscale-[15%] hover:grayscale-0 transition-all duration-1000" 
+                        <Image 
                             src="https://lh3.googleusercontent.com/aida/ADBb0ujqcrNJG6t1PvETrRuz3O477hOIR7Du1N9xYcZDYP29Ob3ZNTD2tL3_j2-hLKq1k0dm3KGCNQi7qqjyDGlXlpAlpNL0-HZE8QGE--wJbO9S2yTJHi0jhT1ACq_1FdeV-8lG87l4ajSOKKVIxxHUxA1m-lYZcT3MsXd1YF7X3jM1rIxeDEdZAPLcyQIbdJHtmy6XM7fV6cWPGuO_UPHwpaWuPh0JI91bs0luaoHTkNyqcGhVjN0gzS-fXUI"
+                            alt="Featured Article" 
+                            fill
+                            sizes="(max-width: 1024px) 100vw, 60vw"
+                            className="object-cover grayscale-[15%] hover:grayscale-0 transition-all duration-1000" 
                         />
                     </div>
                     <div className="col-span-1 lg:col-span-5 flex flex-col justify-center space-y-8 lg:pl-8">
@@ -144,10 +153,12 @@ export default function EditorialPage() {
                         >
                             <div className="aspect-[4/5] bg-cloud-3 overflow-hidden relative">
                                 {article.image ? (
-                                    <img 
+                                    <Image 
                                         src={article.image} 
                                         alt={article.title[language === "VN" ? "VN" : "EN"]} 
-                                        className="w-full h-full object-cover grayscale-[10%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000"
+                                        fill
+                                        sizes="(max-width: 768px) 100vw, 33vw"
+                                        className="object-cover grayscale-[10%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000"
                                     />
                                 ) : (
                                     <div className="w-full h-full bg-cloud-2 flex items-center justify-center p-10 text-center border-l-4 border-primary/40">

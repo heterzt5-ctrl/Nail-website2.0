@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
+import Image from "next/image";
 import { ImageItem, overlayConfig } from "./types";
-import { X } from "lucide-react";
 
 interface Props {
   image: ImageItem | null;
@@ -31,73 +31,180 @@ export default function ImageDetailOverlay({ image, onClose }: Props) {
   return (
     <div
       onClick={onClose}
-      className={`fixed inset-0 z-[100] flex items-center justify-center p-6 md:p-16 backdrop-blur-xl transition-all duration-500 ease-out ${open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-        }`}
-      style={{ background: "rgba(199, 181, 17, 0.94)" }}
+      style={{
+        position: "fixed",
+        inset: 0,
+        background: "rgba(22, 18, 14, 0.96)",
+        backdropFilter: "blur(8px)",
+        zIndex: 100,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "64px",
+        opacity: open ? 1 : 0,
+        pointerEvents: open ? "auto" : "none",
+        transition: "opacity 0.35s ease",
+      }}
     >
       {image && (
         <div
           onClick={(e) => e.stopPropagation()}
-          className={`relative flex flex-col lg:flex-row w-full max-w-[1400px] bg-[#0A0807]/95 overflow-hidden transition-all duration-700 ease-out shadow-[0_40px_100px_rgba(0,0,0,0.8)] border border-white/5 ${open ? "scale-100 translate-y-0" : "scale-95 translate-y-4"
-            }`}
           style={{
-            // Try to maintain 16:9 landscape on large screens, but cap at 85vh to fit screen
-            aspectRatio: "16/9",
-            maxHeight: "85vh",
+            display: "grid",
+            gridTemplateColumns: "minmax(0, 1.4fr) minmax(320px, 0.9fr)",
+            gap: "56px",
+            maxWidth: "1520px",
+            width: "100%",
+            maxHeight: "100%",
+            alignItems: "center",
+            transform: open ? "scale(1)" : "scale(0.98)",
+            transition: "transform 0.35s ease",
           }}
         >
-          {/* Image Container (Left, 55%) - Left-aligned composition */}
-          <div className="relative w-full lg:w-[55%] h-1/2 lg:h-full flex items-center justify-start overflow-hidden">
-            {/* Blend the image right edge into the text area for a seamless editorial look */}
-            <div className="absolute top-0 right-0 w-24 md:w-48 h-full bg-gradient-to-r from-transparent via-[#0A0807]/50 to-[#0A0807]/95 z-10 pointer-events-none" />
-
-            <img
+          {/* Image */}
+          <div
+            style={{
+              position: "relative",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              maxHeight: "calc(100vh - 128px)",
+            }}
+          >
+            <Image
               src={image.src}
               alt={image.title}
-              className="w-full h-full object-contain lg:object-left"
+              fill
+              sizes="90vw"
+              className="object-contain"
               style={{
-                // Padding prevents cropping too tight
-                padding: "1.5rem",
+                boxShadow: "0 40px 100px rgba(22,18,14,0.6)",
               }}
             />
           </div>
 
-          {/* Text Container (Right, 45%) - Negative space & typography */}
-          <div className="relative w-full lg:w-[45%] h-1/2 lg:h-full flex flex-col justify-center p-8 md:p-12 lg:p-16 xl:p-20 z-20">
-            <div className="text-cloud font-sans flex flex-col gap-6 max-h-full overflow-y-auto pr-4 custom-scrollbar">
-              {eyebrow && (
-                <p className="text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-primary-light/80">
-                  {eyebrow}
-                </p>
-              )}
+          {/* Text panel */}
+          <div
+            style={{
+              color: "#F0EEE9",
+              fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
+              display: "flex",
+              flexDirection: "column",
+              gap: "24px",
+              maxHeight: "calc(100vh - 128px)",
+              overflow: "auto",
+            }}
+          >
+            {eyebrow && (
+              <p
+                style={{
+                  fontSize: "11px",
+                  fontWeight: 500,
+                  letterSpacing: "0.14em",
+                  textTransform: "uppercase",
+                  color: "#C9A96E",
+                  margin: 0,
+                }}
+              >
+                {eyebrow}
+              </p>
+            )}
 
-              {image.title && (
-                <h2 className="font-serif text-3xl md:text-5xl xl:text-6xl font-light leading-[1.1] tracking-tight text-white">
-                  {image.title}
-                </h2>
-              )}
+            {image.title && (
+              <h2
+                style={{
+                  fontFamily: "'Noto Serif', 'Times New Roman', serif",
+                  fontSize: "clamp(28px, 2.6vw, 40px)",
+                  fontWeight: 400,
+                  lineHeight: 1.15,
+                  letterSpacing: "-0.01em",
+                  margin: 0,
+                  color: "#F0EEE9",
+                }}
+              >
+                {image.title}
+              </h2>
+            )}
 
-              {image.description && (
-                <p className="font-serif italic text-lg md:text-xl xl:text-2xl leading-relaxed text-cloud/70 mt-2">
-                  {image.description}
-                </p>
-              )}
+            {image.description && (
+              <p
+                style={{
+                  fontFamily: "'Noto Serif', 'Times New Roman', serif",
+                  fontSize: "18px",
+                  lineHeight: 1.65,
+                  color: "rgba(240,238,233,0.85)",
+                  margin: 0,
+                }}
+              >
+                {image.description}
+              </p>
+            )}
 
-              <div className="mt-6 pt-8 border-t border-white/10 grid grid-cols-[100px,1fr] gap-x-4 gap-y-3 text-xs md:text-sm text-cloud/50">
-                <span className="uppercase tracking-widest">Collection</span>
-                <span className="text-cloud/80">{image.category}</span>
-
-                <span className="uppercase tracking-widest">Detail</span>
-                <span className="font-mono text-cloud/80">#RM-{image.src.split("_").pop()?.split(".")[0]}</span>
+            {(overlayConfig.fileLabel || overlayConfig.seriesLabel) && (
+              <div
+                style={{
+                  marginTop: "8px",
+                  paddingTop: "20px",
+                  borderTop: "1px solid rgba(201,169,110,0.3)",
+                  display: "grid",
+                  gridTemplateColumns: "110px 1fr",
+                  rowGap: "8px",
+                  fontSize: "13px",
+                  opacity: 0.75,
+                  color: "rgba(240,238,233,0.7)",
+                }}
+              >
+                {overlayConfig.fileLabel && (
+                  <>
+                    <span style={{ opacity: 0.6 }}>
+                      {overlayConfig.fileLabel}
+                    </span>
+                    <span style={{ fontFamily: "monospace" }}>
+                      {image.src.split("/").pop()}
+                    </span>
+                  </>
+                )}
+                {overlayConfig.seriesLabel && (
+                  <>
+                    <span style={{ opacity: 0.6 }}>
+                      {overlayConfig.seriesLabel}
+                    </span>
+                    <span>{image.title.split(" — ")[0]}</span>
+                  </>
+                )}
               </div>
+            )}
 
+            {overlayConfig.closeLabel && (
               <button
                 onClick={onClose}
-                className="mt-10 self-start px-8 py-3 border border-primary/30 text-xs font-bold uppercase tracking-widest text-cloud hover:bg-primary/10 hover:border-primary transition-all duration-300"
+                style={{
+                  alignSelf: "flex-start",
+                  marginTop: "16px",
+                  background: "transparent",
+                  color: "#F0EEE9",
+                  border: "1px solid rgba(201,169,110,0.5)",
+                  padding: "10px 22px",
+                  fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
+                  fontSize: "13px",
+                  letterSpacing: "0.06em",
+                  cursor: "pointer",
+                  transition: "background 0.2s ease, border-color 0.2s ease, color 0.2s ease",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "rgba(201,169,110,0.15)";
+                  e.currentTarget.style.borderColor = "rgba(201,169,110,0.8)";
+                  e.currentTarget.style.color = "#fff";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "transparent";
+                  e.currentTarget.style.borderColor = "rgba(201,169,110,0.5)";
+                  e.currentTarget.style.color = "#F0EEE9";
+                }}
               >
                 {overlayConfig.closeLabel}
               </button>
-            </div>
+            )}
           </div>
         </div>
       )}
@@ -106,9 +213,24 @@ export default function ImageDetailOverlay({ image, onClose }: Props) {
       <button
         onClick={onClose}
         aria-label="Close"
-        className="fixed top-8 right-8 text-primary-light/60 hover:text-white transition-colors duration-300 p-2"
+        style={{
+          position: "fixed",
+          top: "24px",
+          right: "32px",
+          background: "transparent",
+          border: "none",
+          color: "#C9A96E",
+          fontSize: "28px",
+          lineHeight: 1,
+          cursor: "pointer",
+          padding: "8px 12px",
+          opacity: 0.7,
+          transition: "opacity 0.2s ease",
+        }}
+        onMouseEnter={(e) => (e.currentTarget.style.opacity = "1")}
+        onMouseLeave={(e) => (e.currentTarget.style.opacity = "0.7")}
       >
-        <X className="w-8 h-8" />
+        ×
       </button>
     </div>
   );

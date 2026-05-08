@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/lib/language-context";
+
 
 /* ── Catalog Data ─────────────────────────────────────────────── */
 const catalogImages = Array.from({ length: 9 }, (_, i) => ({
@@ -28,8 +30,8 @@ export function CatalogTrigger({ onOpen }: { onOpen: () => void }) {
     const { language } = useLanguage();
 
     const label: Record<string, string> = {
-        VN: "Xem tất cả các dịch vụ →",
-        EN: "View Full Atelier Catalog →",
+        VN: "Xem Toàn Bộ Menu →",
+        EN: "View Full Menu →",
         KR: "전체 서비스 카탈로그 보기 →",
         CN: "查看完整服务目录 →",
         RU: "Смотреть полный каталог →",
@@ -42,17 +44,9 @@ export function CatalogTrigger({ onOpen }: { onOpen: () => void }) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="group flex items-center gap-3 mx-auto mt-20 px-8 py-4 border border-gold-pale/30 hover:border-primary/40 rounded-none transition-all duration-500 cursor-pointer bg-transparent hover:bg-primary/[0.03]"
+            className="px-10 py-4 shimmer-gold text-white font-serif uppercase tracking-[0.2em] text-sm rounded-xs hover:scale-105 transition-transform duration-300 mx-auto mt-20 block cursor-pointer"
         >
-            <span className="font-sans text-[11px] tracking-[0.25em] uppercase text-ink-mid group-hover:text-primary transition-colors duration-300">
-                {label[language] || label.EN}
-            </span>
-            <svg
-                className="w-4 h-4 text-gold-pale group-hover:text-primary group-hover:translate-x-1 transition-all duration-300"
-                fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}
-            >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-            </svg>
+            {label[language] || label.EN}
         </motion.button>
     );
 }
@@ -65,6 +59,7 @@ export function AtelierCatalogModal({
     isOpen: boolean;
     onClose: () => void;
 }) {
+    const { language } = useLanguage();
     const [index, setIndex] = useState(0);
     const [dragStartX, setDragStartX] = useState(0);
 
@@ -100,9 +95,9 @@ export function AtelierCatalogModal({
     /* ── Preload adjacent images ── */
     useEffect(() => {
         if (!isOpen) return;
-        const preloadNext = new Image();
+        const preloadNext = new globalThis.Image();
         preloadNext.src = catalogImages[(index + 1) % total].src;
-        const preloadPrev = new Image();
+        const preloadPrev = new globalThis.Image();
         preloadPrev.src = catalogImages[(index - 1 + total) % total].src;
     }, [index, isOpen, total]);
 
@@ -136,7 +131,7 @@ export function AtelierCatalogModal({
                     />
 
                     {/* ── Content Container ── */}
-                    <div className="relative w-full h-full flex items-center justify-center select-none">
+                    <div className="relative z-10 w-full h-full flex items-center justify-center select-none">
 
                         {/* ── Close Button ── */}
                         <button
@@ -147,36 +142,39 @@ export function AtelierCatalogModal({
                             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                             </svg>
-                            <span className="font-sans text-[10px] tracking-[0.2em] uppercase">Đóng</span>
+                            <span className="font-sans text-[10px] tracking-[0.2em] uppercase">{language === "VN" ? "Đóng" : "Close"}</span>
                         </button>
 
                         {/* ── Image Viewport ── */}
                         <div
-                            className="relative flex items-center justify-center"
-                            style={{ maxWidth: "92vw", maxHeight: "82vh", width: "auto", height: "auto" }}
+                            className="relative"
+                            style={{ width: "92vw", height: "82vh" }}
                             onTouchStart={handleTouchStart}
                             onTouchEnd={handleTouchEnd}
                         >
                             <AnimatePresence mode="wait">
-                                <motion.img
+                                <motion.div
                                     key={index}
-                                    src={catalogImages[index].src}
-                                    alt={catalogImages[index].alt}
-                                    className="pointer-events-none"
-                                    style={{
-                                        maxWidth: "92vw",
-                                        maxHeight: "82vh",
-                                        width: "auto",
-                                        height: "auto",
-                                        objectFit: "contain",
-                                        display: "block",
-                                    }}
                                     variants={imageVariants}
                                     initial="enter"
                                     animate="center"
                                     exit="exit"
-                                    draggable={false}
-                                />
+                                    className="absolute inset-0 flex items-center justify-center"
+                                    style={{ width: "100%", height: "100%" }}
+                                >
+                                    <Image
+                                        src={catalogImages[index].src}
+                                        alt={catalogImages[index].alt}
+                                        fill
+                                        priority
+                                        sizes="92vw"
+                                        className="object-contain"
+                                        style={{
+                                            boxShadow: "0 40px 100px rgba(0,0,0,0.4)",
+                                        }}
+                                        draggable={false}
+                                    />
+                                </motion.div>
                             </AnimatePresence>
                         </div>
 
