@@ -6,7 +6,21 @@ const escapeHTML = (text: string) => {
     return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 };
 
-async function sendTelegramNotification(booking: any) {
+interface BookingNotification {
+    id: string;
+    startTime: string | Date;
+    notes?: string;
+    client: {
+        name: string;
+        phone: string;
+    };
+    service: {
+        name: string;
+    };
+    offline?: boolean;
+}
+
+async function sendTelegramNotification(booking: BookingNotification) {
     console.log('Attempting to send Telegram notification for booking:', booking.id);
     const token = process.env.TELEGRAM_BOT_TOKEN;
     const chatId = process.env.TELEGRAM_CHAT_ID;
