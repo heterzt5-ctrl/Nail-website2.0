@@ -6,7 +6,10 @@ const prismaClientSingleton = () => {
   const connectionString = process.env.DATABASE_URL
 
   if (!connectionString) {
-    throw new Error('DATABASE_URL is required to initialize Prisma')
+    if (process.env.NODE_ENV === 'production') {
+      console.warn('DATABASE_URL is missing during build/runtime. Prisma operations will fail.')
+    }
+    return new PrismaClient()
   }
 
   const adapter = new PrismaPg(connectionString)
