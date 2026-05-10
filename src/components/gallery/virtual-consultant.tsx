@@ -16,22 +16,8 @@ const HEIGHT_CLASS: Record<string, string> = {
 
 export default function VirtualConsultant() {
     const { language } = useLanguage();
-    const [filter, setFilter] = useState({
-        skinTone: "All",
-        handShape: "All",
-    });
-    const [activeTab, setActiveTab] = useState<"skinTone" | "handShape">("skinTone");
     const [hoveredId, setHoveredId] = useState<string | null>(null);
-
-    const filteredDesigns = NAIL_DESIGNS.filter((d) => {
-        return (
-            (filter.skinTone === "All" || d.skinTone === filter.skinTone) &&
-            (filter.handShape === "All" || d.handShape === filter.handShape)
-        );
-    }).slice(0, 6);
-
-    const skinTones = ["All", "Fair", "Tan", "Deep"];
-    const handShapes = ["All", "Almond", "Square", "Round"];
+    const filteredDesigns = NAIL_DESIGNS.slice(0, 6);
 
     // Distribute into 3 columns — editorial pattern: [0,3], [1,4], [2,5]
     const col1 = filteredDesigns.filter((_, i) => i % 3 === 0);
@@ -117,45 +103,6 @@ export default function VirtualConsultant() {
                         <p className="max-w-md text-ink-light font-serif italic text-lg leading-relaxed">
                             {language === "VN" ? "Các mẫu thiết kế đơn giản, tinh tế cho ngày thường và dịp đặc biệt." : "Simple, clean designs for everyday and special moments."}
                         </p>
-                    </div>
-
-                    {/* Filter Controls */}
-                    <div className="w-full lg:max-w-md space-y-8">
-                        <div className="flex gap-8 border-b border-gold-pale/10 pb-4">
-                            <button
-                                onClick={() => setActiveTab("skinTone")}
-                                className={`text-[10px] font-sans font-bold uppercase tracking-[0.3em] transition-all cursor-pointer ${activeTab === "skinTone" ? "text-primary" : "text-ink-ghost hover:text-ink-mid"}`}
-                                aria-pressed={activeTab === "skinTone"}
-                            >
-                                {language === "VN" ? "Tông Da" : "Skin Tone"}
-                            </button>
-                            <button
-                                onClick={() => setActiveTab("handShape")}
-                                className={`text-[10px] font-sans font-bold uppercase tracking-[0.3em] transition-all cursor-pointer ${activeTab === "handShape" ? "text-primary" : "text-ink-ghost hover:text-ink-mid"}`}
-                                aria-pressed={activeTab === "handShape"}
-                            >
-                                {language === "VN" ? "Dáng Tay" : "Hand Shape"}
-                            </button>
-                        </div>
-                        <div className="flex flex-wrap gap-4">
-                            {(activeTab === "skinTone" ? skinTones : handShapes).map((item) => (
-                                <button
-                                    key={item}
-                                    onClick={() =>
-                                        setFilter({ ...filter, [activeTab]: item })
-                                    }
-                                    className={`px-5 py-2.5 rounded-xs text-[10px] font-sans font-bold uppercase tracking-[0.2em] transition-all border flex items-center gap-2 cursor-pointer
-                                        ${(activeTab === "skinTone" ? filter.skinTone : filter.handShape) === item
-                                            ? "bg-ink border-ink text-white shadow-xl"
-                                            : "bg-transparent border-gold-pale/30 text-ink-ghost hover:border-primary/50"}`}
-                                >
-                                    {language === "VN" ? (item === "All" ? "Tất Cả" : item === "Fair" ? "Da Sáng" : item === "Tan" ? "Da Ngăm" : item === "Deep" ? "Da Tối" : item === "Almond" ? "Dáng Hạnh Nhân" : item === "Square" ? "Dáng Vuông" : item === "Round" ? "Dáng Tròn" : item) : item}
-                                    {(activeTab === "skinTone" ? filter.skinTone : filter.handShape) === item && (
-                                        <Check className="w-3 h-3" />
-                                    )}
-                                </button>
-                            ))}
-                        </div>
                     </div>
                 </div>
 

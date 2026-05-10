@@ -11,7 +11,7 @@ export default function CTA({ onOpenBooking }: CTAProps) {
     const { language } = useLanguage();
     return (
         <section className="py-40 px-8 md:px-20 text-center relative overflow-hidden bg-cloud">
-            <motion.div 
+            <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -24,7 +24,7 @@ export default function CTA({ onOpenBooking }: CTAProps) {
                 <p className="font-serif text-secondary text-lg mb-16 max-w-md mx-auto font-light leading-relaxed">
                     {language === "VN" ? "Số lượng lịch hẹn giới hạn trong mùa này tại studio trung tâm của chúng tôi." : "Limited appointments available for the upcoming season at our downtown studio."}
                 </p>
-                <button 
+                <button
                     onClick={onOpenBooking}
                     className="w-full md:w-auto px-16 py-6 shimmer-gold text-white font-serif uppercase tracking-[0.3em] text-sm rounded-xs hover:scale-[1.02] transition-transform shadow-xl cursor-pointer"
                 >

@@ -25,8 +25,8 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     const { language } = useLanguage();
     const [step, setStep] = useState(1);
     const [services, setServices] = useState<Service[]>([]);
-    const [selectedServiceId, setSelectedServiceId] = useState("");
-    const [selectedService, setSelectedService] = useState<Service | null>(null);
+    const [selectedServices, setSelectedServices] = useState<Service[]>([]);
+    const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
     const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
@@ -61,19 +61,26 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
         setIsSubmitting(true);
         try {
             if (!selectedDate || !selectedTime) return;
-            
+
             const [hours, minutes] = selectedTime.split(':').map(Number);
             const bookingDateTime = new Date(selectedDate);
             bookingDateTime.setHours(hours, minutes, 0, 0);
-            
+
+            const mainService = selectedServices[0];
+            const otherServices = selectedServices.slice(1);
+            const extraNotes = otherServices.length > 0
+                ? `Additional services requested: ${otherServices.map(s => s.name).join(', ')}`
+                : '';
+
             const res = await fetch('/api/bookings', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    serviceId: selectedServiceId,
+                    serviceId: mainService.id,
                     startTime: bookingDateTime.toISOString(),
                     clientName,
                     clientPhone,
+                    notes: extraNotes
                 }),
             });
 
@@ -93,8 +100,8 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     const handleClose = () => {
         setStep(1);
         setIsConfirmed(false);
-        setSelectedServiceId("");
-        setSelectedService(null);
+        setSelectedServices([]);
+        setExpandedCategory(null);
         setSelectedDate(null);
         setSelectedTime(null);
         setCurrentMonth(new Date());
@@ -117,20 +124,19 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
         for (let i = 1; i <= daysInMonth; i++) {
             const date = new Date(year, month, i);
             const isSelected = selectedDate?.toDateString() === date.toDateString();
-            const isPast = date < new Date(new Date().setHours(0,0,0,0));
+            const isPast = date < new Date(new Date().setHours(0, 0, 0, 0));
 
             days.push(
-                <button 
-                    key={i} 
+                <button
+                    key={i}
                     onClick={() => !isPast && setSelectedDate(date)}
                     disabled={isPast}
-                    className={`aspect-square flex items-center justify-center text-[10px] font-sans font-bold transition-all ${
-                        isSelected 
-                            ? 'bg-ink text-white shadow-lg' 
-                            : isPast 
+                    className={`aspect-square flex items-center justify-center text-[10px] font-sans font-bold transition-all ${isSelected
+                            ? 'bg-ink text-white shadow-lg'
+                            : isPast
                                 ? 'text-ink-ghost/30 cursor-not-allowed'
                                 : 'hover:bg-primary/10 hover:text-primary text-ink-ghost'
-                    }`}
+                        }`}
                 >
                     {i}
                 </button>
@@ -203,7 +209,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                                         <Bell className="w-4 h-4 text-primary" />
                                         <span className="font-sans text-[9px] font-bold text-primary uppercase tracking-[0.3em]">Instant Notification</span>
                                     </div>
-                                    <p className="font-serif text-[11px] italic text-ink-light leading-relaxed">The atelier management is notified immediately upon your selection.</p>
+                                    <p className="font-serif text-[11px] italic text-ink-light leading-relaxed">The atelier team is notified instantly upon your selection. For specific requests, please contact us via phone or chat in the section below.</p>
                                 </div>
                             </div>
 
@@ -222,32 +228,71 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                                                         <h4 className="text-3xl font-serif font-light tracking-tight text-ink">Select <span className="italic text-primary">Artistry</span></h4>
                                                         <p className="font-sans text-[10px] text-ink-ghost uppercase tracking-[0.4em]">Choose your signature experience.</p>
                                                     </div>
-                                                    <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2">
+                                                    <div className="space-y-2 max-h-[400px] overflow-y-auto pr-2">
                                                         {isLoading ? (
                                                             <div className="flex flex-col items-center justify-center py-20 space-y-4">
                                                                 <Loader2 className="w-8 h-8 text-primary animate-spin" />
                                                                 <p className="font-serif text-sm italic text-ink-ghost">Preparing the catalog...</p>
                                                             </div>
                                                         ) : (
-                                                            services.map((s) => (
-                                                                <button
-                                                                    key={s.id}
-                                                                    onClick={() => {
-                                                                        setSelectedServiceId(s.id);
-                                                                        setSelectedService(s);
-                                                                    }}
-                                                                    className={`w-full p-8 text-left border transition-all flex items-center justify-between group ${selectedServiceId === s.id ? 'border-primary bg-white shadow-xl' : 'border-gold-pale/20 hover:border-primary/40'}`}
-                                                                >
-                                                                    <div className="space-y-1">
-                                                                        <span className="font-serif text-lg text-ink tracking-tight">
-                                                                            {language === "VN" ? s.name_vn || s.name : s.name}
-                                                                        </span>
-                                                                        <p className="font-serif text-xs text-ink-ghost italic">
-                                                                            {language === "VN" ? s.description_vn : s.description}
-                                                                        </p>
-                                                                    </div>
-                                                                    <CheckCircle2 className={`w-5 h-5 transition-all flex-shrink-0 ${selectedServiceId === s.id ? 'text-primary scale-110' : 'text-gold-pale/20'}`} />
-                                                                </button>
+                                                            Object.entries(
+                                                                services.reduce((acc, service) => {
+                                                                    const cat = service.category || (language === "VN" ? "Khác" : "Other");
+                                                                    if (!acc[cat]) acc[cat] = [];
+                                                                    acc[cat].push(service);
+                                                                    return acc;
+                                                                }, {} as Record<string, Service[]>)
+                                                            ).map(([category, categoryServices]) => (
+                                                                <div key={category} className="border border-gold-pale/20 bg-white overflow-hidden">
+                                                                    <button
+                                                                        onClick={() => setExpandedCategory(expandedCategory === category ? null : category)}
+                                                                        className="w-full p-6 text-left flex items-center justify-between hover:bg-primary/5 transition-colors"
+                                                                    >
+                                                                        <span className="font-serif text-lg text-ink tracking-tight">{category}</span>
+                                                                        <ChevronRight className={`w-5 h-5 text-gold-pale transition-transform ${expandedCategory === category ? 'rotate-90' : ''}`} />
+                                                                    </button>
+                                                                    <AnimatePresence>
+                                                                        {expandedCategory === category && (
+                                                                            <motion.div
+                                                                                initial={{ height: 0, opacity: 0 }}
+                                                                                animate={{ height: "auto", opacity: 1 }}
+                                                                                exit={{ height: 0, opacity: 0 }}
+                                                                                className="overflow-hidden"
+                                                                            >
+                                                                                <div className="p-4 pt-0 space-y-2 bg-cloud/30 border-t border-gold-pale/10">
+                                                                                    {categoryServices.map((s) => {
+                                                                                        const isSelected = selectedServices.some(ss => ss.id === s.id);
+                                                                                        return (
+                                                                                            <button
+                                                                                                key={s.id}
+                                                                                                onClick={() => {
+                                                                                                    if (isSelected) {
+                                                                                                        setSelectedServices(prev => prev.filter(ss => ss.id !== s.id));
+                                                                                                    } else {
+                                                                                                        setSelectedServices(prev => [...prev, s]);
+                                                                                                    }
+                                                                                                }}
+                                                                                                className={`w-full p-4 text-left border transition-all flex items-center justify-between group ${isSelected ? 'border-primary bg-white shadow-md' : 'border-gold-pale/20 hover:border-primary/40 bg-white/50'}`}
+                                                                                            >
+                                                                                                <div className="space-y-1 pr-4">
+                                                                                                    <span className="font-serif text-sm text-ink tracking-tight">
+                                                                                                        {language === "VN" ? s.name_vn || s.name : s.name}
+                                                                                                    </span>
+                                                                                                    <p className="font-serif text-xs text-ink-ghost italic">
+                                                                                                        {language === "VN" ? s.description_vn : s.description}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                                <div className={`w-5 h-5 flex-shrink-0 border flex items-center justify-center transition-all ${isSelected ? 'bg-primary border-primary text-white' : 'border-gold-pale/40'}`}>
+                                                                                                    {isSelected && <CheckCircle2 className="w-4 h-4" />}
+                                                                                                </div>
+                                                                                            </button>
+                                                                                        );
+                                                                                    })}
+                                                                                </div>
+                                                                            </motion.div>
+                                                                        )}
+                                                                    </AnimatePresence>
+                                                                </div>
                                                             ))
                                                         )}
                                                     </div>
@@ -294,7 +339,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                                                                     ))}
                                                                 </div>
                                                             </div>
-                                                            
+
                                                             {selectedDate && selectedTime && (
                                                                 <div className="p-6 bg-primary/5 border border-primary/10 rounded-xs">
                                                                     <p className="font-serif text-[11px] text-primary italic leading-relaxed">
@@ -367,7 +412,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                                                 {step < 3 && (
                                                     <button
                                                         onClick={() => setStep(step + 1)}
-                                                        disabled={(step === 1 && !selectedServiceId) || (step === 2 && (!selectedDate || !selectedTime))}
+                                                        disabled={(step === 1 && selectedServices.length === 0) || (step === 2 && (!selectedDate || !selectedTime))}
                                                         className="px-12 py-5 bg-ink text-white text-[10px] font-sans font-bold tracking-[0.3em] uppercase hover:bg-primary transition-all flex items-center gap-4 disabled:opacity-20 cursor-pointer"
                                                     >
                                                         Next Phase
@@ -388,7 +433,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                                             <div className="space-y-6">
                                                 <h4 className="text-4xl font-serif font-light tracking-tight text-ink">Success.</h4>
                                                 <p className="font-serif text-lg text-ink-light italic max-w-sm mx-auto leading-relaxed">
-                                                    Your request for **{language === "VN" ? selectedService?.name_vn || selectedService?.name : selectedService?.name}** on {selectedDate?.toLocaleDateString(language === "VN" ? 'vi-VN' : 'en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} at {selectedTime} has been recorded.
+                                                    Your request for **{selectedServices.map(s => language === "VN" ? s.name_vn || s.name : s.name).join(' & ')}** on {selectedDate?.toLocaleDateString(language === "VN" ? 'vi-VN' : 'en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} at {selectedTime} has been recorded.
                                                 </p>
                                                 <div className="pt-8 flex justify-center">
                                                     <button

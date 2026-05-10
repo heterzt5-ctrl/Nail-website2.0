@@ -16,7 +16,7 @@ export default function BriefIntro() {
 
     return (
         <section id="philosophy" className="py-32 px-8 md:px-20 bg-surface-variant/20 overflow-hidden">
-            <motion.div 
+            <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}

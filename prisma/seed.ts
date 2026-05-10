@@ -6,33 +6,114 @@ const prisma = new PrismaClient()
 async function main() {
   console.log('--- Starting Seed ---')
 
+  // Clear existing to avoid leftovers
+  await prisma.appointment.deleteMany({})
+  await prisma.service.deleteMany({})
+
   const services = [
+    // Manicure & Pedicure
     {
-      name: "The Muse Sculpt (Glass Nails)",
-      name_vn: "The Muse Sculpt (Móng Thủy Tinh)",
-      description: "Signature translucent glass effect with structural sculpting.",
-      description_vn: "Hiệu ứng thủy tinh mờ đặc trưng với kỹ thuật điêu khắc cấu trúc.",
-      price: 1200000,
-      duration: 120,
-      category: "Glass Nails"
+      name: "Classic Manicure",
+      name_vn: "Chăm sóc móng cơ bản",
+      description: "Essential nail care, cuticle work, and shaping.",
+      description_vn: "Chăm sóc móng thiết yếu, nhặt da và tạo form.",
+      price: 200000,
+      duration: 45,
+      category: "Manicure & Pedicure"
     },
     {
-      name: "Lineal Artistry (3D Sculpture)",
-      name_vn: "Lineal Artistry (Điêu Khắc 3D)",
-      description: "Avant-garde 3D textures and architectural nail art.",
-      description_vn: "Kết cấu 3D tiên phong và nghệ thuật móng kiến trúc.",
-      price: 1500000,
-      duration: 150,
-      category: "3D Art"
+      name: "Regular Polish",
+      name_vn: "Sơn thường",
+      description: "Standard nail polish application.",
+      description_vn: "Sơn móng tay cơ bản.",
+      price: 150000,
+      duration: 30,
+      category: "Manicure & Pedicure"
     },
     {
-      name: "The Ritual (Recovery Spa)",
-      name_vn: "The Ritual (Spa Phục Hồi)",
-      description: "Deep restorative treatment for hand and nail health.",
-      description_vn: "Liệu trình phục hồi sâu cho sức khỏe bàn tay và móng.",
-      price: 800000,
+      name: "Gel Polish",
+      name_vn: "Sơn Gel",
+      description: "Long-lasting gel polish.",
+      description_vn: "Sơn gel giữ màu lâu phai.",
+      price: 300000,
+      duration: 45,
+      category: "Manicure & Pedicure"
+    },
+    {
+      name: "Cat Eye",
+      name_vn: "Sơn mắt mèo",
+      description: "Magnetic cat eye gel effect.",
+      description_vn: "Hiệu ứng sơn gel mắt mèo từ tính.",
+      price: 400000,
       duration: 60,
-      category: "Basic"
+      category: "Manicure & Pedicure"
+    },
+
+    // Basic Designs
+    {
+      name: "Full French Tip",
+      name_vn: "French toàn bộ",
+      description: "Classic or modern French tips on all nails.",
+      description_vn: "Viền móng French cổ điển hoặc hiện đại.",
+      price: 500000,
+      duration: 60,
+      category: "Basic Designs"
+    },
+    {
+      name: "Full Ombre",
+      name_vn: "Ombre toàn bộ",
+      description: "Smooth gradient color transition.",
+      description_vn: "Chuyển màu gradient mượt mà.",
+      price: 500000,
+      duration: 75,
+      category: "Basic Designs"
+    },
+    {
+      name: "Full Chrome",
+      name_vn: "Tráng gương toàn bộ",
+      description: "Metallic chrome finish.",
+      description_vn: "Hiệu ứng tráng gương toàn bộ móng.",
+      price: 600000,
+      duration: 75,
+      category: "Basic Designs"
+    },
+    {
+      name: "Full Cat Eye",
+      name_vn: "Mắt mèo toàn bộ",
+      description: "Intense magnetic cat eye on all nails.",
+      description_vn: "Sơn mắt mèo toàn bộ các ngón.",
+      price: 600000,
+      duration: 75,
+      category: "Basic Designs"
+    },
+
+    // Hair Wash & Relaxation
+    {
+      name: "Classic Shampoo",
+      name_vn: "Gội đầu cơ bản",
+      description: "Standard relaxing hair wash.",
+      description_vn: "Gội đầu thư giãn cơ bản.",
+      price: 150000,
+      duration: 30,
+      category: "Hair Wash & Relaxation"
+    },
+    {
+      name: "Deluxe Shampoo",
+      name_vn: "Gội đầu dưỡng sinh",
+      description: "Deep scalp massage and hair nourishment.",
+      description_vn: "Gội đầu kết hợp massage da đầu.",
+      price: 250000,
+      duration: 45,
+      category: "Hair Wash & Relaxation"
+    },
+    {
+      name: "Luxury Shampoo",
+      name_vn: "Gội đầu hoàng gia",
+      description: "Ultimate relaxation with neck and shoulder massage.",
+      description_vn: "Gội đầu thư giãn hoàng gia kết hợp massage cổ vai gáy.",
+      price: 400000,
+      duration: 60,
+      category: "Hair Wash & Relaxation"
     }
   ]
 

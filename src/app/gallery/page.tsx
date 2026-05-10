@@ -3,67 +3,101 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+// @ts-expect-error react-masonry-css has no types
+import Masonry from "react-masonry-css";
 import Header from "@/components/shared/header";
 import Footer from "@/components/shared/footer";
 import BookingModal from "@/components/booking/booking-modal";
-import { ChevronRight, Grid, LayoutTemplate, Heart, Share, Bookmark, Play } from "lucide-react";
+import { ChevronRight, Grid, LayoutTemplate, Heart, Share, Bookmark, Play, X } from "lucide-react";
 import VortexSection from "@/components/gallery/vortex/vortex-section";
 
 // MOCK DATA for masonry
 const GALLERY_ITEMS = [
   {
     id: "g1",
-    title: "Liquid Gold Chrome",
+    title: "Signature Glass",
     span: 45, // tall
-    imageUrl: "https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&q=80&w=800",
+    imageUrl: "/gallery/RemyMuse-nail1.jpeg",
   },
   {
     id: "g2",
-    title: "Celestial French",
+    title: "Golden Chrome Luxe",
     span: 30, // standard
-    imageUrl: "https://images.unsplash.com/photo-1607779097040-26e80aa78e66?auto=format&fit=crop&q=80&w=800",
+    imageUrl: "/gallery/RemyMuse-nail2.jpeg",
     hasVideo: true,
   },
   {
     id: "g3",
-    title: "Cloud Nude Ombre",
+    title: "Celestial Petals",
     span: 25, // short
-    imageUrl: "https://images.unsplash.com/photo-1519014816548-bf5fe059798b?auto=format&fit=crop&q=80&w=800",
+    imageUrl: "/gallery/RemyMuse-nail3.jpeg",
   },
   {
     id: "g4",
-    title: "Renaissance Florals",
+    title: "Midnight Velvet",
     span: 45, // tall
-    imageUrl: "https://images.unsplash.com/photo-1610992015732-2449b76344bc?auto=format&fit=crop&q=80&w=800",
+    imageUrl: "/gallery/RemyMuse-nail4.jpeg",
   },
   {
     id: "g5",
-    title: "Velvet Emerald",
+    title: "Aurora Bliss",
     span: 30, // standard
-    imageUrl: "/gallery/nail-velvet-rose.png",
+    imageUrl: "/gallery/RemyMuse-nail5.jpeg",
   },
   {
     id: "g6",
-    title: "Glass Nails Reflection",
+    title: "Rose Quartz Minimal",
     span: 25, // short
-    imageUrl: "/gallery/nail-glass-gold.png",
+    imageUrl: "/gallery/RemyMuse-nail6.jpeg",
   },
   {
     id: "g7",
-    title: "Midnight Onyx",
+    title: "Emerald Kintsugi",
     span: 45, // tall
-    imageUrl: "/gallery/nail-midnight-onyx.png",
+    imageUrl: "/gallery/RemyMuse-nail7.jpeg",
   },
   {
     id: "g8",
-    title: "Aurora Borealis",
+    title: "Onyx Sculptural",
     span: 30, // standard
-    imageUrl: "https://images.unsplash.com/photo-1595868615174-8bba23101880?auto=format&fit=crop&q=80&w=800",
+    imageUrl: "/gallery/RemyMuse-nail8.jpeg",
+  },
+  {
+    id: "g9",
+    title: "Pearl Bloom",
+    span: 25, // short
+    imageUrl: "/gallery/RemyMuse-nail9.jpeg",
+  },
+  {
+    id: "g10",
+    title: "Tortoise Luxe",
+    span: 45, // tall
+    imageUrl: "/gallery/RemyMuse-nail10.jpeg",
+  },
+  {
+    id: "g11",
+    title: "Gilded Line Art",
+    span: 30, // standard
+    imageUrl: "/gallery/RemyMuse-nail11.jpeg",
+  },
+  {
+    id: "g12",
+    title: "Prism Glow",
+    span: 25, // short
+    imageUrl: "/gallery/RemyMuse-nail12.jpeg",
   }
 ];
 
 export default function GalleryPage() {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+  const masonryBreakpoints = {
+    default: 4,
+    1024: 3,
+    640: 2
+  };
 
   return (
     <main className="relative overflow-x-hidden selection:bg-primary-container/30 bg-cloud min-h-screen font-sans text-ink">
@@ -89,12 +123,7 @@ export default function GalleryPage() {
 
         {/* AI Ecosystem Section */}
         <div className="mb-24">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-serif mb-4 tracking-tight text-ink">REMY MUSE AI Ecosystem</h2>
-            <p className="text-ink-light font-serif italic text-lg max-w-2xl mx-auto">
-              Step into our infinite design matrix. A living archive of AI-generated nail archetypes, curated for the modern muse.
-            </p>
-          </div>
+
           <VortexSection />
         </div>
 
@@ -118,53 +147,83 @@ export default function GalleryPage() {
         </div>
 
         {/* Masonry Grid */}
-        <div 
-          className="mb-32 grid gap-8 w-full"
-          style={{
-            gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
-            gridAutoRows: "10px"
-          }}
+        <Masonry
+          breakpointCols={masonryBreakpoints}
+          className="flex -ml-8 w-auto mb-32"
+          columnClassName="pl-8 bg-clip-padding"
         >
           {GALLERY_ITEMS.map((item) => (
-            <div 
-              key={item.id} 
-              className="relative group overflow-hidden bg-surface-variant transition-all duration-500"
-              style={{ gridRowEnd: `span ${item.span}` }}
+            <div
+              key={item.id}
+              className="relative group overflow-hidden bg-surface-variant transition-all duration-500 mb-8 cursor-pointer"
+              onClick={() => setSelectedImage(item.imageUrl)}
             >
               {item.hasVideo && (
-                <div className="absolute top-4 right-4 z-10 bg-white/20 backdrop-blur-md rounded-full p-2">
+                <div className="absolute top-4 right-4 z-10 bg-white/20 backdrop-blur-md rounded-full p-2 pointer-events-none">
                   <Play className="w-4 h-4 text-white fill-white ml-[1px]" />
                 </div>
               )}
-              <Image 
-                src={item.imageUrl} 
-                alt={item.title} 
-                fill
+              <Image
+                src={item.imageUrl}
+                alt={item.title}
+                width={800}
+                height={1200}
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1536px) 33vw, 25vw"
-                className="object-cover grayscale-[0.2] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-[1200ms] ease-out" 
+                className="w-full h-auto object-cover grayscale-[0.2] group-hover:grayscale-0 group-hover:scale-[1.02] transition-all duration-[1200ms] ease-out"
               />
-              <div className="absolute inset-0 bg-ink/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
+              <div className="absolute inset-0 bg-ink/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8 pointer-events-none">
                 <h3 className="text-white font-serif text-xl mb-4 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                   {item.title}
                 </h3>
-                <div className="flex gap-4 translate-y-4 group-hover:translate-y-0 transition-transform duration-700">
-                  <button className="text-white hover:text-primary transition-colors"><Heart className="w-5 h-5" /></button>
-                  <button className="text-white hover:text-primary transition-colors"><Share className="w-5 h-5" /></button>
+                <div className="flex gap-4 translate-y-4 group-hover:translate-y-0 transition-transform duration-700 pointer-events-auto">
+                  <button className="text-white hover:text-primary transition-colors" onClick={(e) => e.stopPropagation()}><Heart className="w-5 h-5" /></button>
+                  <button className="text-white hover:text-primary transition-colors" onClick={(e) => e.stopPropagation()}><Share className="w-5 h-5" /></button>
                   {item.span > 25 && (
-                    <button className="text-white hover:text-primary transition-colors"><Bookmark className="w-5 h-5" /></button>
+                    <button className="text-white hover:text-primary transition-colors" onClick={(e) => e.stopPropagation()}><Bookmark className="w-5 h-5" /></button>
                   )}
                 </div>
               </div>
             </div>
           ))}
-        </div>
+        </Masonry>
 
       </div>
 
-      <BookingModal 
-        isOpen={isBookingOpen} 
-        onClose={() => setIsBookingOpen(false)} 
+      <BookingModal
+        isOpen={isBookingOpen}
+        onClose={() => setIsBookingOpen(false)}
       />
+
+      {/* Fullscreen Lightbox Overlay */}
+      <AnimatePresence>
+        {selectedImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedImage(null)}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-ink/95 backdrop-blur-md p-4 md:p-12 cursor-zoom-out"
+          >
+            <button
+              onClick={() => setSelectedImage(null)}
+              className="absolute top-6 right-6 text-white/50 hover:text-white transition-colors z-[110]"
+            >
+              <X className="w-8 h-8" />
+            </button>
+            <motion.img
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              src={selectedImage}
+              alt="Zoomed Design"
+              className="max-w-[90vw] max-h-[90vh] object-contain shadow-2xl rounded-sm"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <Footer />
     </main>
   );

@@ -42,7 +42,7 @@ export default function Header({ onOpenBooking }: HeaderProps) {
                             {link.label}
                         </Link>
                     ))}
-                    <button 
+                    <button
                         onClick={onOpenBooking}
                         className="font-serif tracking-tight uppercase text-primary font-bold border-b border-primary/30 pb-0.5 hover:border-primary transition-all duration-700 cursor-pointer"
                     >
@@ -63,10 +63,10 @@ export default function Header({ onOpenBooking }: HeaderProps) {
                         ))}
                     </div>
                     <User className="hidden md:block w-5 h-5 text-ink cursor-pointer hover:text-primary transition-colors" />
-                    
+
                     {/* Mobile Menu Toggle */}
-                    <button 
-                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
+                    <button
+                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                         className="md:hidden text-ink hover:text-primary transition-colors cursor-pointer"
                         aria-label="Toggle menu"
                     >
@@ -93,8 +93,8 @@ export default function Header({ onOpenBooking }: HeaderProps) {
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: i * 0.1, duration: 0.5 }}
                                 >
-                                    <Link 
-                                        href={link.href} 
+                                    <Link
+                                        href={link.href}
                                         onClick={() => setIsMobileMenuOpen(false)}
                                         className="font-serif text-3xl tracking-[0.15em] uppercase text-ink hover:text-primary transition-colors"
                                     >
@@ -107,7 +107,7 @@ export default function Header({ onOpenBooking }: HeaderProps) {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.3, duration: 0.5 }}
                             >
-                                <button 
+                                <button
                                     onClick={() => { onOpenBooking(); setIsMobileMenuOpen(false); }}
                                     className="px-12 py-5 shimmer-gold text-white font-serif uppercase tracking-[0.3em] text-sm cursor-pointer"
                                 >

@@ -1,69 +1,132 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { BookOpen, ArrowUpRight } from "lucide-react";
+import { BookOpen, ArrowUpRight, TrendingUp, Clock } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { BLOG_POSTS } from "@/lib/mock-data";
 import { useLanguage } from "@/lib/language-context";
 
 export default function BlogPreview() {
     const { language } = useLanguage();
+    const lang = language === "VN" ? "VN" : "EN";
+
+    // 3 bài: trending trước, sau đó 2 bài mới nhất
+    const trending = BLOG_POSTS.find((p) => p.isTrending);
+    const latest = BLOG_POSTS.filter((p) => !p.isTrending).slice(0, 2);
+    const posts = [trending, ...latest].filter(Boolean) as typeof BLOG_POSTS;
+
     return (
         <section id="blog" className="py-32 px-8 md:px-20 bg-cloud overflow-hidden">
             <div className="max-w-[1400px] mx-auto">
+
+                {/* ── Header Row ── */}
                 <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-12">
                     <div className="space-y-6">
                         <div className="inline-flex items-center gap-3 text-primary text-[10px] font-sans font-bold tracking-[0.4em] uppercase">
                             <BookOpen className="w-4 h-4" />
-                            <span>{language === "VN" ? "Góc Chia Sẻ" : "Insights"}</span>
+                            <span>{lang === "VN" ? "Góc Chia Sẻ" : "Insights"}</span>
                         </div>
                         <h2 className="text-4xl md:text-6xl font-serif font-light tracking-tight text-ink">
-                            <span className="italic text-primary">{language === "VN" ? "Góc Chia Sẻ" : "Insights"}</span>
+                            <span className="italic text-primary">
+                                {lang === "VN" ? "Góc Chia Sẻ" : "Insights"}
+                            </span>
                         </h2>
                     </div>
                     <p className="font-serif text-ink-light text-lg max-w-sm italic leading-relaxed">
-                        {language === "VN" ? "Mẹo vặt, xu hướng và ý tưởng đơn giản cho đôi tay của bạn." : "Simple tips, trends, and ideas for your nails."}
+                        {lang === "VN"
+                            ? "Mẹo vặt, xu hướng và ý tưởng đơn giản cho đôi tay của bạn."
+                            : "Simple tips, trends, and ideas for your nails."}
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1px bg-gold-pale/20 border border-gold-pale/20">
-                    {BLOG_POSTS.slice(0, 3).map((post, index) => (
-                        <Link key={post.id} href={`/blog/${post.slug}`} className="group bg-cloud p-12 transition-all hover:bg-white/40">
-                            <motion.div 
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.8, delay: index * 0.1 }}
-                                className="space-y-10"
+                {/* ── 3-Column Grid ── */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-gold-pale/15 border border-gold-pale/15">
+                    {posts.map((post, index) => (
+                        <motion.div
+                            key={post.id}
+                            initial={{ opacity: 0, y: 24 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.7, delay: index * 0.12 }}
+                        >
+                            <Link
+                                href={`/editorial/${post.slug}`}
+                                className="group flex flex-col bg-cloud hover:bg-white/40 transition-all duration-500 h-full"
                             >
-                                <div className="flex justify-between items-start">
-                                    <div className="space-y-1">
-                                        <span className="block font-sans text-[10px] tracking-[0.3em] uppercase text-ink-ghost">{language === "VN" ? post.date.VN : post.date.EN}</span>
-                                        <span className="block font-serif text-[12px] italic text-primary">{post.author}</span>
-                                    </div>
-                                    <ArrowUpRight className="w-5 h-5 text-ink-ghost group-hover:text-primary group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-500" />
-                                </div>
-                                
-                                <h3 className="text-3xl font-serif font-light leading-[1.2] text-ink group-hover:text-primary transition-colors h-[72px] overflow-hidden">
-                                {language === "VN" ? post.title.VN : post.title.EN}
-                                </h3>
-                                
-                                <p className="text-ink-mid text-sm leading-relaxed font-sans line-clamp-3 opacity-60 group-hover:opacity-100 transition-opacity">
-                                {language === "VN" ? post.excerpt.VN : post.excerpt.EN}
-                                </p>
+                                {/* Cover Image */}
+                                <div className="relative aspect-[4/3] overflow-hidden">
+                                    <Image
+                                        src={post.coverImage}
+                                        alt={post.title[lang]}
+                                        fill
+                                        sizes="(max-width: 768px) 100vw, 33vw"
+                                        className="object-cover grayscale-[20%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000"
+                                    />
+                                    {/* Gradient overlay */}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-ink/30 to-transparent" />
 
-                                <div className="pt-4 border-t border-gold-pale/10 inline-block font-sans text-[10px] tracking-[0.2em] uppercase text-primary font-bold group-hover:tracking-[0.3em] transition-all">
-                                    {language === "VN" ? "Đọc Bài Viết" : "Read Article"}
+                                    {/* Trending badge — chỉ bài đầu */}
+                                    {post.isTrending && (
+                                        <div className="absolute top-5 left-5 z-10 inline-flex items-center gap-2 bg-primary text-white px-4 py-1.5">
+                                            <TrendingUp className="w-3 h-3" />
+                                            <span className="font-sans text-[8px] font-bold tracking-[0.3em] uppercase">
+                                                {lang === "VN" ? "Nổi Bật" : "Editor's Pick"}
+                                            </span>
+                                        </div>
+                                    )}
+
+                                    {/* Index number — góc phải dưới */}
+                                    <span className="absolute bottom-4 right-5 font-serif text-white/30 text-5xl font-light leading-none select-none">
+                                        {String(index + 1).padStart(2, "0")}
+                                    </span>
                                 </div>
-                            </motion.div>
-                        </Link>
+
+                                {/* Content */}
+                                <div className="flex flex-col flex-1 p-8 space-y-5">
+                                    {/* Meta */}
+                                    <div className="flex items-center justify-between">
+                                        <div className="space-y-0.5">
+                                            <span className="block font-sans text-[9px] tracking-[0.3em] uppercase text-ink-ghost">
+                                                {post.date[lang]}
+                                            </span>
+                                            <span className="block font-sans text-[9px] uppercase tracking-[0.2em] text-primary font-bold">
+                                                {post.category[lang]}
+                                            </span>
+                                        </div>
+                                        <ArrowUpRight className="w-4 h-4 text-ink-ghost group-hover:text-primary group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-400 flex-shrink-0" />
+                                    </div>
+
+                                    {/* Title */}
+                                    <h3 className="font-serif text-2xl font-light leading-snug text-ink group-hover:text-primary transition-colors duration-500 flex-1">
+                                        {post.title[lang]}
+                                    </h3>
+
+                                    {/* Excerpt */}
+                                    <p className="font-sans text-sm text-ink-mid leading-relaxed line-clamp-2 opacity-60 group-hover:opacity-100 transition-opacity">
+                                        {post.excerpt[lang]}
+                                    </p>
+
+                                    {/* Footer */}
+                                    <div className="pt-5 border-t border-gold-pale/15 flex items-center justify-between">
+                                        <span className="font-sans text-[9px] uppercase tracking-[0.2em] text-ink-ghost">
+                                            {post.author}
+                                        </span>
+                                        <span className="inline-flex items-center gap-1.5 font-sans text-[9px] tracking-[0.2em] uppercase text-primary font-bold">
+                                            <Clock className="w-2.5 h-2.5" /> {post.readTime[lang]}
+                                        </span>
+                                    </div>
+                                </div>
+                            </Link>
+                        </motion.div>
                     ))}
                 </div>
 
-                <div className="mt-20 flex justify-center">
+                {/* ── View All CTA ── */}
+                <div className="mt-16 flex justify-center">
                     <Link href="/editorial">
                         <button className="px-12 py-5 border border-gold-pale/40 text-ink font-serif uppercase tracking-[0.3em] text-xs hover:bg-ink hover:text-white transition-all duration-700">
-                            {language === "VN" ? "Xem Tất Cả Bài Viết" : "Explore Full Library"}
+                            {lang === "VN" ? "Xem Tất Cả Bài Viết" : "Explore Full Library"}
                         </button>
                     </Link>
                 </div>

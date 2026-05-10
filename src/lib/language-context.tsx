@@ -51,6 +51,25 @@ const translations: Record<Language, Record<string, string>> = {
         'sum-d70-txt': 'Xem quy trình 16 bước', 'sum-l90-txt': 'Xem quy trình 19 bước',
         'ft-tagline': 'Nail Studio · Đà Nẵng',
         'ft-note': 'Giá chưa bao gồm thuế<br>Prices subject to change without notice<br>© REMY MUSE Nail Studio',
+
+        // Footer & Map Section
+        'nav-portfolio': 'Bộ Sưu Tập',
+        'nav-services': 'Dịch Vụ',
+        'nav-editorial': 'Bài Viết',
+        'nav-location': 'Vị Trí',
+        'nav-privacy': 'Quyền Riêng Tư',
+        'ft-rights': 'Đã đăng ký bản quyền',
+
+        'map-visit': 'Đến Với Chúng Tôi',
+        'map-desc': 'Một studio làm móng hiện đại tại An Hải, Đà Nẵng.',
+        'map-hours': 'Giờ Mở Cửa',
+        'map-days': 'Thứ 2 - Chủ Nhật',
+        'map-hotline': 'Hotline',
+        'map-directions': 'Chỉ Đường',
+        'map-hub': 'Vị Trí',
+        'map-address': '21 An Nhơn 6, An Hải, Đà Nẵng (ngã tư Phan Bôi x An Nhơn 6)',
+        'map-connect': 'Kết nối với chúng tôi',
+        'map-open-maps': 'Mở Bản Đồ',
     },
     EN: {
         'h-eyebrow': 'Luxury Nail Studio · Da Nang',
@@ -90,6 +109,25 @@ const translations: Record<Language, Record<string, string>> = {
         'sum-d70-txt': 'View 16-step process', 'sum-l90-txt': 'View 19-step process',
         'ft-tagline': 'Nail Studio · Da Nang',
         'ft-note': 'Prices exclusive of tax<br>Subject to change without notice<br>© REMY MUSE Nail Studio',
+
+        // Footer & Map Section
+        'nav-portfolio': 'Portfolio',
+        'nav-services': 'Services',
+        'nav-editorial': 'Editorial',
+        'nav-location': 'Location',
+        'nav-privacy': 'Privacy',
+        'ft-rights': 'All rights reserved',
+
+        'map-visit': 'Visit Us',
+        'map-desc': 'A modern nail studio in An Hai, Da Nang.',
+        'map-hours': 'Opening Hours',
+        'map-days': 'Mon - Sun',
+        'map-hotline': 'Direct Line',
+        'map-directions': 'Get Directions',
+        'map-hub': 'Aesthetic Hub',
+        'map-address': '21 An Nhon 6, An Hai, Da Nang (Phan Boi x An Nhon 6 intersection)',
+        'map-connect': 'Connect with us',
+        'map-open-maps': 'Open in Maps',
     },
     KR: {
         'h-eyebrow': '럭셔리 네일 스튜디오 · 다낭',
@@ -129,6 +167,25 @@ const translations: Record<Language, Record<string, string>> = {
         'sum-d70-txt': '16단계 과정 보기', 'sum-l90-txt': '19단계 과정 보기',
         'ft-tagline': 'Nail Studio · 다낭',
         'ft-note': '가격은 세금 미포함<br>사전 공지 없이 변경 가능<br>© REMY MUSE Nail Studio',
+
+        // Footer & Map Section
+        'nav-portfolio': '포트폴리오',
+        'nav-services': '서비스',
+        'nav-editorial': '에디토리얼',
+        'nav-location': '위치',
+        'nav-privacy': '개인정보보호',
+        'ft-rights': '모든 권리 보유',
+
+        'map-visit': '방문하기',
+        'map-desc': '다낭 안하이에 위치한 모던 네일 스튜디오.',
+        'map-hours': '영업 시간',
+        'map-days': '월 - 일',
+        'map-hotline': '직통 전화',
+        'map-directions': '길찾기',
+        'map-hub': '미학 허브',
+        'map-address': '다낭 안하이 21 An Nhon 6 (판보이 x 안논 6 교차로)',
+        'map-connect': '우리와 연결',
+        'map-open-maps': '지도에서 열기',
     },
     CN: {
         'h-eyebrow': '奢华美甲工作室 · 岘港',
@@ -168,6 +225,25 @@ const translations: Record<Language, Record<string, string>> = {
         'sum-d70-txt': '查看16步流程', 'sum-l90-txt': '查看19步流程',
         'ft-tagline': 'Nail Studio · 岘港',
         'ft-note': '价格不含税<br>如有变动恕不另行通知<br>© REMY MUSE Nail Studio',
+
+        // Footer & Map Section
+        'nav-portfolio': '作品集',
+        'nav-services': '服务',
+        'nav-editorial': '社论',
+        'nav-location': '位置',
+        'nav-privacy': '隐私',
+        'ft-rights': '保留所有权利',
+
+        'map-visit': '访问我们',
+        'map-desc': '位于岘港安海的现代美甲工作室。',
+        'map-hours': '营业时间',
+        'map-days': '周一 - 周日',
+        'map-hotline': '热线电话',
+        'map-directions': '获取路线',
+        'map-hub': '美学中心',
+        'map-address': '岘港安海 21 An Nhon 6 (Phan Boi x An Nhon 6 十字路口)',
+        'map-connect': '联系我们',
+        'map-open-maps': '在地图中打开',
     },
     RU: {
         'h-eyebrow': 'Люкс Нейл Студио · Да-Нанг',
@@ -207,6 +283,25 @@ const translations: Record<Language, Record<string, string>> = {
         'sum-d70-txt': 'Посмотреть 16 шагов', 'sum-l90-txt': 'Посмотреть 19 шагов',
         'ft-tagline': 'Nail Studio · Да-Нанг',
         'ft-note': 'Цены без учёта налогов<br>Возможны изменения без предупреждения<br>© REMY MUSE Nail Studio',
+
+        // Footer & Map Section
+        'nav-portfolio': 'Портфолио',
+        'nav-services': 'Услуги',
+        'nav-editorial': 'Редакция',
+        'nav-location': 'Локация',
+        'nav-privacy': 'Конфиденциальность',
+        'ft-rights': 'Все права защищены',
+
+        'map-visit': 'Посетите нас',
+        'map-desc': 'Современная студия маникюра в Ан Хай, Дананг.',
+        'map-hours': 'Часы работы',
+        'map-days': 'Пн - Вс',
+        'map-hotline': 'Прямая линия',
+        'map-directions': 'Маршрут',
+        'map-hub': 'Эстетический центр',
+        'map-address': '21 An Nhon 6, Ан Хай, Дананг (перекресток Phan Boi x An Nhon 6)',
+        'map-connect': 'Свяжитесь с нами',
+        'map-open-maps': 'Открыть в картах',
     }
 };
 

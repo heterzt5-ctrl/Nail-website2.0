@@ -132,6 +132,7 @@ export default class VortexGallery {
     current: 0,
     direction: 1,
   };
+  private lastScrollTime = 0;
   textureIndex = 0;
   time = 0;
   paused = false;
@@ -149,17 +150,19 @@ export default class VortexGallery {
   private uZrange = 0;
 
   private disposed = false;
+  private canvas: HTMLCanvasElement;
 
   constructor(canvas: HTMLCanvasElement, imagePaths: string[]) {
+    this.canvas = canvas;
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color(0xF0EEE9);
 
-    this.camera = new THREE.PerspectiveCamera(
-      50,
-      canvas.clientWidth / canvas.clientHeight,
-      0.1,
-      200
-    );
+    // FIX 1: Dùng offsetWidth/offsetHeight thay vì clientWidth/clientHeight
+    // để đọc kích thước thực sau khi layout xong
+    const w = canvas.offsetWidth || canvas.clientWidth;
+    const h = canvas.offsetHeight || canvas.clientHeight;
+
+    this.camera = new THREE.PerspectiveCamera(50, w / h, 0.1, 200);
     this.camera.position.z = 5;
 
     this.renderer = new THREE.WebGLRenderer({
@@ -167,7 +170,7 @@ export default class VortexGallery {
       alpha: false,
       antialias: true,
     });
-    this.renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+    this.renderer.setSize(w, h, false);
     this.renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
 
     this.setupEvents(canvas);
@@ -178,6 +181,9 @@ export default class VortexGallery {
     await this.loadTextureAtlas(imagePaths);
     this.buildInstancedMesh();
     this.buildCenterMesh();
+    // FIX 2: Sau khi build xong, resize lại 1 lần để đảm bảo
+    // canvas đã có kích thước đúng (đặc biệt quan trọng trên mobile)
+    this.handleResize();
     this.render();
   }
 
@@ -378,30 +384,86 @@ export default class VortexGallery {
     this.scene.add(this.centerMesh);
   }
 
-  setupEvents(canvas: HTMLCanvasElement) {
-    const onResize = () => {
-      this.camera.aspect = canvas.clientWidth / canvas.clientHeight;
-      this.camera.updateProjectionMatrix();
-      this.renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-    };
-    window.addEventListener("resize", onResize);
+  // FIX 3: Tách handleResize ra thành method riêng để gọi được từ nhiều chỗ
+  private handleResize = () => {
+    const canvas = this.canvas;
+    // Dùng offsetWidth để lấy kích thước CSS thực, không phải buffer size
+    const w = canvas.offsetWidth;
+    const h = canvas.offsetHeight;
+    if (w === 0 || h === 0) return;
 
+    this.camera.aspect = w / h;
+    this.camera.updateProjectionMatrix();
+    // false = không set style, chỉ set buffer size
+    this.renderer.setSize(w, h, false);
+  };
+
+  setupEvents(canvas: HTMLCanvasElement) {
+    // FIX 4: Dùng ResizeObserver thay vì window resize
+    // ResizeObserver fires khi canvas element thay đổi kích thước,
+    // chính xác hơn nhiều trên mobile (vd: orientation change, safe area insets)
+    const resizeObserver = new ResizeObserver(() => {
+      this.handleResize();
+    });
+    resizeObserver.observe(canvas);
+
+    // Giữ lại window resize làm fallback
+    window.addEventListener("resize", this.handleResize);
+
+    // FIX 5: Thêm wheel event (dùng passive: false để có thể preventDefault)
     const onWheel = (e: WheelEvent) => {
-      if (this.paused) return;
-      const norm = normalizeWheel(e);
-      const fov = this.camera.fov * (Math.PI / 180);
-      const height =
-        this.camera.position.z * Math.tan(fov / 2) * 2;
-      const dir = Math.sign(e.deltaY) || this.scrollY.direction;
-      this.scrollY.direction = dir;
-      const delta = (norm.pixelY * height) / canvas.clientHeight;
-      this.scrollY.speedTarget += delta;
-      this.scrollY.target += delta;
+      e.preventDefault();
+      const normalized = normalizeWheel(e);
+      this.addScrollDelta(normalized.pixelY * 0.01);
     };
-    canvas.addEventListener("wheel", onWheel);
+    canvas.addEventListener("wheel", onWheel, { passive: false });
+
+    // FIX 6: Thêm touch events cho mobile swipe
+    let touchStartY = 0;
+    let touchLastY = 0;
+
+    const onTouchStart = (e: TouchEvent) => {
+      if (this.paused) return;
+      touchStartY = e.touches[0].clientY;
+      touchLastY = touchStartY;
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (this.paused) return;
+      e.preventDefault();
+      const currentY = e.touches[0].clientY;
+      const delta = touchLastY - currentY; // vuốt lên → delta dương
+      touchLastY = currentY;
+      this.addScrollDelta(delta * 0.04);
+    };
+
+    const onTouchEnd = () => {
+      // Momentum decay tự nhiên qua lerp trong render loop
+    };
+
+    canvas.addEventListener("touchstart", onTouchStart, { passive: true });
+    canvas.addEventListener("touchmove", onTouchMove, { passive: false });
+    canvas.addEventListener("touchend", onTouchEnd, { passive: true });
+
+    this._cleanupEvents = () => {
+      resizeObserver.disconnect();
+      window.removeEventListener("resize", this.handleResize);
+      canvas.removeEventListener("wheel", onWheel);
+      canvas.removeEventListener("touchstart", onTouchStart);
+      canvas.removeEventListener("touchmove", onTouchMove);
+      canvas.removeEventListener("touchend", onTouchEnd);
+    };
   }
 
+  private _cleanupEvents?: () => void;
+
   addScrollDelta(delta: number) {
+    if (this.paused) return;
+
+    this.lastScrollTime = performance.now();
+    const dir = Math.sign(delta) || this.scrollY.direction;
+    this.scrollY.direction = dir;
+
     this.scrollY.speedTarget += delta;
     this.scrollY.target += delta;
   }
@@ -412,8 +474,10 @@ export default class VortexGallery {
     requestAnimationFrame(this.render);
 
     if (!this.paused) {
-      this.scrollY.target += 0.015 * this.scrollY.direction;
-      this.scrollY.speedTarget += 0.015 * this.scrollY.direction;
+      if (performance.now() - this.lastScrollTime > 2000) {
+        this.scrollY.target += 0.005 * this.scrollY.direction;
+        this.scrollY.speedTarget += 0.005 * this.scrollY.direction;
+      }
 
       this.scrollY.current = gsap.utils.interpolate(
         this.scrollY.current,
@@ -430,15 +494,12 @@ export default class VortexGallery {
     if (this.instancedMaterial) {
       this.instancedMaterial.uniforms.uScrollY.value = this.scrollY.current;
       this.instancedMaterial.uniforms.uSpeedY.value = this.scrollY.speedCurrent;
-      this.instancedMaterial.uniforms.uDirection.value =
-        this.scrollY.direction;
+      this.instancedMaterial.uniforms.uDirection.value = this.scrollY.direction;
     }
 
     if (this.centerMaterial && this.imageInfos.length > 0) {
       this.textureIndex = Math.abs(
-        Math.floor(
-          this.scrollY.speedTarget % (this.imageInfos.length - 1)
-        )
+        Math.floor(this.scrollY.speedTarget % (this.imageInfos.length - 1))
       );
       const uvs = this.imageInfos[this.textureIndex].uvs;
       this.centerMaterial.uniforms.uTextureCoords.value.set(
@@ -456,7 +517,11 @@ export default class VortexGallery {
     this.paused = paused;
   }
 
-  pickAtScreen(clientX: number, clientY: number, canvasRect: DOMRect): number | null {
+  pickAtScreen(
+    clientX: number,
+    clientY: number,
+    canvasRect: DOMRect
+  ): number | null {
     const ndcX = ((clientX - canvasRect.left) / canvasRect.width) * 2 - 1;
     const ndcY = -(((clientY - canvasRect.top) / canvasRect.height) * 2 - 1);
 
@@ -481,7 +546,10 @@ export default class VortexGallery {
     const scrollY = this.scrollY.current;
     const speedY = this.scrollY.speedCurrent;
 
-    const PIXEL_RADIUS = 55;
+    // FIX 7: Tăng PIXEL_RADIUS trên mobile vì touch area cần lớn hơn
+    const isMobile = w < 768;
+    const PIXEL_RADIUS = isMobile ? 75 : 55;
+
     let bestIdx: number | null = null;
     let bestNdcZ = Infinity;
 
@@ -494,7 +562,11 @@ export default class VortexGallery {
       zPos = ((shifted % zRange) + zRange) % zRange + minZ;
       const theta = angles[i] + speedY * 0.4 * speeds[i];
 
-      pos.set(Math.cos(theta) * radiuses[i], zPos, Math.sin(theta) * radiuses[i]);
+      pos.set(
+        Math.cos(theta) * radiuses[i],
+        zPos,
+        Math.sin(theta) * radiuses[i]
+      );
       pos.project(this.camera);
 
       if (pos.z < -1 || pos.z > 1) continue;
@@ -517,6 +589,7 @@ export default class VortexGallery {
 
   destroy() {
     this.disposed = true;
+    this._cleanupEvents?.();
     this.renderer.dispose();
     if (this.atlasTexture) this.atlasTexture.dispose();
     if (this.instancedMaterial) this.instancedMaterial.dispose();

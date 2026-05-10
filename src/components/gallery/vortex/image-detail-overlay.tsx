@@ -16,7 +16,12 @@ export default function ImageDetailOverlay({ image, onClose }: Props) {
       if (e.key === "Escape") onClose();
     };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    // FIX 1: Khoá scroll body khi overlay mở để tránh vortex bị scroll ngầm
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
   }, [image, onClose]);
 
   const open = !!image;
@@ -36,50 +41,60 @@ export default function ImageDetailOverlay({ image, onClose }: Props) {
         inset: 0,
         background: "rgba(22, 18, 14, 0.96)",
         backdropFilter: "blur(8px)",
+        WebkitBackdropFilter: "blur(8px)", // Safari fix
         zIndex: 100,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        padding: "64px",
+        // FIX 2: padding nhỏ hơn trên mobile, đủ chỗ cho content
+        padding: "clamp(16px, 4vw, 64px)",
+        // FIX 3: Thêm paddingTop để không bị close button che
+        paddingTop: "clamp(60px, 8vh, 96px)",
         opacity: open ? 1 : 0,
         pointerEvents: open ? "auto" : "none",
         transition: "opacity 0.35s ease",
+        boxSizing: "border-box",
+        overflowY: "auto",
       }}
     >
       {image && (
         <div
           onClick={(e) => e.stopPropagation()}
           style={{
+            // FIX 4: Responsive grid — desktop: 2 cột, mobile: 1 cột
+            // Dùng auto-fit với min-width thay vì fr cứng nhắc
             display: "grid",
-            gridTemplateColumns: "minmax(0, 1.4fr) minmax(320px, 0.9fr)",
-            gap: "56px",
+            gridTemplateColumns: "repeat(auto-fit, minmax(min(320px, 100%), 1fr))",
+            gap: "clamp(24px, 4vw, 56px)",
             maxWidth: "1520px",
             width: "100%",
-            maxHeight: "100%",
             alignItems: "center",
-            transform: open ? "scale(1)" : "scale(0.98)",
-            transition: "transform 0.35s ease",
+            transform: open ? "translateY(0) scale(1)" : "translateY(12px) scale(0.98)",
+            transition: "transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
           }}
         >
-          {/* Image */}
+          {/* FIX 5: Image container — cần có kích thước rõ ràng để Next.js fill hoạt động */}
           <div
             style={{
               position: "relative",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              maxHeight: "calc(100vh - 128px)",
+              width: "100%",
+              // Dùng aspect-ratio thay vì fill để container có chiều cao xác định
+              aspectRatio: "3 / 4",
+              // Giới hạn chiều cao tối đa để không tràn màn hình
+              maxHeight: "70vh",
+              // Khi aspect-ratio tạo ra container cao hơn maxHeight, dùng overflow hidden
+              overflow: "hidden",
+              borderRadius: "2px",
+              boxShadow: "0 40px 100px rgba(22,18,14,0.6)",
             }}
           >
             <Image
               src={image.src}
               alt={image.title}
               fill
-              sizes="90vw"
-              className="object-contain"
-              style={{
-                boxShadow: "0 40px 100px rgba(22,18,14,0.6)",
-              }}
+              sizes="(max-width: 768px) 90vw, 55vw"
+              className="object-cover"
+              priority
             />
           </div>
 
@@ -90,9 +105,9 @@ export default function ImageDetailOverlay({ image, onClose }: Props) {
               fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
               display: "flex",
               flexDirection: "column",
-              gap: "24px",
-              maxHeight: "calc(100vh - 128px)",
-              overflow: "auto",
+              gap: "clamp(16px, 2.5vh, 24px)",
+              // FIX 6: Không dùng maxHeight + overflow: auto ở đây
+              // vì gây scroll trong overlay, confusing trên mobile
             }}
           >
             {eyebrow && (
@@ -114,7 +129,7 @@ export default function ImageDetailOverlay({ image, onClose }: Props) {
               <h2
                 style={{
                   fontFamily: "'Noto Serif', 'Times New Roman', serif",
-                  fontSize: "clamp(28px, 2.6vw, 40px)",
+                  fontSize: "clamp(24px, 3vw, 40px)",
                   fontWeight: 400,
                   lineHeight: 1.15,
                   letterSpacing: "-0.01em",
@@ -130,7 +145,7 @@ export default function ImageDetailOverlay({ image, onClose }: Props) {
               <p
                 style={{
                   fontFamily: "'Noto Serif', 'Times New Roman', serif",
-                  fontSize: "18px",
+                  fontSize: "clamp(15px, 1.5vw, 18px)",
                   lineHeight: 1.65,
                   color: "rgba(240,238,233,0.85)",
                   margin: 0,
@@ -150,25 +165,20 @@ export default function ImageDetailOverlay({ image, onClose }: Props) {
                   gridTemplateColumns: "110px 1fr",
                   rowGap: "8px",
                   fontSize: "13px",
-                  opacity: 0.75,
                   color: "rgba(240,238,233,0.7)",
                 }}
               >
                 {overlayConfig.fileLabel && (
                   <>
-                    <span style={{ opacity: 0.6 }}>
-                      {overlayConfig.fileLabel}
-                    </span>
-                    <span style={{ fontFamily: "monospace" }}>
+                    <span style={{ opacity: 0.6 }}>{overlayConfig.fileLabel}</span>
+                    <span style={{ fontFamily: "monospace", wordBreak: "break-all" }}>
                       {image.src.split("/").pop()}
                     </span>
                   </>
                 )}
                 {overlayConfig.seriesLabel && (
                   <>
-                    <span style={{ opacity: 0.6 }}>
-                      {overlayConfig.seriesLabel}
-                    </span>
+                    <span style={{ opacity: 0.6 }}>{overlayConfig.seriesLabel}</span>
                     <span>{image.title.split(" — ")[0]}</span>
                   </>
                 )}
@@ -180,7 +190,7 @@ export default function ImageDetailOverlay({ image, onClose }: Props) {
                 onClick={onClose}
                 style={{
                   alignSelf: "flex-start",
-                  marginTop: "16px",
+                  marginTop: "8px",
                   background: "transparent",
                   color: "#F0EEE9",
                   border: "1px solid rgba(201,169,110,0.5)",
@@ -209,23 +219,29 @@ export default function ImageDetailOverlay({ image, onClose }: Props) {
         </div>
       )}
 
-      {/* Close X (always in corner) */}
+      {/* Close X button — luôn hiển thị ở góc trên phải */}
       <button
         onClick={onClose}
         aria-label="Close"
         style={{
           position: "fixed",
-          top: "24px",
-          right: "32px",
+          top: "16px",
+          right: "20px",
           background: "transparent",
           border: "none",
           color: "#C9A96E",
+          // FIX 7: Touch target đủ lớn cho mobile (44x44px tối thiểu theo Apple HIG)
+          width: "44px",
+          height: "44px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
           fontSize: "28px",
           lineHeight: 1,
           cursor: "pointer",
-          padding: "8px 12px",
           opacity: 0.7,
           transition: "opacity 0.2s ease",
+          zIndex: 101,
         }}
         onMouseEnter={(e) => (e.currentTarget.style.opacity = "1")}
         onMouseLeave={(e) => (e.currentTarget.style.opacity = "0.7")}

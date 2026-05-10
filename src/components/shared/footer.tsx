@@ -1,18 +1,19 @@
 "use client";
 
 import Link from "next/link";
+import { Facebook, Instagram, MessageCircle, MessageSquare } from "lucide-react";
 import { useLanguage } from "@/lib/language-context";
 
 export default function Footer() {
-    const { language } = useLanguage();
+    const { t } = useLanguage();
     const goldColor = "#735c06";
 
     const links = [
-        { label: language === "VN" ? "Bộ Sưu Tập" : "Portfolio", href: "/gallery" },
-        { label: language === "VN" ? "Dịch Vụ" : "Services", href: "/#services" },
-        { label: language === "VN" ? "Bài Viết" : "Editorial", href: "/editorial" },
-        { label: language === "VN" ? "Vị Trí" : "Location", href: "/#location" },
-        { label: language === "VN" ? "Quyền Riêng Tư" : "Privacy", href: "#privacy" },
+        { label: t('nav-portfolio'), href: "/gallery" },
+        { label: t('nav-services'), href: "/#services" },
+        { label: t('nav-editorial'), href: "/editorial" },
+        { label: t('nav-location'), href: "/#location" },
+        { label: t('nav-privacy'), href: "#privacy" },
     ];
 
     return (
@@ -20,20 +21,37 @@ export default function Footer() {
             <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10 md:gap-4">
 
                 {/* Thương hiệu & Liên hệ (Bên trái) */}
-                <div className="flex flex-col items-center md:items-start gap-3 text-center md:text-left">
+                <div className="flex flex-col items-center gap-3 text-center w-full md:w-auto">
                     <Link href="/" className="font-serif text-xl md:text-2xl font-semibold text-gray-800 uppercase tracking-widest hover:opacity-70 transition-opacity">
                         REMY MUSE
                     </Link>
-                    <div className="font-sans text-[0.65rem] tracking-[0.15em] text-gray-600 uppercase">
+                    <div className="font-sans text-[0.85rem] tracking-wider text-gray-600 uppercase">
                         Nail — Shampoo — Foot Care Studio
                     </div>
-                    <div className="font-sans text-[0.65rem] tracking-[0.15em] text-gray-500 uppercase mt-2 space-y-1.5">
+                    <div className="font-sans text-[0.85rem] tracking-wider text-gray-500 uppercase mt-2 space-y-1.5">
                         <p>
                             <a href="tel:+840945598001" className="hover:opacity-60 transition-opacity duration-300">
                                 +84 094 559 8001
                             </a>
                         </p>
-                        <p>21 An Nhơn 6, An Hải, Đà Nẵng (ngã tư Phan Bôi x An Nhơn 6)</p>
+                        <div className="flex flex-col items-center gap-4">
+                            <p>{t('map-address')}</p>
+                            {/* Social Icons */}
+                            <div className="flex items-center gap-4">
+                                <a href="https://www.facebook.com/remymusenail" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-[#735c06] transition-colors duration-300" aria-label="Facebook">
+                                    <Facebook className="w-4 h-4" />
+                                </a>
+                                <a href="https://www.instagram.com/remymuse_nail_studio/" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-[#735c06] transition-colors duration-300" aria-label="Instagram">
+                                    <Instagram className="w-4 h-4" />
+                                </a>
+                                <a href="https://zalo.me/84945598001" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-[#735c06] transition-colors duration-300" aria-label="Zalo">
+                                    <MessageSquare className="w-4 h-4" />
+                                </a>
+                                <a href="https://wa.me/84945598001" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-[#735c06] transition-colors duration-300" aria-label="WhatsApp">
+                                    <MessageCircle className="w-4 h-4" />
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -43,7 +61,7 @@ export default function Footer() {
                         <Link
                             key={link.label}
                             href={link.href}
-                            className="font-sans text-[0.65rem] tracking-[0.15em] text-gray-600 uppercase transition-opacity duration-300 hover:opacity-60"
+                            className="font-sans text-sm font-medium tracking-wide text-gray-700 uppercase transition-opacity duration-300 hover:opacity-60"
                         >
                             {link.label}
                         </Link>
@@ -51,9 +69,9 @@ export default function Footer() {
                 </nav>
 
                 {/* Bản quyền (Bên phải) */}
-                <div className="font-sans text-[0.6rem] tracking-[0.1em] text-gray-500 uppercase text-center md:text-right space-y-1">
+                <div className="font-sans text-xs tracking-wider text-gray-500 uppercase text-center md:text-right space-y-1">
                     <p>© 2026 REMY MUSE.</p>
-                    <p>{language === "VN" ? "Đã đăng ký bản quyền" : "All rights reserved"}</p>
+                    <p>{t('ft-rights')}</p>
                 </div>
 
             </div>

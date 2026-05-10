@@ -1,6 +1,7 @@
 import { Noto_Serif, Inter } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "@/lib/language-context";
+import FloatingActions from "@/components/shared/floating-actions";
 
 const notoSerif = Noto_Serif({ 
   subsets: ["latin"], 
@@ -43,6 +44,7 @@ export default function RootLayout({
       <body className={`${notoSerif.variable} ${inter.variable} antialiased min-h-screen bg-cloud`}>
         <LanguageProvider>
           {children}
+          <FloatingActions />
         </LanguageProvider>
       </body>
     </html>

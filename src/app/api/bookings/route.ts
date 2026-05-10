@@ -148,8 +148,13 @@ export async function POST(request: Request) {
             }
         });
 
-        // 6. Send notification (Background task)
-        sendTelegramNotification(appointment).catch(console.error);
+        // 6. Send notification (Awaited for Vercel stability)
+        // In serverless environments, we must await background tasks 
+        // otherwise the function may terminate before the fetch completes.
+        await sendTelegramNotification({
+            ...appointment,
+            notes: appointment.notes ?? undefined,
+        }).catch(console.error);
 
         return NextResponse.json(appointment);
     } catch (error) {
@@ -169,7 +174,7 @@ export async function POST(request: Request) {
             };
 
             console.log('Database unavailable. Triggering Telegram notification in fallback mode.');
-            sendTelegramNotification(fallbackAppointment).catch(console.error);
+            await sendTelegramNotification(fallbackAppointment).catch(console.error);
 
             return NextResponse.json(fallbackAppointment);
         }

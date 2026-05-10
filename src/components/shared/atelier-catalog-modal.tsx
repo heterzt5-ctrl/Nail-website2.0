@@ -208,11 +208,10 @@ export function AtelierCatalogModal({
                                     <button
                                         key={i}
                                         onClick={() => setIndex(i)}
-                                        className={`w-1.5 h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
-                                            i === index
+                                        className={`w-1.5 h-1.5 rounded-full transition-all duration-300 cursor-pointer ${i === index
                                                 ? "bg-primary-container w-6"
                                                 : "bg-cloud/20 hover:bg-cloud/40"
-                                        }`}
+                                            }`}
                                         aria-label={`Go to page ${i + 1}`}
                                     />
                                 ))}

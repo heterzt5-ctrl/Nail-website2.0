@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, Navigation, Clock, Phone, X, ExternalLink } from "lucide-react";
+import { MapPin, Navigation, Clock, Phone, X, ExternalLink, Facebook, Instagram, MessageCircle, Send, MessageSquare } from "lucide-react";
 import { useLanguage } from "@/lib/language-context";
 
 const GOOGLE_MAPS_EMBED_URL =
@@ -18,8 +18,46 @@ const springTransition = {
     damping: 20
 };
 
+const SOCIAL_LINKS = [
+  {
+    name: "Facebook",
+    href: "https://www.facebook.com/remymusenail",
+    icon: Facebook,
+  },
+  {
+    name: "Instagram",
+    href: "https://www.instagram.com/remymuse_nail_studio/",
+    icon: Instagram,
+  },
+  {
+    name: "WhatsApp",
+    href: "https://wa.me/84945598001",
+    icon: MessageCircle,
+  },
+  {
+    name: "Zalo",
+    href: "https://zalo.me/84945598001",
+    icon: MessageSquare,
+  },
+  {
+    name: "Line",
+    href: "https://line.me/",
+    icon: Send,
+  },
+  {
+    name: "WeChat",
+    href: "https://wechat.com/",
+    icon: MessageCircle,
+  },
+  {
+    name: "KakaoTalk",
+    href: "https://open.kakao.com/",
+    icon: MessageSquare,
+  },
+];
+
 export default function MapSection() {
-    const { language } = useLanguage();
+    const { t } = useLanguage();
     const [isMapOpen, setIsMapOpen] = useState(false);
 
     const handleEsc = useCallback(
@@ -47,10 +85,10 @@ export default function MapSection() {
                     <div className="space-y-8">
                         <div className="inline-flex items-center gap-3 text-primary text-[10px] font-sans font-bold tracking-[0.4em] uppercase">
                             <MapPin className="w-4 h-4" />
-                            <span>{language === "VN" ? "Đến Với Chúng Tôi" : "Visit Us"}</span>
+                            <span>{t('map-visit')}</span>
                         </div>
                         <p className="max-w-md text-ink-light font-serif italic text-lg leading-relaxed">
-                            {language === "VN" ? "Một studio làm móng hiện đại tại An Hải, Đà Nẵng." : "A modern nail studio in An Hai, Da Nang."}
+                            {t('map-desc')}
                         </p>
                     </div>
 
@@ -60,8 +98,8 @@ export default function MapSection() {
                                 <Clock className="w-5 h-5" />
                             </div>
                             <div className="space-y-1">
-                                <h4 className="font-serif text-xl font-normal text-ink">{language === "VN" ? "Giờ Mở Cửa" : "Opening Hours"}</h4>
-                                <p className="font-sans text-[10px] text-ink-ghost tracking-[0.3em] uppercase">{language === "VN" ? "Thứ 2 - Chủ Nhật" : "Mon - Sun"} · 09:30 - 21:00</p>
+                                <h4 className="font-serif text-xl font-normal text-ink">{t('map-hours')}</h4>
+                                <p className="font-sans text-[13px] text-ink-ghost tracking-wider uppercase">{t('map-days')} · 09:30 - 21:00</p>
                             </div>
                         </div>
                         <div className="space-y-6">
@@ -69,9 +107,52 @@ export default function MapSection() {
                                 <Phone className="w-5 h-5" />
                             </div>
                             <div className="space-y-1">
-                                <h4 className="font-serif text-xl font-normal text-ink">{language === "VN" ? "Hotline" : "Direct Line"}</h4>
-                                <p className="font-sans text-[10px] text-ink-ghost tracking-[0.3em] uppercase">+84 094 559 8001</p>
+                                <h4 className="font-serif text-xl font-normal text-ink">{t('map-hotline')}</h4>
+                                <a href="tel:+840945598001" className="font-sans text-[13px] text-ink-ghost tracking-wider uppercase hover:text-primary transition-colors duration-300">
+                                    +84 094 559 8001
+                                </a>
                             </div>
+                        </div>
+                    </div>
+
+                    <div className="space-y-6 pt-10 border-t border-gold-pale/15">
+                        {/* Label */}
+                        <div className="flex items-center gap-3">
+                            <div className="w-6 h-[1px] bg-primary/50" />
+                            <span className="text-[10px] font-sans font-bold tracking-[0.4em] uppercase text-primary">
+                                {t('map-connect')}
+                            </span>
+                        </div>
+
+                        {/* Icons */}
+                        <div className="flex flex-wrap gap-3">
+                            {SOCIAL_LINKS.map((item) => {
+                                const Icon = item.icon;
+
+                                return (
+                                    <a
+                                        key={item.name}
+                                        href={item.href}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        aria-label={`Visit our ${item.name}`}
+                                        className="
+                                            group
+                                            w-11 h-11
+                                            flex items-center justify-center
+                                            bg-white/5
+                                            backdrop-blur-md
+                                            border border-white/10
+                                            text-ink-light
+                                            transition-all duration-500
+                                            hover:bg-primary hover:text-white hover:border-primary
+                                            active:scale-95
+                                        "
+                                    >
+                                        <Icon className="w-4 h-4 transition-transform duration-500 group-hover:scale-110" />
+                                    </a>
+                                );
+                            })}
                         </div>
                     </div>
 
@@ -79,7 +160,7 @@ export default function MapSection() {
                         onClick={() => setIsMapOpen(true)}
                         className="px-14 py-6 shimmer-gold text-white font-serif uppercase tracking-[0.3em] text-xs rounded-xs hover:scale-105 transition-transform duration-500 shadow-2xl flex items-center gap-4 cursor-pointer"
                     >
-                        {language === "VN" ? "Chỉ Đường" : "Get Directions"}
+                        {t('map-directions')}
                         <Navigation className="w-4 h-4" />
                     </button>
                 </div>
@@ -118,8 +199,8 @@ export default function MapSection() {
 
                     <div className="absolute -bottom-10 -right-10 bg-white/95 backdrop-blur-md p-10 shadow-2xl max-w-[320px] z-30 hidden xl:block pointer-events-none">
                         <div className="space-y-6">
-                            <span className="font-sans text-[10px] font-bold text-primary tracking-[0.4em] uppercase">{language === "VN" ? "Vị Trí" : "Aesthetic Hub"}</span>
-                            <p className="font-serif text-2xl text-ink leading-tight italic">{language === "VN" ? "21 An Nhơn 6, An Hải, Đà Nẵng (ngã tư Phan Bôi x An Nhơn 6)" : "21 An Nhon 6, An Hai, Da Nang (Phan Boi x An Nhon 6 intersection)"}</p>
+                            <span className="font-sans text-[10px] font-bold text-primary tracking-[0.4em] uppercase">{t('map-hub')}</span>
+                            <p className="font-serif text-2xl text-ink leading-tight italic">{t('map-address')}</p>
                         </div>
                     </div>
                 </motion.div>
@@ -168,7 +249,7 @@ export default function MapSection() {
                                 rel="noopener noreferrer"
                                 className="absolute bottom-6 right-6 z-20 bg-white/95 hover:bg-white text-ink px-6 py-3 text-xs font-sans font-bold tracking-[0.2em] uppercase rounded-full shadow-lg transition-all flex items-center gap-2"
                             >
-                                {language === "VN" ? "Mở Bản Đồ" : "Open in Maps"}
+                                {t('map-open-maps')}
                                 <ExternalLink className="w-4 h-4" />
                             </a>
                         </motion.div>
