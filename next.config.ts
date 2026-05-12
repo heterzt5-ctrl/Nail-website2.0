@@ -11,6 +11,12 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "lh3.googleusercontent.com",
       },
+      {
+        protocol: "https",
+        // Supabase Storage — project-specific subdomain
+        hostname: "wfgpbbgedxrlmpszbfib.supabase.co",
+        pathname: "/storage/v1/object/public/**",
+      },
     ],
   },
   typescript: {
