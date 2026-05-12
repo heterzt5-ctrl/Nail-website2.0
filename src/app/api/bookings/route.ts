@@ -30,17 +30,17 @@ async function sendTelegramNotification(booking: BookingNotification) {
         return;
     }
 
-    const dateStr = new Date(booking.startTime).toLocaleDateString('vi-VN', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    });
+    const dateObj = new Date(booking.startTime);
     
-    const timeStr = new Date(booking.startTime).toLocaleTimeString('vi-VN', {
-        hour: '2-digit',
-        minute: '2-digit'
-    });
+    // Robust date formatting that doesn't strictly depend on server locale
+    const day = String(dateObj.getDate()).padStart(2, '0');
+    const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+    const year = dateObj.getFullYear();
+    const hours = String(dateObj.getHours()).padStart(2, '0');
+    const minutes = String(dateObj.getMinutes()).padStart(2, '0');
+    
+    const dateStr = `${day}/${month}/${year}`;
+    const timeStr = `${hours}:${minutes}`;
 
     const message = `✨ <b>NEW ATELIER RESERVATION</b> ✨
 -----------------------------------------
@@ -53,7 +53,8 @@ async function sendTelegramNotification(booking: BookingNotification) {
 ${booking.notes ? `📝 <b>Notes:</b> ${escapeHTML(booking.notes)}` : '<i>No additional notes</i>'}`;
 
     try {
-        const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+        const url = `https://api.telegram.org/bot${token}/sendMessage`;
+        const response = await fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -65,12 +66,15 @@ ${booking.notes ? `📝 <b>Notes:</b> ${escapeHTML(booking.notes)}` : '<i>No add
 
         const result = await response.json();
         if (!response.ok) {
-            console.error('Telegram API Error:', result);
+            console.error('Telegram API Error Response:', JSON.stringify(result));
+            throw new Error(`Telegram API returned ${response.status}: ${result.description || 'Unknown error'}`);
         } else {
-            console.log('Telegram notification sent successfully!');
+            console.log('Telegram notification sent successfully. Message ID:', result.result?.message_id);
         }
     } catch (error) {
-        console.error('Failed to send Telegram notification:', error);
+        console.error('CRITICAL: Failed to send Telegram notification:', error);
+        // We don't re-throw here because we don't want to fail the entire booking process
+        // just because the notification failed.
     }
 }
 
