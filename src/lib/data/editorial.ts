@@ -3,13 +3,15 @@ import { supabase } from "@/lib/supabase";
 
 // For server-side rendering where we just need anonymous read access
 const getSupabase = () => {
-    // If NEXT_PUBLIC_SUPABASE_URL isn't fully loaded in some server contexts,
-    // this ensures we instantiate cleanly.
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL || "",
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "",
-        { auth: { persistSession: false } }
-    );
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    
+    if (!url || !key) {
+        // Fallback stub for Vercel build time when env vars might be absent
+        return createClient('https://placeholder.supabase.co', 'placeholder-key', { auth: { persistSession: false } });
+    }
+    
+    return createClient(url, key, { auth: { persistSession: false } });
 };
 
 export type Post = {
