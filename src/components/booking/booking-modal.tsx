@@ -169,7 +169,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     return (
         <AnimatePresence>
             {isOpen && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-8 overflow-y-auto">
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-2 sm:p-4 md:p-8 overflow-y-auto">
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -183,26 +183,26 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
                         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                        className="relative w-full max-w-5xl bg-cloud rounded-xs shadow-2xl overflow-hidden border border-gold-pale/20"
+                        className="relative w-full max-w-5xl bg-cloud rounded-xs shadow-2xl border border-gold-pale/20 overflow-hidden my-4 md:my-8"
                     >
-                        <div className="flex flex-col md:flex-row h-full min-h-[650px]">
+                        <div className="flex flex-col md:flex-row min-h-[500px] max-h-[90vh] md:max-h-[85vh]">
                             {/* Left Side: Editorial Context */}
-                            <div className="md:w-1/3 p-12 bg-white/50 border-r border-gold-pale/10 flex flex-col justify-between">
-                                <div className="space-y-16">
-                                    <div className="space-y-6">
-                                        <div className="w-10 h-10 bg-ink flex items-center justify-center">
-                                            <Sparkles className="w-5 h-5 text-gold-pale" />
+                            <div className="md:w-1/3 p-6 sm:p-8 md:p-12 bg-white/50 border-b md:border-b-0 md:border-r border-gold-pale/10 flex flex-col justify-between overflow-y-auto max-h-[30vh] md:max-h-full">
+                                <div className="space-y-8 md:space-y-16">
+                                    <div className="space-y-4 md:space-y-6">
+                                        <div className="w-8 h-8 md:w-10 md:h-10 bg-ink flex items-center justify-center">
+                                            <Sparkles className="w-4 h-4 md:w-5 md:h-5 text-gold-pale" />
                                         </div>
-                                        <h3 className="text-4xl font-serif font-light tracking-tight text-ink leading-tight">
-                                            {t("Reserve")} <br /><span className="italic text-primary">{t("Your Session")}</span>
+                                        <h3 className="text-2xl sm:text-3xl md:text-4xl font-serif font-light tracking-tight text-ink leading-tight">
+                                            {t("Reserve")} <br className="hidden md:inline" /><span className="italic text-primary">{t("Your Session")}</span>
                                         </h3>
-                                        <p className="font-serif text-sm text-ink-light italic leading-relaxed">
+                                        <p className="font-serif text-xs md:text-sm text-ink-light italic leading-relaxed">
                                             {t("A curated encounter with stillness. No deposit required at this stage.")}
                                         </p>
                                     </div>
 
                                     {!isConfirmed && (
-                                        <nav className="space-y-10 relative">
+                                        <nav className="space-y-6 md:space-y-10 relative hidden sm:block">
                                             <div className="absolute left-[7px] top-2 bottom-2 w-px bg-gold-pale/20" />
                                             {steps.map((text, i) => (
                                                 <div key={text} className="flex items-center gap-6 relative">
@@ -217,31 +217,31 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                                     )}
                                 </div>
 
-                                <div className="pt-12 border-t border-gold-pale/10">
-                                    <div className="flex items-center gap-4 mb-4">
-                                        <Bell className="w-4 h-4 text-primary" />
+                                <div className="pt-6 md:pt-12 border-t border-gold-pale/10 mt-6 md:mt-0">
+                                    <div className="flex items-center gap-4 mb-2 md:mb-4">
+                                        <Bell className="w-3.5 h-3.5 md:w-4 md:h-4 text-primary" />
                                         <span className="font-sans text-[9px] font-bold text-primary uppercase tracking-[0.3em]">{t("Instant Notification")}</span>
                                     </div>
-                                    <p className="font-serif text-[11px] italic text-ink-light leading-relaxed">{t("The atelier team is notified instantly upon your selection. For specific requests, please contact us via phone or chat in the section below.")}</p>
+                                    <p className="font-serif text-[10px] md:text-[11px] italic text-ink-light leading-relaxed">{t("The atelier team is notified instantly upon your selection. For specific requests, please contact us via phone or chat in the section below.")}</p>
                                 </div>
                             </div>
 
                             {/* Right Side: Form Interaction */}
-                            <div className="flex-1 p-12 sm:p-20 relative bg-cloud">
-                                <button onClick={handleClose} className="absolute top-10 right-10 w-10 h-10 flex items-center justify-center text-ink-ghost hover:text-primary transition-colors">
+                            <div className="flex-1 p-6 sm:p-10 md:p-16 lg:p-20 relative bg-cloud overflow-y-auto max-h-[60vh] md:max-h-full">
+                                <button onClick={handleClose} className="absolute top-4 right-4 sm:top-8 sm:right-8 w-10 h-10 flex items-center justify-center text-ink-ghost hover:text-primary transition-colors z-20">
                                     <X className="w-5 h-5" />
                                 </button>
 
-                                <div className="h-full flex flex-col pt-8">
+                                <div className="h-full flex flex-col pt-4 md:pt-8">
                                     {!isConfirmed ? (
                                         <>
                                             {step === 1 && (
-                                                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-12">
+                                                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-8 md:space-y-12">
                                                     <div className="space-y-3">
-                                                        <h4 className="text-3xl font-serif font-light tracking-tight text-ink">{t("Select")} <span className="italic text-primary">{t("Artistry")}</span></h4>
+                                                        <h4 className="text-2xl md:text-3xl font-serif font-light tracking-tight text-ink">{t("Select")} <span className="italic text-primary">{t("Artistry")}</span></h4>
                                                         <p className="font-sans text-[10px] text-ink-ghost uppercase tracking-[0.4em]">{t("Choose your signature experience.")}</p>
                                                     </div>
-                                                    <div className="space-y-2 max-h-[400px] overflow-y-auto pr-2">
+                                                    <div className="space-y-2">
                                                         {isLoading ? (
                                                             <div className="flex flex-col items-center justify-center py-20 space-y-4">
                                                                 <Loader2 className="w-8 h-8 text-primary animate-spin" />
