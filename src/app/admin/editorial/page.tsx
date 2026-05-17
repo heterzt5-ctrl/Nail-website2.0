@@ -1,5 +1,8 @@
 "use client";
 
+// Never statically prerender — requires Supabase auth session at runtime
+export const dynamic = 'force-dynamic';
+
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
