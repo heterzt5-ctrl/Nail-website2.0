@@ -4,9 +4,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/lib/language-context";
+import { useEffect, useState } from "react";
 
 export default function Hero() {
     const { t, language } = useLanguage();
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => { setMounted(true); }, []);
 
     return (
         <section className="relative min-h-screen flex items-center px-8 md:px-20 pt-20 pb-24 bg-[#F0EEE9]">
@@ -32,9 +35,16 @@ export default function Hero() {
 
                         {/* Main Heading */}
                         <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl tracking-tight leading-[1.1] text-[#1b1c19] mb-8">
-                            The{" "}
-                            <span className="italic text-[#735c00]">Art</span>
-                            {" "}of{" "}
+                            The <span 
+                                className="italic"
+                                style={{ 
+                                    backgroundImage: "linear-gradient(90deg, #927708ff 0%, #d4af37 100%)",
+                                    WebkitBackgroundClip: "text",
+                                    color: "transparent"
+                                }}
+                            >
+                                Art
+                            </span> of
                             <br />
                             Precision.
                         </h1>
@@ -56,15 +66,13 @@ export default function Hero() {
                                         "linear-gradient(90deg, #735c00 0%, #d4af37 100%)",
                                 }}
                             >
-                                {language === "VN"
-                                    ? "Khám Phá Atelier"
-                                    : "Explore Atelier"}
+                                {t('h-btn-explore')}
                             </Link>
                             <Link
                                 className="font-serif uppercase tracking-widest text-xs border-b border-[#735c00]/30 pb-1 hover:border-[#735c00] transition-colors cursor-pointer text-[#1b1c19]"
                                 href="/#philosophy"
                             >
-                                {language === "VN" ? "Về Chúng Tôi" : "About Us"}
+                                {t('h-btn-about')}
                             </Link>
                         </div>
                     </motion.div>
@@ -99,7 +107,7 @@ export default function Hero() {
                                 className="absolute top-4 right-4 z-10"
                             >
                                 <span className="font-serif uppercase tracking-[0.25em] text-[10px] text-[#735c00] bg-[#F0EEE9]/80 px-3 py-1 border border-[#d4af37]/30">
-                                    Digital Atelier
+                                    {t('h-label-atelier')}
                                 </span>
                             </motion.div>
                         </motion.div>

@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Sparkles, CheckCircle2, ArrowRight, Bell, Loader2, ChevronLeft, ChevronRight } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useLanguage } from "@/lib/language-context";
 
 interface Service {
@@ -22,7 +22,7 @@ interface BookingModalProps {
 }
 
 export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
-    const { language } = useLanguage();
+    const { language, t } = useLanguage();
     const [step, setStep] = useState(1);
     const [services, setServices] = useState<Service[]>([]);
     const [selectedServices, setSelectedServices] = useState<Service[]>([]);
@@ -36,7 +36,17 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     const [clientName, setClientName] = useState("");
     const [clientPhone, setClientPhone] = useState("");
 
-    const steps = ["Experience", "Schedule", "Contact"];
+    const steps = useMemo(() => [t("Experience"), t("Schedule"), t("Contact")], [t]);
+
+    const locale = useMemo(() => {
+        switch (language) {
+            case "VN": return "vi-VN";
+            case "KR": return "ko-KR";
+            case "CN": return "zh-CN";
+            case "RU": return "ru-RU";
+            default: return "en-US";
+        }
+    }, [language]);
 
     useEffect(() => {
         if (isOpen) {
@@ -88,7 +98,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                 setIsConfirmed(true);
             } else {
                 const err = await res.json();
-                alert(err.error || "Failed to create booking");
+                alert(err.error || t('booking-err-fail'));
             }
         } catch (error) {
             console.error("Booking failed:", error);
@@ -132,10 +142,10 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                     onClick={() => !isPast && setSelectedDate(date)}
                     disabled={isPast}
                     className={`aspect-square flex items-center justify-center text-[10px] font-sans font-bold transition-all ${isSelected
-                            ? 'bg-ink text-white shadow-lg'
-                            : isPast
-                                ? 'text-ink-ghost/30 cursor-not-allowed'
-                                : 'hover:bg-primary/10 hover:text-primary text-ink-ghost'
+                        ? 'bg-ink text-white shadow-lg'
+                        : isPast
+                            ? 'text-ink-ghost/30 cursor-not-allowed'
+                            : 'hover:bg-primary/10 hover:text-primary text-ink-ghost'
                         }`}
                 >
                     {i}
@@ -152,6 +162,9 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     const handleNextMonth = () => {
         setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1));
     };
+
+    const getServiceName = (s: Service) => t(s.name);
+    const getServiceDesc = (s: Service) => t(s.description || "");
 
     return (
         <AnimatePresence>
@@ -181,10 +194,10 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                                             <Sparkles className="w-5 h-5 text-gold-pale" />
                                         </div>
                                         <h3 className="text-4xl font-serif font-light tracking-tight text-ink leading-tight">
-                                            Reserve <br /><span className="italic text-primary">Your Session</span>
+                                            {t("Reserve")} <br /><span className="italic text-primary">{t("Your Session")}</span>
                                         </h3>
                                         <p className="font-serif text-sm text-ink-light italic leading-relaxed">
-                                            A curated encounter with stillness. No deposit required at this stage.
+                                            {t("A curated encounter with stillness. No deposit required at this stage.")}
                                         </p>
                                     </div>
 
@@ -195,7 +208,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                                                 <div key={text} className="flex items-center gap-6 relative">
                                                     <div className={`w-4 h-4 rounded-full z-10 border-2 transition-all duration-700 ${step > i ? 'bg-primary border-primary' : step === i + 1 ? 'bg-white border-primary' : 'bg-transparent border-gold-pale/30'}`} />
                                                     <div className="space-y-1">
-                                                        <p className={`font-sans text-[9px] font-bold uppercase tracking-[0.3em] transition-colors ${step === i + 1 ? 'text-primary' : 'text-ink-ghost'}`}>Phase 0{i + 1}</p>
+                                                        <p className={`font-sans text-[9px] font-bold uppercase tracking-[0.3em] transition-colors ${step === i + 1 ? 'text-primary' : 'text-ink-ghost'}`}>{t("Phase 0")}{i + 1}</p>
                                                         <span className={`font-serif text-xs uppercase tracking-widest transition-colors ${step === i + 1 ? 'text-ink' : 'text-ink-ghost'}`}>{text}</span>
                                                     </div>
                                                 </div>
@@ -207,9 +220,9 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                                 <div className="pt-12 border-t border-gold-pale/10">
                                     <div className="flex items-center gap-4 mb-4">
                                         <Bell className="w-4 h-4 text-primary" />
-                                        <span className="font-sans text-[9px] font-bold text-primary uppercase tracking-[0.3em]">Instant Notification</span>
+                                        <span className="font-sans text-[9px] font-bold text-primary uppercase tracking-[0.3em]">{t("Instant Notification")}</span>
                                     </div>
-                                    <p className="font-serif text-[11px] italic text-ink-light leading-relaxed">The atelier team is notified instantly upon your selection. For specific requests, please contact us via phone or chat in the section below.</p>
+                                    <p className="font-serif text-[11px] italic text-ink-light leading-relaxed">{t("The atelier team is notified instantly upon your selection. For specific requests, please contact us via phone or chat in the section below.")}</p>
                                 </div>
                             </div>
 
@@ -225,19 +238,19 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                                             {step === 1 && (
                                                 <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-12">
                                                     <div className="space-y-3">
-                                                        <h4 className="text-3xl font-serif font-light tracking-tight text-ink">Select <span className="italic text-primary">Artistry</span></h4>
-                                                        <p className="font-sans text-[10px] text-ink-ghost uppercase tracking-[0.4em]">Choose your signature experience.</p>
+                                                        <h4 className="text-3xl font-serif font-light tracking-tight text-ink">{t("Select")} <span className="italic text-primary">{t("Artistry")}</span></h4>
+                                                        <p className="font-sans text-[10px] text-ink-ghost uppercase tracking-[0.4em]">{t("Choose your signature experience.")}</p>
                                                     </div>
                                                     <div className="space-y-2 max-h-[400px] overflow-y-auto pr-2">
                                                         {isLoading ? (
                                                             <div className="flex flex-col items-center justify-center py-20 space-y-4">
                                                                 <Loader2 className="w-8 h-8 text-primary animate-spin" />
-                                                                <p className="font-serif text-sm italic text-ink-ghost">Preparing the catalog...</p>
+                                                                <p className="font-serif text-sm italic text-ink-ghost">{t("Preparing the catalog...")}</p>
                                                             </div>
                                                         ) : (
                                                             Object.entries(
                                                                 services.reduce((acc, service) => {
-                                                                    const cat = service.category || (language === "VN" ? "Khác" : "Other");
+                                                                    const cat = service.category || "Other";
                                                                     if (!acc[cat]) acc[cat] = [];
                                                                     acc[cat].push(service);
                                                                     return acc;
@@ -248,7 +261,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                                                                         onClick={() => setExpandedCategory(expandedCategory === category ? null : category)}
                                                                         className="w-full p-6 text-left flex items-center justify-between hover:bg-primary/5 transition-colors"
                                                                     >
-                                                                        <span className="font-serif text-lg text-ink tracking-tight">{category}</span>
+                                                                        <span className="font-serif text-lg text-ink tracking-tight">{t(category)}</span>
                                                                         <ChevronRight className={`w-5 h-5 text-gold-pale transition-transform ${expandedCategory === category ? 'rotate-90' : ''}`} />
                                                                     </button>
                                                                     <AnimatePresence>
@@ -276,10 +289,10 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                                                                                             >
                                                                                                 <div className="space-y-1 pr-4">
                                                                                                     <span className="font-serif text-sm text-ink tracking-tight">
-                                                                                                        {language === "VN" ? s.name_vn || s.name : s.name}
+                                                                                                        {getServiceName(s)}
                                                                                                     </span>
                                                                                                     <p className="font-serif text-xs text-ink-ghost italic">
-                                                                                                        {language === "VN" ? s.description_vn : s.description}
+                                                                                                        {getServiceDesc(s)}
                                                                                                     </p>
                                                                                                 </div>
                                                                                                 <div className={`w-5 h-5 flex-shrink-0 border flex items-center justify-center transition-all ${isSelected ? 'bg-primary border-primary text-white' : 'border-gold-pale/40'}`}>
@@ -302,8 +315,8 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                                             {step === 2 && (
                                                 <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-12">
                                                     <div className="space-y-3">
-                                                        <h4 className="text-3xl font-serif font-light tracking-tight text-ink">The <span className="italic text-primary">Timeline</span></h4>
-                                                        <p className="font-sans text-[10px] text-ink-ghost uppercase tracking-[0.4em]">Reserve your preferred arrival window.</p>
+                                                        <h4 className="text-3xl font-serif font-light tracking-tight text-ink">{t("The")} <span className="italic text-primary">{t("Timeline")}</span></h4>
+                                                        <p className="font-sans text-[10px] text-ink-ghost uppercase tracking-[0.4em]">{t("Reserve your preferred arrival window.")}</p>
                                                     </div>
                                                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                                                         <div className="bg-white/50 p-6 sm:p-10 border border-gold-pale/10">
@@ -312,21 +325,25 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                                                                     <ChevronLeft className="w-5 h-5" />
                                                                 </button>
                                                                 <div className="font-sans text-xs font-bold uppercase tracking-[0.2em] text-ink">
-                                                                    {currentMonth.toLocaleDateString(language === "VN" ? 'vi-VN' : 'en-US', { month: 'long', year: 'numeric' })}
+                                                                    {currentMonth.toLocaleDateString(locale, { month: 'long', year: 'numeric' })}
                                                                 </div>
                                                                 <button onClick={handleNextMonth} className="p-2 hover:bg-gold-pale/10 rounded-full transition-colors text-ink-ghost hover:text-primary">
                                                                     <ChevronRight className="w-5 h-5" />
                                                                 </button>
                                                             </div>
                                                             <div className="grid grid-cols-7 gap-2 sm:gap-4 text-center">
-                                                                {(language === "VN" ? ["CN", "T2", "T3", "T4", "T5", "T6", "T7"] : ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]).map((d, i) => <span key={`${d}-${i}`} className="font-sans text-[9px] font-bold text-primary/40 uppercase tracking-[0.3em] mb-4">{d}</span>)}
+                                                                {["Days-Su", "Days-Mo", "Days-Tu", "Days-We", "Days-Th", "Days-Fr", "Days-Sa"].map((dayKey) => (
+                                                                    <span key={dayKey} className="font-sans text-[9px] font-bold text-primary/40 uppercase tracking-[0.3em] mb-4">
+                                                                        {t(dayKey)}
+                                                                    </span>
+                                                                ))}
                                                                 {renderCalendar()}
                                                             </div>
                                                         </div>
 
                                                         <div className="space-y-8">
                                                             <div className="space-y-3">
-                                                                <label className="font-sans text-[9px] font-bold uppercase tracking-[0.4em] text-primary block">Select Time Window</label>
+                                                                <label className="font-sans text-[9px] font-bold uppercase tracking-[0.4em] text-primary block">{t("Select Time Window")}</label>
                                                                 <div className="grid grid-cols-3 gap-3">
                                                                     {["09:30", "11:00", "13:00", "14:30", "16:00", "17:30", "19:00", "20:30"].map((time) => (
                                                                         <button
@@ -343,7 +360,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                                                             {selectedDate && selectedTime && (
                                                                 <div className="p-6 bg-primary/5 border border-primary/10 rounded-xs">
                                                                     <p className="font-serif text-[11px] text-primary italic leading-relaxed">
-                                                                        You have selected <span className="font-bold">{selectedDate.toLocaleDateString(language === "VN" ? 'vi-VN' : 'en-US', { weekday: 'long', day: 'numeric', month: 'long' })}</span> at <span className="font-bold">{selectedTime}</span>.
+                                                                        {t("You have selected")} <span className="font-bold">{selectedDate.toLocaleDateString(locale, { weekday: 'long', day: 'numeric', month: 'long' })}</span> {t("at")} <span className="font-bold">{selectedTime}</span>.
                                                                     </p>
                                                                 </div>
                                                             )}
@@ -355,24 +372,24 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                                             {step === 3 && (
                                                 <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-12">
                                                     <div className="space-y-3">
-                                                        <h4 className="text-3xl font-serif font-light tracking-tight text-ink">Personal <span className="italic text-primary">Identifier</span></h4>
-                                                        <p className="font-sans text-[10px] text-ink-ghost uppercase tracking-[0.4em]">Finalize your reservation details.</p>
+                                                        <h4 className="text-3xl font-serif font-light tracking-tight text-ink">{t("Personal")} <span className="italic text-primary">{t("Identifier")}</span></h4>
+                                                        <p className="font-sans text-[10px] text-ink-ghost uppercase tracking-[0.4em]">{t("Finalize your reservation details.")}</p>
                                                     </div>
 
                                                     <div className="space-y-8">
                                                         <div className="space-y-3">
-                                                            <label htmlFor="client-name" className="font-sans text-[9px] font-bold uppercase tracking-[0.4em] text-primary block">Your Name</label>
+                                                            <label htmlFor="client-name" className="font-sans text-[9px] font-bold uppercase tracking-[0.4em] text-primary block">{t("Your Name")}</label>
                                                             <input
                                                                 id="client-name"
                                                                 type="text"
                                                                 value={clientName}
                                                                 onChange={(e) => setClientName(e.target.value)}
-                                                                placeholder="Enter full name"
+                                                                placeholder={t("Enter full name")}
                                                                 className="w-full p-6 bg-white border border-gold-pale/20 focus:border-primary outline-none font-serif text-ink tracking-wide transition-all"
                                                             />
                                                         </div>
                                                         <div className="space-y-3">
-                                                            <label htmlFor="client-phone" className="font-sans text-[9px] font-bold uppercase tracking-[0.4em] text-primary block">Phone Number</label>
+                                                            <label htmlFor="client-phone" className="font-sans text-[9px] font-bold uppercase tracking-[0.4em] text-primary block">{t("Phone Number")}</label>
                                                             <input
                                                                 id="client-phone"
                                                                 type="tel"
@@ -392,11 +409,11 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                                                         {isSubmitting ? (
                                                             <>
                                                                 <Loader2 className="w-4 h-4 animate-spin" />
-                                                                Finalizing Reservation...
+                                                                {t("Finalizing Reservation...")}
                                                             </>
                                                         ) : (
                                                             <>
-                                                                Confirm Atelier Reservation
+                                                                {t("Confirm Atelier Reservation")}
                                                                 <ArrowRight className="w-4 h-4" />
                                                             </>
                                                         )}
@@ -406,7 +423,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
 
                                             <div className="mt-auto pt-16 flex items-center justify-between border-t border-gold-pale/10">
                                                 {step > 1 ? (
-                                                    <button onClick={() => setStep(step - 1)} className="font-sans text-[9px] font-bold tracking-[0.4em] uppercase text-ink-ghost hover:text-primary transition-all cursor-pointer">Previous Phase</button>
+                                                    <button onClick={() => setStep(step - 1)} className="font-sans text-[9px] font-bold tracking-[0.4em] uppercase text-ink-ghost hover:text-primary transition-all cursor-pointer">{t("Previous Phase")}</button>
                                                 ) : <div />}
 
                                                 {step < 3 && (
@@ -415,7 +432,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                                                         disabled={(step === 1 && selectedServices.length === 0) || (step === 2 && (!selectedDate || !selectedTime))}
                                                         className="px-12 py-5 bg-ink text-white text-[10px] font-sans font-bold tracking-[0.3em] uppercase hover:bg-primary transition-all flex items-center gap-4 disabled:opacity-20 cursor-pointer"
                                                     >
-                                                        Next Phase
+                                                        {t("Next Phase")}
                                                         <ArrowRight className="w-4 h-4" />
                                                     </button>
                                                 )}
@@ -431,16 +448,16 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                                                 <CheckCircle2 className="w-10 h-10 text-primary" />
                                             </div>
                                             <div className="space-y-6">
-                                                <h4 className="text-4xl font-serif font-light tracking-tight text-ink">Success.</h4>
+                                                <h4 className="text-4xl font-serif font-light tracking-tight text-ink">{t("Success.")}</h4>
                                                 <p className="font-serif text-lg text-ink-light italic max-w-sm mx-auto leading-relaxed">
-                                                    Your request for **{selectedServices.map(s => language === "VN" ? s.name_vn || s.name : s.name).join(' & ')}** on {selectedDate?.toLocaleDateString(language === "VN" ? 'vi-VN' : 'en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} at {selectedTime} has been recorded.
+                                                    {t("Your request for")} **{selectedServices.map(s => getServiceName(s)).join(' & ')}** {t("on")} {selectedDate?.toLocaleDateString(locale, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} {t("at")} {selectedTime} {t("has been recorded.")}
                                                 </p>
                                                 <div className="pt-8 flex justify-center">
                                                     <button
                                                         onClick={handleClose}
                                                         className="px-14 py-6 border border-ink text-ink font-serif uppercase tracking-[0.4em] text-xs hover:bg-ink hover:text-white transition-all duration-700"
                                                     >
-                                                        Finalize Experience
+                                                        {t("Finalize Experience")}
                                                     </button>
                                                 </div>
                                             </div>

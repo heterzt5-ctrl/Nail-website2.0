@@ -15,7 +15,7 @@ export default function ServicesMenu() {
             id: "nail",
             title: t('s-muse-title'),
             subtitle: t('s-muse-sub'),
-            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCwHWljhPRPnn8J6PEzrVy2pMhx-R9BhsodLyoU8eBxp6vgahduOimEkR2d5NxPo9vdGvKBtj1mjqDnGZ7EokXvOuH0OKjrvD6SNON-0onq-7ZswFlc5aX9UZEJQpeTZdY3nj6eXF_NqEjMkEVp50mACftCgAmtMgOFQm2wqi1Stp3TbKTV8vdT2FbMtbflzKSzfLOjYIxL3U9PoWu4N8ezsP8gG_S6e1sPrijqGWVC6vUWIspypiyXB5C0gXoCzAs-vglX7MbnKHYR",
+            image: "/images/menu03/menu-01.JPG",
             price: "",
             services: [
                 { id: 'classic', name: t('n-classic-vi'), price: "70k" },
@@ -28,7 +28,7 @@ export default function ServicesMenu() {
             id: "art-essential",
             title: t('s-essential-title'),
             subtitle: t('s-essential-sub'),
-            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBWSreoz9vio0SMdrwcQyuLn_Ak4zTPzF-96OOTLpozXBGf1UrWQcwBpiz_AYnb_XgrcjL0PIqCG-40PKFoDaAkMMjBmTn0fQghqKsXWnbcz4kJzhMLYqv5Zc9BR6J3DMLbOQuOHH0vAMCUI23TuSyOUNHe1y6G0JDPdpOVOH-6DBM0m2FYGIuBtpEDD4wgyy3MyIoR1UOA8NVB_qF9f61Jk2LgeCNzDqR6pBF6ODjpqw_I4eNhF7l5vede7chF5tcPi6jN0IZ0zucN",
+            image: "/images/menu03/menu-02.JPG",
             price: "",
             asymmetric: true,
             services: [
@@ -42,7 +42,7 @@ export default function ServicesMenu() {
             id: "art-bespoke",
             title: t('s-bespoke-title'),
             subtitle: t('s-bespoke-sub'),
-            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBWSreoz9vio0SMdrwcQyuLn_Ak4zTPzF-96OOTLpozXBGf1UrWQcwBpiz_AYnb_XgrcjL0PIqCG-40PKFoDaAkMMjBmTn0fQghqKsXWnbcz4kJzhMLYqv5Zc9BR6J3DMLbOQuOHH0vAMCUI23TuSyOUNHe1y6G0JDPdpOVOH-6DBM0m2FYGIuBtpEDD4wgyy3MyIoR1UOA8NVB_qF9f61Jk2LgeCNzDqR6pBF6ODjpqw_I4eNhF7l5vede7chF5tcPi6jN0IZ0zucN",
+            image: "/images/menu03/menu-03.JPG",
             price: "",
             services: [
                 { id: 'bespoke-items', name: t('n-bespoke-items'), price: t('p-on-request') }
@@ -50,9 +50,9 @@ export default function ServicesMenu() {
         },
         {
             id: "ritual",
-            title: language === "VN" ? "Gội đầu & Thư giãn" : "Hair shampoo & Relaxation",
-            subtitle: language === "VN" ? "Spa Phục Hồi" : "Restorative Spa",
-            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDnfaeYd_saXJAzAUxMrlG2BxsGP9fZ_f0rsW3Fih4-YCHNT04OcomxzYdRXeuGLizDdGFW6sww9CmqpeO6qWs8lDfv7FiWKhgQCuKJRPD1-_ema4C5m-hdZ-4S2XPkvJyXhe7OiYF3-A94A8poqOcP-_l6zZG8ZUj_tf2bRERZ-qWMaI_AmeDM8sFfuj3pf8kI73Tz0ITawRr1VWit5i5JCJ6-MKLv4tzAWdZZIWkvGCL1t1w6gBLBTJLbrPrH4DhCZSNHFEi-JB-7",
+            title: t('s-ritual-title'),
+            subtitle: t('s-ritual-sub'),
+            image: "/images/menu03/menu-04.JPG",
             price: "",
             asymmetric: true,
             services: [
@@ -67,7 +67,7 @@ export default function ServicesMenu() {
         <section id="services" className="py-32 px-8 md:px-20 bg-cloud">
             <div className="flex flex-col md:flex-row justify-between items-baseline mb-24 max-w-[1400px] mx-auto">
                 <h2 className="font-serif text-4xl md:text-5xl tracking-tight text-ink">The Menu</h2>
-                <p className="font-sans text-secondary mt-4 md:mt-0 tracking-widest uppercase text-xs">{language === "VN" ? "Dịch Vụ" : "Our Services"}</p>
+                <p className="font-sans text-secondary mt-4 md:mt-0 tracking-widest uppercase text-xs">{t('s-menu-label')}</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-32 max-w-[1400px] mx-auto">
@@ -76,7 +76,7 @@ export default function ServicesMenu() {
                         key={section.id}
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
+                        viewport={{ once: true, amount: 0.3 }}
                         transition={{ duration: 0.8, delay: idx * 0.1 }}
                         className={`group cursor-pointer ${section.asymmetric ? 'md:mt-40' : ''}`}
                     >
@@ -86,8 +86,17 @@ export default function ServicesMenu() {
                                 alt={section.title}
                                 fill
                                 sizes="(max-width: 768px) 100vw, 50vw"
-                                className="object-cover grayscale hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100"
+                                className="object-cover transition-transform duration-1000 scale-105 group-hover:scale-100"
                             />
+                            {/* Color wash overlay — fades out as card enters viewport */}
+                            <motion.div
+                                initial={{ opacity: 0.75 }}
+                                whileInView={{ opacity: 0 }}
+                                viewport={{ once: true, amount: 0.5 }}
+                                transition={{ duration: 1.2, ease: "easeOut" }}
+                                className="absolute inset-0 bg-cloud/80 pointer-events-none"
+                            />
+                            {/* Hover shimmer overlay — independent of scroll state */}
                             <div className="absolute inset-0 bg-ink/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                         </div>
 

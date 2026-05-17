@@ -2,8 +2,10 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { useLanguage } from "@/lib/language-context";
 
 export default function VisualBreak() {
+    const { t } = useLanguage();
     return (
         <div className="bg-cloud-2 border-y border-cloud-3 overflow-hidden">
             <div className="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-[1.2fr_0.8fr_1fr] gap-[2px]">
@@ -26,8 +28,8 @@ export default function VisualBreak() {
                     />
 
                     <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10 bg-gradient-to-t from-ink/38 to-transparent z-20">
-                        <div className="text-[11px] tracking-[4px] text-cloud/85 uppercase">Glass Nails</div>
-                        <div className="font-serif italic text-base text-cloud/70 mt-1">Móng thủy tinh</div>
+                        <div className="text-[11px] tracking-[4px] text-cloud/85 uppercase">{t('vb-glass-title')}</div>
+                        <div className="font-serif italic text-base text-cloud/70 mt-1">{t('vb-glass-sub')}</div>
                     </div>
                 </div>
 
@@ -48,8 +50,8 @@ export default function VisualBreak() {
                     />
 
                     <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10 bg-gradient-to-t from-ink/38 to-transparent z-20">
-                        <div className="text-[11px] tracking-[4px] text-cloud/85 uppercase">Chrome Art</div>
-                        <div className="font-serif italic text-base text-cloud/70 mt-1">Bạc kim loại</div>
+                        <div className="text-[11px] tracking-[4px] text-cloud/85 uppercase">{t('vb-chrome-title')}</div>
+                        <div className="font-serif italic text-base text-cloud/70 mt-1">{t('vb-chrome-sub')}</div>
                     </div>
                 </div>
 
@@ -71,8 +73,8 @@ export default function VisualBreak() {
                     />
 
                     <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10 bg-gradient-to-t from-ink/38 to-transparent z-20">
-                        <div className="text-[11px] tracking-[4px] text-cloud/85 uppercase">3D · Champagne</div>
-                        <div className="font-serif italic text-base text-cloud/70 mt-1">Vàng sâm panh</div>
+                        <div className="text-[11px] tracking-[4px] text-cloud/85 uppercase">{t('vb-3d-title')}</div>
+                        <div className="font-serif italic text-base text-cloud/70 mt-1">{t('vb-3d-sub')}</div>
                     </div>
                 </div>
             </div>

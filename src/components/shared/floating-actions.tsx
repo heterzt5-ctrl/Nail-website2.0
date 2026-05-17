@@ -5,8 +5,7 @@ import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/language-context";
 
 export default function FloatingActions() {
-    const { language } = useLanguage();
-    const lang = language === "VN" ? "VN" : "EN";
+    const { t } = useLanguage();
 
     const [isVisible, setIsVisible] = useState(false);
     const [hovered, setHovered] = useState<"call" | "book" | null>(null);
@@ -57,7 +56,7 @@ export default function FloatingActions() {
                     pointerEvents: hovered === "call" ? "auto" : "none",
                     boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
                 }}>
-                    {lang === "VN" ? "Gọi ngay" : "Call us"}
+                    {t('fa-call')}
                 </span>
 
                 <a
@@ -101,7 +100,7 @@ export default function FloatingActions() {
                     transform: hovered === "book" ? "translateX(0)" : "translateX(8px)",
                     pointerEvents: hovered === "book" ? "auto" : "none",
                 }}>
-                    {lang === "VN" ? "Đặt lịch" : "Book now"}
+                    {t('fa-book')}
                 </span>
 
                 <button

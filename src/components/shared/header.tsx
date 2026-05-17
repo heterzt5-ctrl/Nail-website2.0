@@ -11,7 +11,7 @@ interface HeaderProps {
 }
 
 export default function Header({ onOpenBooking }: HeaderProps) {
-    const { language, setLanguage } = useLanguage();
+    const { language, setLanguage, t } = useLanguage();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     const langs: { id: typeof language, label: string }[] = [
@@ -23,10 +23,10 @@ export default function Header({ onOpenBooking }: HeaderProps) {
     ];
 
     const navLinks = [
-        { href: "/gallery", label: language === "VN" ? "Bộ Sưu Tập" : "Portfolio" },
-        { href: "/#services", label: language === "VN" ? "Dịch Vụ" : "Services" },
-        { href: "/editorial", label: language === "VN" ? "Bài Viết" : "Editorial" },
-        { href: "/#location", label: language === "VN" ? "Vị Trí" : "Location" },
+        { href: "/gallery", label: t('nav-portfolio') },
+        { href: "/#services", label: t('nav-services') },
+        { href: "/editorial", label: t('nav-editorial') },
+        { href: "/#location", label: t('nav-location') },
     ];
 
     return (
@@ -35,7 +35,6 @@ export default function Header({ onOpenBooking }: HeaderProps) {
                 <Link href="/" className="text-2xl font-serif tracking-[0.2em] text-ink uppercase group">
                     REMY <span className="italic text-primary group-hover:text-ink transition-colors">MUSE</span>
                 </Link>
-
                 <div className="hidden md:flex items-center space-x-12">
                     {navLinks.map(link => (
                         <Link key={link.href} href={link.href} className="font-serif tracking-tight uppercase text-ink-ghost hover:text-primary transition-all duration-700 ease-in-out">
@@ -46,7 +45,7 @@ export default function Header({ onOpenBooking }: HeaderProps) {
                         onClick={onOpenBooking}
                         className="font-serif tracking-tight uppercase text-primary font-bold border-b border-primary/30 pb-0.5 hover:border-primary transition-all duration-700 cursor-pointer"
                     >
-                        {language === "VN" ? "Đặt Lịch" : "Booking"}
+                        {t('nav-booking')}
                     </button>
                 </div>
 
@@ -111,7 +110,7 @@ export default function Header({ onOpenBooking }: HeaderProps) {
                                     onClick={() => { onOpenBooking(); setIsMobileMenuOpen(false); }}
                                     className="px-12 py-5 shimmer-gold text-white font-serif uppercase tracking-[0.3em] text-sm cursor-pointer"
                                 >
-                                    {language === "VN" ? "Đặt Lịch" : "Booking"}
+                                    {t('nav-booking')}
                                 </button>
                             </motion.div>
 

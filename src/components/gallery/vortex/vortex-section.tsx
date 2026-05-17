@@ -4,8 +4,10 @@ import { useEffect, useRef, useState } from "react";
 import VortexGallery from "./vortex-gallery-class";
 import { VORTEX_IMAGES } from "./types";
 import ImageDetailOverlay from "./image-detail-overlay";
+import { useLanguage } from "@/lib/language-context";
 
 export default function VortexSection() {
+  const { t } = useLanguage();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const vortexRef = useRef<VortexGallery | null>(null);
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
@@ -123,16 +125,16 @@ export default function VortexSection() {
             <div className="flex items-center gap-3 mt-2">
               <div className="w-6 h-[1px] bg-primary/60" />
               <p className="text-primary-light/90 text-[10px] uppercase tracking-[0.3em] font-bold">
-                Infinite Design Matrix
+                {t("Infinite Design Matrix")}
               </p>
             </div>
           </div>
           <div className="hidden md:flex flex-col items-end gap-2 bg-ink/30 backdrop-blur-md px-6 py-4">
             <div className="w-1 h-1 bg-primary rounded-full animate-pulse mb-1" />
             <p className="text-white/40 text-[9px] uppercase tracking-[0.4em] leading-relaxed text-right">
-              Scroll to Navigate
+              {t("Scroll to Navigate")}
               <br />
-              Click to Explore
+              {t("Click to Explore")}
             </p>
           </div>
         </div>
@@ -140,7 +142,7 @@ export default function VortexSection() {
         {/* FIX 5: Thêm hint cho mobile vì instruction chỉ hiện trên md+ */}
         <div className="flex md:hidden justify-center mb-2">
           <p className="text-white/30 text-[9px] uppercase tracking-[0.3em]">
-            Swipe · Tap to Explore
+            {t("Swipe · Tap to Explore")}
           </p>
         </div>
 

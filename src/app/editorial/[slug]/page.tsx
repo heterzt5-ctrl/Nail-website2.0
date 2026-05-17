@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { BLOG_POSTS } from "@/lib/mock-data";
+import { getPostBySlug, getPosts } from "@/lib/data/editorial";
 import ArticleClient from "./article-client";
 
 interface Props {
@@ -9,26 +9,29 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { slug } = await params;
-    const post = BLOG_POSTS.find((p) => p.slug === slug);
+    const post = await getPostBySlug(slug);
 
     if (!post) return { title: "Article Not Found | REMY MUSE" };
 
     return {
-        title: `${post.title.EN} | REMY MUSE Editorial`,
-        description: post.excerpt.EN,
+        title: `${post.title_en} | REMY MUSE Editorial`,
+        description: post.excerpt_en,
         openGraph: {
-            title: post.title.EN,
-            description: post.excerpt.EN,
-            images: [post.coverImage],
+            title: post.title_en,
+            description: post.excerpt_en,
+            images: [post.cover_image_url],
         },
     };
 }
 
 export default async function EditorialArticlePage({ params }: Props) {
     const { slug } = await params;
-    const post = BLOG_POSTS.find((p) => p.slug === slug);
+    const post = await getPostBySlug(slug);
 
     if (!post) return notFound();
+    
+    const allPosts = await getPosts();
+    const related = allPosts.filter(p => p.slug !== slug).slice(0, 2);
 
-    return <ArticleClient post={post} />;
+    return <ArticleClient post={post} related={related} />;
 }

@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import Image from "next/image";
 import { ImageItem, overlayConfig } from "./types";
+import { useLanguage } from "@/lib/language-context";
 
 interface Props {
   image: ImageItem | null;
@@ -10,6 +11,8 @@ interface Props {
 }
 
 export default function ImageDetailOverlay({ image, onClose }: Props) {
+  const { t } = useLanguage();
+
   useEffect(() => {
     if (!image) return;
     const onKey = (e: KeyboardEvent) => {
@@ -29,8 +32,8 @@ export default function ImageDetailOverlay({ image, onClose }: Props) {
   const eyebrow =
     image && image.category
       ? overlayConfig.frameDetailLabel
-        ? `${image.category} — ${overlayConfig.frameDetailLabel}`
-        : image.category
+        ? `${t(image.category)} — ${t(overlayConfig.frameDetailLabel)}`
+        : t(image.category)
       : "";
 
   return (
@@ -137,7 +140,7 @@ export default function ImageDetailOverlay({ image, onClose }: Props) {
                   color: "#F0EEE9",
                 }}
               >
-                {image.title}
+                {t(image.title)}
               </h2>
             )}
 
@@ -151,7 +154,7 @@ export default function ImageDetailOverlay({ image, onClose }: Props) {
                   margin: 0,
                 }}
               >
-                {image.description}
+                {t(image.description)}
               </p>
             )}
 
@@ -170,7 +173,7 @@ export default function ImageDetailOverlay({ image, onClose }: Props) {
               >
                 {overlayConfig.fileLabel && (
                   <>
-                    <span style={{ opacity: 0.6 }}>{overlayConfig.fileLabel}</span>
+                    <span style={{ opacity: 0.6 }}>{t(overlayConfig.fileLabel)}</span>
                     <span style={{ fontFamily: "monospace", wordBreak: "break-all" }}>
                       {image.src.split("/").pop()}
                     </span>
@@ -178,8 +181,8 @@ export default function ImageDetailOverlay({ image, onClose }: Props) {
                 )}
                 {overlayConfig.seriesLabel && (
                   <>
-                    <span style={{ opacity: 0.6 }}>{overlayConfig.seriesLabel}</span>
-                    <span>{image.title.split(" — ")[0]}</span>
+                    <span style={{ opacity: 0.6 }}>{t(overlayConfig.seriesLabel)}</span>
+                    <span>{t(image.title).split(" — ")[0]}</span>
                   </>
                 )}
               </div>
@@ -212,7 +215,7 @@ export default function ImageDetailOverlay({ image, onClose }: Props) {
                   e.currentTarget.style.color = "#F0EEE9";
                 }}
               >
-                {overlayConfig.closeLabel}
+                {t(overlayConfig.closeLabel)}
               </button>
             )}
           </div>

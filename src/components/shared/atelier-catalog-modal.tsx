@@ -27,15 +27,7 @@ const imageVariants = {
 
 /* ── Trigger Button ───────────────────────────────────────────── */
 export function CatalogTrigger({ onOpen }: { onOpen: () => void }) {
-    const { language } = useLanguage();
-
-    const label: Record<string, string> = {
-        VN: "Xem Toàn Bộ Menu →",
-        EN: "View Full Menu →",
-        KR: "전체 서비스 카탈로그 보기 →",
-        CN: "查看完整服务目录 →",
-        RU: "Смотреть полный каталог →",
-    };
+    const { t } = useLanguage();
 
     return (
         <motion.button
@@ -46,7 +38,7 @@ export function CatalogTrigger({ onOpen }: { onOpen: () => void }) {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="px-10 py-4 shimmer-gold text-white font-serif uppercase tracking-[0.2em] text-sm rounded-xs hover:scale-105 transition-transform duration-300 mx-auto mt-20 block cursor-pointer"
         >
-            {label[language] || label.EN}
+            {t('catalog-btn')}
         </motion.button>
     );
 }
@@ -59,7 +51,7 @@ export function AtelierCatalogModal({
     isOpen: boolean;
     onClose: () => void;
 }) {
-    const { language } = useLanguage();
+    const { language, t } = useLanguage();
     const [index, setIndex] = useState(0);
     const [dragStartX, setDragStartX] = useState(0);
 
@@ -142,7 +134,7 @@ export function AtelierCatalogModal({
                             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                             </svg>
-                            <span className="font-sans text-[10px] tracking-[0.2em] uppercase">{language === "VN" ? "Đóng" : "Close"}</span>
+                            <span className="font-sans text-[10px] tracking-[0.2em] uppercase">{t('catalog-close')}</span>
                         </button>
 
                         {/* ── Image Viewport ── */}
@@ -209,8 +201,8 @@ export function AtelierCatalogModal({
                                         key={i}
                                         onClick={() => setIndex(i)}
                                         className={`w-1.5 h-1.5 rounded-full transition-all duration-300 cursor-pointer ${i === index
-                                                ? "bg-primary-container w-6"
-                                                : "bg-cloud/20 hover:bg-cloud/40"
+                                            ? "bg-primary-container w-6"
+                                            : "bg-cloud/20 hover:bg-cloud/40"
                                             }`}
                                         aria-label={`Go to page ${i + 1}`}
                                     />

@@ -100,11 +100,90 @@
 
 ---
 
-## 📌 Current Status
-- **UI/UX**: 95% Complete (Focusing on micro-animations and final asset polish).
-- **Backend**: 90% Complete (Dynamic gallery upload UI in progress).
-- **Deployment**: Stable on Vercel with automated Prisma migrations.
+## 📅 May 16, 2026 - Phase 5: Editorial System & Supabase Migration
+
+### 🗞️ 1. Editorial Content System (Supabase-backed)
+- **Architecture**: Built a full editorial pipeline — `PostsTable` (Supabase) → `editorial/page.tsx` (list) → `editorial/[slug]/page.tsx` (article).
+- **Dynamic Fetching**: `EditorialPage`, `EditorialArticlePage`, and `BlogPreview` all fetch live data from the `posts` table instead of mock data.
+- **Schema Sync**: Aligned frontend data structures with the Supabase schema — handled multilingual content fields (`title_vn`, `title_en`, etc.) and image URL resolution.
+- **Admin Portal**: Created `/admin/editorial` portal for content management, with `/admin/login` auth gate.
+- **Static Data Layer**: Added `src/lib/data/` for structured local fallback content while Supabase is being populated.
+
+### 🖼️ 2. Editorial Article UX — Premium Reading Experience
+- **Layout**: Transitioned from standard two-column to single-column reading at 860px max-width.
+- **Hero Image**: Full-bleed "cinematic breakout" between metadata and body — uses `padding-bottom` ratio hack + `object-contain` to prevent layout shifts.
+- **Lightbox Modal**: Built scroll-triggered image zoom lightbox with zoom controls relocated to the top bar, translucency panel, and responsive layout.
+- **Stability**: `max-w-[75vw]` constraint on hero images prevents viewport overflow.
+
+### 🐛 3. Compilation Error Resolution
+- Fixed Framer Motion type errors (`ease: number[]` → proper `Easing` types) across `article-client.tsx`.
+- Removed stale `@ts-expect-error` directives in `gallery/page.tsx`.
+- Consolidated multilingual data access to match current Supabase schema (removed legacy VN/EN ternary pattern).
+
+### 🌐 4. Localization Engine Upgrade
+- Migrated all legacy `language === 'VN' ? ... : ...` conditional code into the centralized `LanguageContext` `t()` engine.
+- Completed Korean (KR) and Chinese (CN) translation keys for Booking Modal and Gallery interface.
+- Synchronized English keys across all 5 language files (VN, EN, KR, CN, RU).
+
+### 🗺️ 5. Map Section Asset Update
+- Replaced placeholder map image in `map-section.tsx` with local `Location.webp` for brand-aligned location discovery experience.
 
 ---
-*End of current log.*
+
+## 📅 May 17, 2026 - Phase 6: Services Menu & Typography Polish
+
+### 📖 1. Editorial Typography Refinement (`article-client.tsx`)
+- **Line Height**: Reduced body paragraph `leading` from `leading-[2]` (double-spaced) to **`leading-[1.6]`** — tighter, more premium editorial rhythm.
+- **Paragraph Spacing**: Reduced `space-y-8` (32px) → **`space-y-4` (16px)** on the body paragraph container for unified text flow.
+- **Empty Line Elements**: Reduced empty line `<div>` height from `h-8` to **`h-2` (8px)** — eliminating the "air pocket" effect that diluted reading continuity.
+- **Result**: Consecutive paragraphs are 16px apart; blank-line separators now 40px total (vs. previous ~96px).
+
+### 🖼️ 2. Services Menu — Image Migration (`services-menu.tsx`)
+- **Before**: 4 external Google CDN placeholder URLs (unreliable, slow, external dependency).
+- **After**: 4 local high-quality JPGs from `public/images/menu03/`:
+
+| Section | ID | Asset |
+|---|---|---|
+| Muse / Nail | `nail` | `/images/menu03/menu-01.JPG` |
+| Art Essential | `art-essential` | `/images/menu03/menu-02.JPG` |
+| Art Bespoke | `art-bespoke` | `/images/menu03/menu-03.JPG` |
+| Ritual | `ritual` | `/images/menu03/menu-04.JPG` |
+
+- **Next.js Config**: Images served via `/images/menu03/` from `public/` directory — no additional domain config required.
+- **Display**: `object-cover` with `object-center` focus point maintained on `aspect-video` (16:9) container.
+
+### ✨ 3. Services Menu — Scroll-Reveal Color Wash Effect (`services-menu.tsx`)
+- **Removed**: `grayscale` CSS filter approach (expensive GPU composite layer, conflicts with hover state).
+- **Implemented**: Option A — Scroll-triggered **color wash overlay** using Framer Motion `motion.div`:
+  - Initial overlay: `bg-cloud/80` at `opacity: 0.75`
+  - On scroll into view (`amount: 0.5`): fades to `opacity: 0` over `1.2s easeOut`
+  - Hover shimmer (`bg-ink/10`) operates independently without state conflict
+- **Performance wins**: GPU-only `opacity` property vs. `filter: grayscale()` — no layout recalculation.
+- **Viewport config**: Updated from `{ once: true }` to `{ once: true, amount: 0.3 }` on parent card for more reliable scroll triggering.
+
+---
+
+## 📌 Current Status — May 17, 2026
+
+| Area | Status | Notes |
+|---|---|---|
+| **UI/UX Design** | ✅ 98% | Typography, spacing, animations all refined |
+| **Editorial System** | ✅ 95% | Supabase-backed, admin portal live |
+| **Services Menu** | ✅ 100% | Local assets, color wash scroll effect |
+| **i18n (5 languages)** | ✅ 95% | All keys migrated to `t()` engine |
+| **Backend / API** | ✅ 90% | Telegram notifications, Supabase bookings |
+| **Deployment** | ✅ Stable | Vercel — Prisma lazy init, build errors resolved |
+
+### 📁 Key Assets
+- `public/images/menu03/` — 4 menu section JPGs (menu-01 to menu-04)
+- `public/images/catalog/` — 9 catalog pages (01.jpg to 09.jpg)
+- `public/Location.webp` — Map section brand image
+- `public/images/hero-main.jpeg` — Hero section
+
+### ⚠️ Known Pre-existing Issues (not introduced this session)
+- `src/app/editorial/[slug]/article-client copy.tsx` — Legacy backup file with Framer Motion type errors (`ease: number[]`). **Not used in production** — safe to delete when confirmed.
+- `src/app/gallery/page.tsx` — Stale `@ts-expect-error` directive (unused). Minor cleanup needed.
+
+---
+*Log updated: May 17, 2026 @ 11:52 ICT*
 

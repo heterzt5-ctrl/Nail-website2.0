@@ -26,7 +26,7 @@ export default function Footer() {
                         REMY MUSE
                     </Link>
                     <div className="font-sans text-[0.85rem] tracking-wider text-gray-600 uppercase">
-                        Nail — Shampoo — Foot Care Studio
+                        {t('ft-studio-desc')}
                     </div>
                     <div className="font-sans text-[0.85rem] tracking-wider text-gray-500 uppercase mt-2 space-y-1.5">
                         <p>

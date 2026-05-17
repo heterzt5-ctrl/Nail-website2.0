@@ -4,33 +4,24 @@ import { motion } from "framer-motion";
 import { useLanguage } from "@/lib/language-context";
 
 export default function Testimonials() {
-    const { language } = useLanguage();
+    const { t } = useLanguage();
     const reviews = [
         {
             name: "Lan Anh",
-            role: { VN: "Khách hàng", EN: "Client" },
-            quote: { 
-                VN: "\"Làm rất kỹ và sạch. Mình rất hài lòng với bộ móng mới.\"",
-                EN: "\"Meticulous and clean work. I am very satisfied with my new nails.\""
-            },
+            role: t('review-role'),
+            quote: t('review-1-quote'),
             offset: "0"
         },
         {
             name: "Minh Thư",
-            role: { VN: "Khách hàng", EN: "Client" },
-            quote: { 
-                VN: "\"Nhân viên nhẹ nhàng, dễ chịu. Không gian rất thư giãn.\"",
-                EN: "\"Gentle and pleasant staff. The atmosphere is very relaxing.\""
-            },
+            role: t('review-role'),
+            quote: t('review-2-quote'),
             offset: "md:mt-24"
         },
         {
             name: "Ngọc Bích",
-            role: { VN: "Khách hàng", EN: "Client" },
-            quote: { 
-                VN: "\"Dịch vụ chu đáo, tư vấn nhiệt tình. Sẽ quay lại ủng hộ tiếp.\"",
-                EN: "\"Attentive service, enthusiastic consultation. I will definitely come back.\""
-            },
+            role: t('review-role'),
+            quote: t('review-3-quote'),
             offset: "md:mt-48"
         }
     ];
@@ -53,11 +44,11 @@ export default function Testimonials() {
                             className={`flex flex-col space-y-8 ${rev.offset}`}
                         >
                             <p className="font-serif text-xl italic leading-relaxed text-ink/80">
-                                {language === "VN" ? rev.quote.VN : rev.quote.EN}
+                                {rev.quote}
                             </p>
                             <div>
                                 <span className="block font-serif uppercase tracking-widest text-[10px] text-primary">{rev.name}</span>
-                                <span className="block font-serif text-[10px] text-secondary/70">{language === "VN" ? rev.role.VN : rev.role.EN}</span>
+                                <span className="block font-serif text-[10px] text-secondary/70">{rev.role}</span>
                             </div>
                         </motion.div>
                     ))}

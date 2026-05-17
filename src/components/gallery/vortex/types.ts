@@ -68,8 +68,12 @@ export const VORTEX_IMAGES: ImageItem[] = [
     title: "Verde — No. 08",
     description: "Emerald green with hand-painted gold kintsugi veins. A celebration of imperfection and beauty, inspired by the Japanese art of repairing broken pottery with gold.",
   },
-
   {
+    src: "/gallery/vortex/nail_09.jpg",
+    category: "Abstract",
+    title: "Fluidity — No. 09",
+    description: "Clear negative space with fluid silver chrome drips. An avant-garde approach to nail art that plays with the boundaries of liquid and solid forms.",
+  },  {
     src: "/gallery/vortex/nail_10.jpg",
     category: "Botanical",
     title: "Sakura — No. 10",
@@ -147,8 +151,12 @@ export const VORTEX_IMAGES: ImageItem[] = [
     title: "Tidal — No. 22",
     description: "Teal base with silver chrome wave patterns. Fluid and dynamic, this design captures the motion of ocean waves in metallic form.",
   },
-
   {
+    src: "/gallery/vortex/nail_23.jpg",
+    category: "Aura",
+    title: "Blush Aura — No. 23",
+    description: "Soft diffused aura gradient in peach and magenta. A deeply spiritual, glowing design that mimics the ethereal energy fields of the body.",
+  },  {
     src: "/gallery/vortex/nail_24.jpg",
     category: "Dark Luxe",
     title: "Obsidian — No. 24",

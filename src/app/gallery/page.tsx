@@ -23,6 +23,7 @@ import {
 import VortexSection from "@/components/gallery/vortex/vortex-section";
 import { supabase } from "@/lib/supabase";
 import type { GalleryItem } from "@/types/gallery";
+import { useLanguage } from "@/lib/language-context";
 
 // ─── Fallback static data (shown when DB is empty or fetch fails) ────────────
 const GALLERY_FALLBACK: GalleryItem[] = [
@@ -109,6 +110,7 @@ function GallerySkeleton() {
 
 // ─── Main page ───────────────────────────────────────────────────────────────
 export default function GalleryPage() {
+  const { t } = useLanguage();
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
   const [items, setItems] = useState<GalleryItem[]>([]);
@@ -160,24 +162,23 @@ export default function GalleryPage() {
         {/* Breadcrumbs */}
         <nav className="mb-8 flex items-center gap-3 text-[0.7rem] uppercase tracking-[0.15rem] text-ink-light font-sans font-medium">
           <Link className="hover:text-primary transition-colors" href="/">
-            Home
+            {t("Home")}
           </Link>
           <ChevronRight className="w-3 h-3" />
           <span className="hover:text-primary transition-colors cursor-pointer">
-            Portfolio
+            {t("Portfolio")}
           </span>
           <ChevronRight className="w-3 h-3" />
-          <span className="text-ink">Gallery</span>
+          <span className="text-ink">{t("Gallery")}</span>
         </nav>
 
         {/* Page Header */}
         <div className="mb-16">
           <h1 className="text-5xl md:text-6xl font-serif font-light tracking-tight text-ink mb-4">
-            The Muse Gallery
+            {t("The Muse Gallery")}
           </h1>
           <p className="text-ink-light max-w-xl font-serif italic leading-relaxed text-lg">
-            A curated exhibition of our finest artistry. From timeless French
-            tips to avant-garde 3D floral expressions.
+            {t("A curated exhibition of our finest artistry. From timeless French tips to avant-garde 3D floral expressions.")}
           </p>
         </div>
 
@@ -198,12 +199,12 @@ export default function GalleryPage() {
                   : "text-ink-light hover:text-primary"
                   }`}
               >
-                {cat}
+                {t(cat)}
               </button>
             ))}
           </div>
           <div className="hidden lg:flex items-center gap-4 text-ink-light text-xs font-sans tracking-widest uppercase pl-8 border-l border-ink/10">
-            <span>View:</span>
+            <span>{t("View:")}</span>
             <Grid className="w-4 h-4 cursor-pointer text-primary transition-colors" />
             <LayoutTemplate className="w-4 h-4 cursor-pointer text-ink-light hover:text-primary transition-colors" />
           </div>
@@ -213,8 +214,8 @@ export default function GalleryPage() {
         {!loading && (
           <div className="mb-8 flex items-center gap-3">
             <p className="text-[10px] font-sans uppercase tracking-[0.3em] text-ink-ghost">
-              {filteredItems.length} work{filteredItems.length !== 1 ? "s" : ""}
-              {activeCategory !== "All" && ` · ${activeCategory}`}
+              {filteredItems.length} {filteredItems.length !== 1 ? t("works") : t("work")}
+              {activeCategory !== "All" && ` · ${t(activeCategory)}`}
             </p>
             {loading && <Loader2 className="w-3 h-3 animate-spin text-ink-ghost" />}
           </div>
@@ -263,7 +264,7 @@ export default function GalleryPage() {
                     {item.is_trending && (
                       <div className="absolute top-4 left-4 z-10">
                         <span className="text-[8px] font-sans font-bold uppercase tracking-[0.2em] bg-white/90 backdrop-blur-sm text-primary px-3 py-1.5">
-                          Trending
+                          {t("Trending")}
                         </span>
                       </div>
                     )}
@@ -329,7 +330,7 @@ export default function GalleryPage() {
             {/* Title + category */}
             <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-center z-[110] pointer-events-none">
               <p className="text-white/40 text-[10px] font-sans uppercase tracking-[0.3em] mb-1">
-                {selectedItem.category}
+                {t(selectedItem.category)}
               </p>
               <h3 className="text-white font-serif text-xl">
                 {selectedItem.title}

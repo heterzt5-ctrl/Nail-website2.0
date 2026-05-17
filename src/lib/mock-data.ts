@@ -69,9 +69,9 @@ export const SERVICES = [
         name_vn: "Chăm sóc móng cơ bản",
         description: "Essential nail care, cuticle work, and shaping.",
         description_vn: "Chăm sóc móng thiết yếu, nhặt da và tạo form.",
-        price: 200000,
+        price: 70000,
         duration: 45,
-        category: "Manicure & Pedicure"
+        category: "s-muse-title"
     },
     {
         id: "s2",
@@ -81,7 +81,7 @@ export const SERVICES = [
         description_vn: "Sơn móng tay cơ bản.",
         price: 150000,
         duration: 30,
-        category: "Manicure & Pedicure"
+        category: "s-muse-title"
     },
     {
         id: "s3",
@@ -89,9 +89,9 @@ export const SERVICES = [
         name_vn: "Sơn Gel",
         description: "Long-lasting gel polish.",
         description_vn: "Sơn gel giữ màu lâu phai.",
-        price: 300000,
+        price: 180000,
         duration: 45,
-        category: "Manicure & Pedicure"
+        category: "s-muse-title"
     },
     {
         id: "s4",
@@ -99,9 +99,9 @@ export const SERVICES = [
         name_vn: "Sơn mắt mèo",
         description: "Magnetic cat eye gel effect.",
         description_vn: "Hiệu ứng sơn gel mắt mèo từ tính.",
-        price: 400000,
+        price: 220000,
         duration: 60,
-        category: "Manicure & Pedicure"
+        category: "s-muse-title"
     },
 
     // Basic Designs
@@ -111,9 +111,9 @@ export const SERVICES = [
         name_vn: "French toàn bộ",
         description: "Classic or modern French tips on all nails.",
         description_vn: "Viền móng French cổ điển hoặc hiện đại.",
-        price: 500000,
+        price: 150000,
         duration: 60,
-        category: "Basic Designs"
+        category: "s-essential-title"
     },
     {
         id: "s6",
@@ -121,9 +121,9 @@ export const SERVICES = [
         name_vn: "Ombre toàn bộ",
         description: "Smooth gradient color transition.",
         description_vn: "Chuyển màu gradient mượt mà.",
-        price: 500000,
+        price: 150000,
         duration: 75,
-        category: "Basic Designs"
+        category: "s-essential-title"
     },
     {
         id: "s7",
@@ -131,9 +131,9 @@ export const SERVICES = [
         name_vn: "Tráng gương toàn bộ",
         description: "Metallic chrome finish.",
         description_vn: "Hiệu ứng tráng gương toàn bộ móng.",
-        price: 600000,
+        price: 150000,
         duration: 75,
-        category: "Basic Designs"
+        category: "s-essential-title"
     },
     {
         id: "s8",
@@ -141,9 +141,21 @@ export const SERVICES = [
         name_vn: "Mắt mèo toàn bộ",
         description: "Intense magnetic cat eye on all nails.",
         description_vn: "Sơn mắt mèo toàn bộ các ngón.",
-        price: 600000,
+        price: 150000,
         duration: 75,
-        category: "Basic Designs"
+        category: "s-essential-title"
+    },
+
+    // Bespoke
+    {
+        id: "s-bespoke",
+        name: "Bespoke Artistry",
+        name_vn: "Thiết kế riêng",
+        description: "Custom, hand-painted sets tailored to your vision.",
+        description_vn: "Mẫu vẽ tay, thiết kế riêng theo yêu cầu.",
+        price: 0,
+        duration: 120,
+        category: "s-bespoke-title"
     },
 
     // Hair Wash & Relaxation
@@ -153,9 +165,9 @@ export const SERVICES = [
         name_vn: "Gội đầu cơ bản",
         description: "Standard relaxing hair wash.",
         description_vn: "Gội đầu thư giãn cơ bản.",
-        price: 150000,
+        price: 60000,
         duration: 30,
-        category: "Hair Wash & Relaxation"
+        category: "s-ritual-title"
     },
     {
         id: "s10",
@@ -163,9 +175,9 @@ export const SERVICES = [
         name_vn: "Gội đầu dưỡng sinh",
         description: "Deep scalp massage and hair nourishment.",
         description_vn: "Gội đầu kết hợp massage da đầu.",
-        price: 250000,
+        price: 150000,
         duration: 45,
-        category: "Hair Wash & Relaxation"
+        category: "s-ritual-title"
     },
     {
         id: "s11",
@@ -173,9 +185,9 @@ export const SERVICES = [
         name_vn: "Gội đầu hoàng gia",
         description: "Ultimate relaxation with neck and shoulder massage.",
         description_vn: "Gội đầu thư giãn hoàng gia kết hợp massage cổ vai gáy.",
-        price: 400000,
+        price: 250000,
         duration: 60,
-        category: "Hair Wash & Relaxation"
+        category: "s-ritual-title"
     }
 ];
 

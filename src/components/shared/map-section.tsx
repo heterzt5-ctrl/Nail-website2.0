@@ -19,41 +19,41 @@ const springTransition = {
 };
 
 const SOCIAL_LINKS = [
-  {
-    name: "Facebook",
-    href: "https://www.facebook.com/remymusenail",
-    icon: Facebook,
-  },
-  {
-    name: "Instagram",
-    href: "https://www.instagram.com/remymuse_nail_studio/",
-    icon: Instagram,
-  },
-  {
-    name: "WhatsApp",
-    href: "https://wa.me/84945598001",
-    icon: MessageCircle,
-  },
-  {
-    name: "Zalo",
-    href: "https://zalo.me/84945598001",
-    icon: MessageSquare,
-  },
-  {
-    name: "Line",
-    href: "https://line.me/",
-    icon: Send,
-  },
-  {
-    name: "WeChat",
-    href: "https://wechat.com/",
-    icon: MessageCircle,
-  },
-  {
-    name: "KakaoTalk",
-    href: "https://open.kakao.com/",
-    icon: MessageSquare,
-  },
+    {
+        name: "Facebook",
+        href: "https://www.facebook.com/remymusenail",
+        icon: Facebook,
+    },
+    {
+        name: "Instagram",
+        href: "https://www.instagram.com/remymuse_nail_studio/",
+        icon: Instagram,
+    },
+    {
+        name: "WhatsApp",
+        href: "https://wa.me/84945598001",
+        icon: MessageCircle,
+    },
+    {
+        name: "Zalo",
+        href: "https://zalo.me/84945598001",
+        icon: MessageSquare,
+    },
+    {
+        name: "Line",
+        href: "https://line.me/",
+        icon: Send,
+    },
+    {
+        name: "WeChat",
+        href: "https://wechat.com/",
+        icon: MessageCircle,
+    },
+    {
+        name: "KakaoTalk",
+        href: "https://open.kakao.com/",
+        icon: MessageSquare,
+    },
 ];
 
 export default function MapSection() {
@@ -180,10 +180,10 @@ export default function MapSection() {
                         className="relative z-10 bg-surface-variant overflow-hidden aspect-[4/3] shadow-2xl cursor-pointer group"
                     >
                         <Image
-                            src="https://images.unsplash.com/photo-1527853787696-f7be74f2e39a?auto=format&fit=crop&q=80&w=1200"
+                            src="/Location.webp"
                             alt="Salon Location Map"
                             fill
-                            className="object-cover grayscale-[0.5] group-hover:scale-105 transition-transform duration-1000"
+                            className="object-cover grayscale-[0.2] group-hover:scale-105 transition-transform duration-1000"
                         />
                         <div className="absolute inset-0 bg-ink/20 group-hover:bg-transparent transition-colors duration-700 pointer-events-none" />
 
@@ -197,10 +197,10 @@ export default function MapSection() {
                         </div>
                     </motion.div>
 
-                    <div className="absolute -bottom-10 -right-10 bg-white/95 backdrop-blur-md p-10 shadow-2xl max-w-[320px] z-30 hidden xl:block pointer-events-none">
-                        <div className="space-y-6">
+                    <div className="absolute bottom-4 left-4 right-4 md:bottom-6 md:left-6 md:right-auto md:max-w-[320px] xl:-bottom-10 xl:-right-10 xl:left-auto bg-white/70 backdrop-blur-xl p-6 md:p-8 xl:p-10 shadow-2xl z-30 pointer-events-none">
+                        <div className="space-y-4 md:space-y-6">
                             <span className="font-sans text-[10px] font-bold text-primary tracking-[0.4em] uppercase">{t('map-hub')}</span>
-                            <p className="font-serif text-2xl text-ink leading-tight italic">{t('map-address')}</p>
+                            <p className="font-serif text-lg md:text-2xl text-ink leading-tight italic leading-tight">{t('map-address')}</p>
                         </div>
                     </div>
                 </motion.div>
