@@ -8,7 +8,10 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 let _client: SupabaseClient | null = null;
 
 function getClient(): SupabaseClient {
-    if (!supabaseUrl || !supabaseAnonKey) {
+    let url = supabaseUrl?.trim();
+    let key = supabaseAnonKey?.trim();
+
+    if (!url || !key) {
         console.warn(
             '[supabase] NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY is missing. ' +
             'Supabase calls will fail until env vars are configured on Vercel.'
@@ -17,7 +20,12 @@ function getClient(): SupabaseClient {
         return createClient('https://placeholder.supabase.co', 'placeholder-key');
     }
     if (!_client) {
-        _client = createClient(supabaseUrl, supabaseAnonKey);
+        try {
+            _client = createClient(url, key);
+        } catch (e) {
+            console.warn("Supabase client init failed in fallback", e);
+            return createClient('https://placeholder.supabase.co', 'placeholder-key');
+        }
     }
     return _client;
 }

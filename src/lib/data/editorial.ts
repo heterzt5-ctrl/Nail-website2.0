@@ -3,15 +3,23 @@ import { supabase } from "@/lib/supabase";
 
 // For server-side rendering where we just need anonymous read access
 const getSupabase = () => {
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    let url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    let key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    
+    url = url?.trim();
+    key = key?.trim();
     
     if (!url || !key) {
         // Fallback stub for Vercel build time when env vars might be absent
         return createClient('https://placeholder.supabase.co', 'placeholder-key', { auth: { persistSession: false } });
     }
     
-    return createClient(url, key, { auth: { persistSession: false } });
+    try {
+        return createClient(url, key, { auth: { persistSession: false } });
+    } catch (e) {
+        console.warn("Supabase client init failed in fallback", e);
+        return createClient('https://placeholder.supabase.co', 'placeholder-key', { auth: { persistSession: false } });
+    }
 };
 
 export type Post = {
