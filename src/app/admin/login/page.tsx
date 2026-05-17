@@ -19,7 +19,9 @@ export default function AdminLoginPage() {
         // Check if already logged in
         supabase.auth.getSession().then(({ data: { session } }) => {
             if (session) {
-                router.push("/admin/editorial");
+                const searchParams = new URLSearchParams(window.location.search);
+                const redirectPath = searchParams.get("redirect") || "/admin/editorial";
+                router.push(redirectPath);
             } else {
                 setLoading(false);
             }
@@ -40,7 +42,9 @@ export default function AdminLoginPage() {
             setError(error.message);
             setLoading(false);
         } else {
-            router.push("/admin/editorial");
+            const searchParams = new URLSearchParams(window.location.search);
+            const redirectPath = searchParams.get("redirect") || "/admin/editorial";
+            router.push(redirectPath);
         }
     };
 

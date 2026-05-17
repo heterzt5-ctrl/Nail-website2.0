@@ -61,7 +61,9 @@ export default function Header({ onOpenBooking }: HeaderProps) {
                             </button>
                         ))}
                     </div>
-                    <User className="hidden md:block w-5 h-5 text-ink cursor-pointer hover:text-primary transition-colors" />
+                    <Link href="/admin/login" aria-label="Admin Portal">
+                        <User className="hidden md:block w-5 h-5 text-ink cursor-pointer hover:text-primary transition-colors" />
+                    </Link>
 
                     {/* Mobile Menu Toggle */}
                     <button

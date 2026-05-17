@@ -8,6 +8,7 @@ import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { Loader2, Plus, LogOut, Edit2, Trash2, Image as ImageIcon } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 type Post = {
     id: string;
@@ -63,7 +64,7 @@ export default function AdminEditorialPage() {
     const checkUserAndFetchData = async () => {
         const { data: { session } } = await supabase.auth.getSession();
         if (!session) {
-            router.push("/admin/login");
+            router.push("/admin/login?redirect=/admin/editorial");
             return;
         }
         await fetchPosts();
@@ -178,8 +179,18 @@ export default function AdminEditorialPage() {
             {/* Header */}
             <header className="bg-white border-b border-gold-pale/20 sticky top-0 z-40">
                 <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-8">
                         <h1 className="font-serif text-2xl italic font-light">Editorial Admin</h1>
+                        
+                        {/* Section Selector */}
+                        <div className="flex gap-4 border-l border-gold-pale/20 pl-6 h-5 items-center">
+                            <Link href="/admin/gallery" className="text-ink-light hover:text-ink font-sans text-xs uppercase tracking-[0.2em] font-medium transition-colors">
+                                Gallery
+                            </Link>
+                            <span className="text-ink font-sans text-xs uppercase tracking-[0.2em] font-medium border-b border-primary pb-0.5">
+                                Editorial
+                            </span>
+                        </div>
                     </div>
                     <div className="flex items-center gap-4">
                         {!isEditing && (

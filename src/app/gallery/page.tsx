@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-// @ts-expect-error react-masonry-css has no types
+// @ts-ignore react-masonry-css has no types
 import Masonry from "react-masonry-css";
 import Header from "@/components/shared/header";
 import Footer from "@/components/shared/footer";
@@ -144,6 +144,13 @@ export default function GalleryPage() {
     };
 
     fetchItems();
+  }, []);
+
+  // Listen to open-booking custom event
+  useEffect(() => {
+    const handleOpen = () => setIsBookingOpen(true);
+    window.addEventListener("open-booking", handleOpen);
+    return () => window.removeEventListener("open-booking", handleOpen);
   }, []);
 
   // Filtered items

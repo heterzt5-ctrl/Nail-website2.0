@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/shared/header";
@@ -20,6 +20,13 @@ export default function EditorialListClient({ initialPosts }: { initialPosts: Po
     const { language } = useLanguage();
     const [isBookingOpen, setIsBookingOpen] = useState(false);
     const [activeCategory, setActiveCategory] = useState("All");
+
+    // Listen to open-booking custom event
+    useEffect(() => {
+        const handleOpen = () => setIsBookingOpen(true);
+        window.addEventListener("open-booking", handleOpen);
+        return () => window.removeEventListener("open-booking", handleOpen);
+    }, []);
 
     const lang = language === "VN" ? "VN" : "EN";
     const cats = CATEGORIES[lang];

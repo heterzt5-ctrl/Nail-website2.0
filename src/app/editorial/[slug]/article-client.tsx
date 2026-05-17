@@ -137,6 +137,13 @@ export default function ArticleClient({ post, related }: { post: Post, related: 
         };
     }, [isLightboxOpen]);
 
+    // Listen to open-booking custom event
+    useEffect(() => {
+        const handleOpen = () => setIsBookingOpen(true);
+        window.addEventListener("open-booking", handleOpen);
+        return () => window.removeEventListener("open-booking", handleOpen);
+    }, []);
+
     return (
         <main className="relative bg-white min-h-screen selection:bg-[#735c00]/10">
             {/* Reading Progress Bar */}
